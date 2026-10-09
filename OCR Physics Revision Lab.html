@@ -1,0 +1,1253 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>OCR Physics Revision Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: graph-paper header, instrument-style readouts, one content column that widens to two on desktop.
+   Colour: cool paper + ink navy, cobalt accent; amber/green/red reserved for status. */
+:root{
+  --bg:#EDF1F6; --surface:#FFFFFF; --surface2:#E3E9F1; --ink:#0F1B30; --ink2:#4B5972; --line:#C9D3E0;
+  --accent:#2447D8; --accent-ink:#FFFFFF; --accent-soft:#DAE3FF; --good:#0E8A5E; --warn:#B26A00; --bad:#C23A3A;
+  --good-soft:#D6F1E5; --warn-soft:#FBE8C8; --bad-soft:#F9DADA; --grid:rgba(15,27,48,.06);
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-body:'Public Sans','Segoe UI',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B1220; --surface:#131D31; --surface2:#1B2740; --ink:#E8EEF8; --ink2:#9CABC4; --line:#2B3B59;
+  --accent:#86A2FF; --accent-ink:#0B1220; --accent-soft:#1F2E5E; --good:#3DD598; --warn:#F0B04A; --bad:#FF8080;
+  --good-soft:#103A2C; --warn-soft:#3F2F10; --bad-soft:#4A1E1E; --grid:rgba(232,238,248,.05); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1220; --surface:#131D31; --surface2:#1B2740; --ink:#E8EEF8; --ink2:#9CABC4; --line:#2B3B59;
+  --accent:#86A2FF; --accent-ink:#0B1220; --accent-soft:#1F2E5E; --good:#3DD598; --warn:#F0B04A; --bad:#FF8080;
+  --good-soft:#103A2C; --warn-soft:#3F2F10; --bad-soft:#4A1E1E; --grid:rgba(232,238,248,.05); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);padding-inline:0}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:1.5rem;font-weight:800} h3{font-size:1.1rem;font-weight:800} h4{font-size:.95rem;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.sup{font-size:.78rem}
+.muted{color:var(--ink2)}
+.small{font-size:.85rem}
+.eyebrow{font:500 .72rem/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink2)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:14px 14px}
+.top-in{max-width:1080px;margin:0 auto;padding:10px 16px 0;display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.brand b{font:800 1.15rem var(--f-display);letter-spacing:-.02em}
+.brand span{font:500 .72rem var(--f-mono);color:var(--ink2)}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-inline:-4px}
+.nav button{background:none;border:0;border-bottom:3px solid transparent;padding:8px 12px 7px;font-weight:600;color:var(--ink2);white-space:nowrap}
+.nav button[aria-current="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.nav .badge{font:500 .7rem var(--f-mono);background:var(--accent);color:var(--accent-ink);border-radius:9px;padding:1px 6px;margin-left:5px}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:20px 60px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row.sp{justify-content:space-between}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0}
+.card.flat{background:transparent}
+.card h3+*{margin-top:8px}
+
+/* buttons */
+.btn{background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);border-radius:6px;padding:8px 14px;font-weight:600}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{background:var(--surface2)}
+.btn.sm{padding:4px 10px;font-size:.85rem}
+.btn.danger{background:transparent;color:var(--bad);border-color:var(--bad)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 .72rem var(--f-mono);border:1px solid var(--line);border-radius:4px;padding:2px 7px;background:var(--surface2);color:var(--ink2);white-space:nowrap}
+.chip.acc{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.chip.good{background:var(--good-soft);color:var(--good);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.chip.bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+input[type=text],input[type=date],input[type=number],textarea,select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px;width:100%;min-width:0}
+textarea{min-height:90px;resize:vertical}
+label.f{display:flex;flex-direction:column;gap:4px;font-weight:600;font-size:.85rem}
+
+/* readout */
+.readout{font:500 2.6rem/1 var(--f-mono);letter-spacing:-.03em}
+.readout small{font-size:.8rem;color:var(--ink2);letter-spacing:0;margin-left:6px}
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;align-items:end}
+.hero>div{display:flex;flex-direction:column;gap:6px}
+.bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;min-width:60px}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.bar.good>i{background:var(--good)} .bar.warn>i{background:var(--warn)} .bar.bad>i{background:var(--bad)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{background:var(--surface);border:0;padding:5px 10px;font-size:.82rem;font-weight:500;color:var(--ink2)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.dots{display:inline-flex;gap:4px}
+.dots button{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);padding:0}
+.dots button.on{background:var(--ink);border-color:var(--ink)}
+.dots.c1 button.on{background:var(--bad);border-color:var(--bad)} .dots.c2 button.on{background:var(--warn);border-color:var(--warn)} .dots.c3 button.on{background:var(--warn);border-color:var(--warn)}
+.dots.c4 button.on,.dots.c5 button.on{background:var(--good);border-color:var(--good)}
+
+/* topics */
+.mod{display:flex;flex-direction:column;gap:8px}
+.mod-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding-top:8px}
+.topic{background:var(--surface);border:1px solid var(--line);border-radius:8px;min-width:0}
+.topic-h{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;padding:12px 14px;align-items:center}
+.topic-h .t{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left;background:none;border:0;padding:0}
+.topic-h .t b{font-family:var(--f-display);font-size:1.02rem}
+.topic-ctl{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.topic-b{border-top:1px solid var(--line);padding:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.topic-b ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.eq{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin-top:6px;font-size:.88rem}
+.eq dt{color:var(--ink2)} .eq dd{margin:0;font-family:var(--f-mono);font-size:.84rem}
+.pit{background:var(--warn-soft);border-radius:6px;padding:8px 10px;margin-top:6px;font-size:.88rem}
+
+/* practice */
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px}
+.mode{display:flex;flex-direction:column;gap:10px}
+.mode p{flex:1}
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:4px 12px}
+.checks label{display:flex;gap:8px;align-items:flex-start;font-size:.88rem;cursor:pointer}
+.checks input{margin-top:3px;flex:none}
+.sess{max-width:760px;margin:0 auto}
+.sess-card{display:flex;flex-direction:column;gap:14px}
+.qtext{font-size:1.05rem;line-height:1.6}
+.answer{background:var(--surface2);border-radius:6px;padding:12px 14px}
+.ms{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+.ms label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.ms input{margin-top:4px;flex:none}
+.grades{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.grades button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-weight:600}
+.grades button small{font:400 .72rem var(--f-mono);color:var(--ink2)}
+.grades button:hover{border-color:var(--accent)}
+.fig-box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px;overflow-x:auto}
+.fig{width:100%;max-width:460px;height:auto;display:block;margin:0 auto}
+.fig text{font:11px var(--f-mono);fill:var(--ink2)}
+.fig .tk{fill:var(--ink)}
+.fig .ax{stroke:var(--ink);fill:none;stroke-width:1.4}
+.fig .gr{stroke:var(--line);stroke-width:.6}
+.fig .c1{stroke:var(--accent);fill:none;stroke-width:2.2;stroke-linejoin:round}
+.fig .c2{stroke:var(--warn);fill:none;stroke-width:2;stroke-dasharray:6 3}
+.fig .c3{stroke:var(--bad);fill:none;stroke-width:2}
+.fig .ink{stroke:var(--ink);fill:none;stroke-width:1.5}
+.fig .inkf{fill:var(--ink);stroke:none}
+.fig .fill{fill:var(--accent-soft);stroke:none}
+.fig .accf{fill:var(--accent);stroke:none}
+.fig .box{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.fig .thin{stroke:var(--ink2);stroke-width:1;fill:none}
+.fig .dash{stroke:var(--ink2);stroke-width:1;stroke-dasharray:4 3;fill:none}
+.fig .lbl{fill:var(--ink)}
+.fig .lblA{fill:var(--accent)}
+.timer{font:500 1rem var(--f-mono)}
+.timer.over{color:var(--bad)}
+.prog{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.prog>i{display:block;height:100%;background:var(--accent)}
+kbd{font:500 .72rem var(--f-mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--surface)}
+
+/* progress */
+.tb{width:100%;border-collapse:collapse;font-size:.88rem}
+.tb th,.tb td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tb th{font:500 .72rem var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+.tw{overflow-x:auto}
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,14px);gap:3px;overflow-x:auto;padding-bottom:4px}
+.heat i{width:14px;height:14px;border-radius:3px;background:var(--surface2);display:block;position:relative}
+.heat i b{position:absolute;inset:0;background:var(--accent);border-radius:3px}
+.fc{display:flex;align-items:flex-end;gap:4px;height:90px}
+.fc div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;height:100%;min-width:0}
+.fc i{display:block;width:100%;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px}
+.fc span{font:400 .62rem var(--f-mono);color:var(--ink2)}
+.agenda{display:flex;flex-direction:column;gap:8px}
+.day{display:grid;grid-template-columns:78px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.day:first-child{border-top:0}
+.day .d{font:500 .8rem var(--f-mono)}
+.day .d b{display:block;font:800 1rem var(--f-display)}
+.day ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:.9rem}
+.empty{border:1.5px dashed var(--line);border-radius:8px;padding:20px;color:var(--ink2);text-align:center}
+.note{font-size:.85rem;color:var(--ink2)}
+.warnbox{background:var(--warn-soft);color:var(--ink);border-radius:6px;padding:10px 12px;font-size:.88rem}
+@media (max-width:520px){
+  .readout{font-size:2.1rem}
+  .topic-h{grid-template-columns:1fr}
+  .topic-ctl{justify-content:flex-start}
+  .day{grid-template-columns:62px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top"><div class="top-in">
+  <div class="brand"><b>OCR Physics Revision Lab</b><span class="mono">H556 · A Level Physics A</span></div>
+  <nav class="nav" id="nav" aria-label="Sections"></nav>
+</div></header>
+<main class="wrap" id="view"></main>
+<script>
+/* ---------- Specification data (paraphrased from OCR A H556; check the official spec for exact wording) ---------- */
+const MODULES={
+ 1:"Module 1 · Development of practical skills",
+ 2:"Module 2 · Foundations of physics",
+ 3:"Module 3 · Forces and motion",
+ 4:"Module 4 · Electrons, waves and photons",
+ 5:"Module 5 · Newtonian world and astrophysics",
+ 6:"Module 6 · Particles and medical physics"};
+const PAPERS={
+ 1:"Paper 1 (Modelling physics)", 2:"Paper 2 (Exploring physics)", 3:"Paper 3 (Unified physics)"};
+const MOD_PAPERS={1:[1,2,3],2:[1,2,3],3:[1,3],4:[2,3],5:[1,3],6:[2,3]};
+const TOPICS=[];
+function T(id,mod,ref,title,o){TOPICS.push(Object.assign({id,mod,ref,title,pts:[],eq:[],tips:[],cards:[],qs:[]},o))}
+
+T("prac",1,"1.1–1.2","Practical skills and uncertainty in practice",{
+ pts:["Plan experiments: identify independent, dependent and control variables, and choose apparatus with a suitable resolution and range.",
+  "Implement safely, recording readings to a consistent number of decimal places with units and column headings.",
+  "Analyse with graphs: choose scales, plot, draw a line of best fit, find gradient and intercept, and link them to the equation.",
+  "Evaluate: identify random and systematic errors, estimate uncertainties and suggest realistic improvements.",
+  "Practical Endorsement is reported separately from the written papers, but practical skills are examined in all three papers."],
+ eq:[["% uncertainty","(absolute uncertainty ÷ measured value) × 100%"],["Mean value","sum of repeats ÷ number of repeats"],["Uncertainty in a repeat mean","half the range of the repeats"]],
+ tips:["Quote a gradient to the same number of significant figures as the least precise data.","'Improve the experiment' answers need a specific change and the reason it helps."],
+ cards:[
+  ["Difference between random and systematic error?","Random: scatter about the true value, unpredictable, reduced by repeating and averaging. Systematic: every reading shifted the same way (for example a zero error), NOT reduced by repeats; fix by calibrating or correcting."],
+  ["Accuracy, precision and resolution: define each.","Accuracy: closeness to the true value. Precision: closeness of repeated readings to each other. Resolution: smallest change the instrument can detect."],
+  ["Why plot a graph instead of calculating from a single pair of readings?","The gradient averages many readings, anomalies are visible, and a non-zero intercept can reveal a systematic error."],
+  ["How do you reduce the effect of human reaction time when timing?","Time many oscillations or a long interval so the fixed reaction-time uncertainty is a smaller percentage; use light gates or a data logger; repeat and average."],
+  ["How is the uncertainty in a gradient found?","Draw the best-fit line and a worst acceptable line (steepest or shallowest line that still passes through all the error bars). Uncertainty = difference between best and worst gradients."]],
+ qs:[
+  {m:3,cw:"Explain",q:"A student times one oscillation of a pendulum with a stopwatch and finds the percentage uncertainty in the period is too large. Explain how the student can reduce the percentage uncertainty in the period.",
+   ms:["Time a large number of oscillations (for example 20) rather than one","Divide the total time by the number of oscillations to get the period, so the fixed reaction-time uncertainty becomes a much smaller percentage of the measured time","Repeat the timing and take the mean (or time from a fiducial marker at the centre of the swing)"],
+   tip:"The absolute timing uncertainty (about 0.2 s of reaction time) stays about the same, so a longer total time makes the percentage smaller."},
+  {m:3,cw:"Explain",q:"A graph of a student's results should pass through the origin but has a positive y-intercept. Suggest what type of error this indicates, give one possible cause and state how it can be removed.",
+   ms:["Systematic error (all readings shifted by the same amount)","Cause such as a zero error on an instrument, or a constant offset in the set-up","Remove by checking the zero before use / correcting each reading, or by using the gradient (not a single point) in the analysis"],
+   tip:"Random errors cause scatter. A consistent offset is systematic."}]});
+
+T("units",2,"2.1","Physical quantities and units",{
+ pts:["Use SI base units: kg, m, s, A, K, mol.","Derive units of derived quantities (N, J, W, Pa, V, Ω) in base units.","Check an equation is homogeneous by comparing the base units of each term.","Use prefixes from pico (10⁻¹²) to tera (10¹²) and convert between them.","Make reasoned estimates of quantities and give orders of magnitude."],
+ eq:[["Newton","N = kg m s⁻²"],["Joule","J = kg m² s⁻²"],["Watt","W = kg m² s⁻³"],["Pascal","Pa = kg m⁻¹ s⁻²"],["Volt","V = kg m² s⁻³ A⁻¹"],["Ohm","Ω = kg m² s⁻³ A⁻²"]],
+ tips:["Homogeneous does not mean correct. Dimensionless constants such as ½ or 2π cannot be checked this way."],
+ cards:[
+  ["Express the newton in SI base units.","kg m s⁻² (force = mass × acceleration)."],
+  ["Express the volt in SI base units.","V = W/Q = J/(A s) = kg m² s⁻² / (A s) = kg m² s⁻³ A⁻¹."],
+  ["Values of the prefixes p, n, μ, m, k, M, G, T.","10⁻¹², 10⁻⁹, 10⁻⁶, 10⁻³, 10³, 10⁶, 10⁹, 10¹²."],
+  ["What does it mean if an equation is homogeneous?","Every term has the same base units. This is necessary for the equation to be correct but is not sufficient."],
+  ["Express the pascal in base units.","Pa = N m⁻² = kg m s⁻² / m² = kg m⁻¹ s⁻²."]],
+ qs:[
+  {m:3,cw:"Show that",q:"Show that the SI base units of pressure are kg m⁻¹ s⁻².",
+   ms:["Pressure = force ÷ area","Force = mass × acceleration, so the unit is kg m s⁻²","Area has unit m², so pressure = kg m s⁻² ÷ m² = kg m⁻¹ s⁻²"],tip:"Always start from the defining equation."},
+  {m:4,cw:"Show that",q:"The speed v of a wave on a stretched string is given by v = √(T/μ), where T is the tension in the string and μ is its mass per unit length. Show that the equation is homogeneous.",
+   ms:["T has base units kg m s⁻²","μ has base units kg m⁻¹","T/μ = m² s⁻²","√(T/μ) = m s⁻¹ which is the unit of speed, so the equation is homogeneous"],tip:"Do the square root as the last step."}]});
+
+T("meas",2,"2.2","Making measurements and analysing data",{
+ pts:["Absolute, fractional and percentage uncertainties.","Combine uncertainties: add absolute for sums and differences, add percentages for products and quotients, multiply the percentage by the power for powers.","Use error bars, best-fit lines and worst-acceptable lines.","Determine gradients and intercepts, and the uncertainty in a gradient.","Distinguish accuracy, precision, resolution, random and systematic errors."],
+ eq:[["Percentage uncertainty","Δx/x × 100%"],["A + B or A − B","absolute uncertainties add"],["A × B or A ÷ B","percentage uncertainties add"],["Aⁿ","% uncertainty = n × % uncertainty in A"]],
+ tips:["Do not add percentages for a sum or difference. Convert back to absolute uncertainties first."],
+ cards:[
+  ["How are uncertainties combined when adding or subtracting measurements?","Add the absolute uncertainties."],
+  ["How are uncertainties combined when multiplying or dividing?","Add the percentage (or fractional) uncertainties."],
+  ["The radius of a sphere is measured with a 2% uncertainty. What is the % uncertainty in its volume (V ∝ r³)?","3 × 2% = 6%."],
+  ["Why draw error bars on a graph?","They show the uncertainty in each point, allow worst-acceptable lines to be drawn, and show whether the data are consistent with a given relationship (for example a line through the origin)."],
+  ["A micrometer reads 0.02 mm with the jaws closed. What type of error is this?","A systematic (zero) error, which should be subtracted from every reading."]],
+ qs:[
+  {m:3,cw:"Calculate",q:"The diameter d of a wire is measured as 0.50 ± 0.01 mm. The cross-sectional area is A = πd²/4. Calculate (i) the percentage uncertainty in d, (ii) the percentage uncertainty in A and (iii) the value of A with its absolute uncertainty.",
+   ms:["% uncertainty in d = 0.01/0.50 × 100 = 2%","% uncertainty in A = 2 × 2% = 4%","A = 1.96 × 10⁻⁷ m² with absolute uncertainty ± 0.08 × 10⁻⁷ m² (±8 × 10⁻⁹ m²)"],tip:"A depends on d², so the percentage doubles."},
+  {m:3,cw:"Describe",q:"A student plots a graph with error bars and wants the best value for the gradient and its uncertainty. Describe how the student does this using the graph shown.",fig:["errbar"],
+   ms:["Draw a best-fit line through the points (balanced about the points, passing within the error bars) and find its gradient using a large triangle","Draw the steepest and shallowest lines that still pass through all the error bars","Uncertainty in gradient = difference between the best gradient and the worst gradient (or half the range of the two worst gradients)"],tip:"State that the worst lines must pass through all the error bars."}]});
+
+T("vec",2,"2.3","Nature of quantities: scalars and vectors",{
+ pts:["Distinguish scalar quantities (magnitude only) from vector quantities (magnitude and direction).","Add vectors using scale drawings or by calculation (triangle or parallelogram method).","Resolve a vector into two perpendicular components.","Use resolution and addition for forces, velocities and displacements."],
+ eq:[["Components","Fₓ = F cosθ ; F_y = F sinθ"],["Resultant (perpendicular vectors)","R = √(Fₓ² + F_y²)"],["Direction","tanθ = F_y / Fₓ"]],
+ tips:["Say which line the angle is measured from. A bare angle with no reference scores poorly."],
+ cards:[
+  ["Define scalar and vector, with one example of each.","Scalar: magnitude only (e.g. energy, speed). Vector: magnitude and direction (e.g. force, velocity)."],
+  ["A 50 N force acts 30° above the horizontal. State the horizontal and vertical components.","Horizontal 50 cos30° = 43 N; vertical 50 sin30° = 25 N."],
+  ["Forces of 6.0 N and 8.0 N act at right angles. Find the resultant.","10 N, at tan⁻¹(6/8) = 37° to the 8.0 N force."],
+  ["Which are vectors: momentum, kinetic energy, acceleration, power?","Momentum and acceleration are vectors; kinetic energy and power are scalars."]],
+ qs:[
+  {m:3,cw:"Calculate",q:"Two forces of 12 N and 5.0 N act at right angles on an object as shown. Calculate the magnitude and direction of the resultant force.",fig:["vecadd"],
+   ms:["Resultant = √(12² + 5.0²) = 13 N","Angle: tanθ = 5.0/12","θ = 23° (22.6°) to the 12 N force"],tip:"Give the direction relative to a named force."},
+  {m:4,cw:"Calculate",q:"A boat heads directly across a river at 2.0 m s⁻¹ relative to the water. The river flows at 1.5 m s⁻¹ and is 40 m wide. Calculate (i) the resultant speed of the boat relative to the bank and (ii) how far downstream the boat lands.",
+   ms:["Resultant speed = √(2.0² + 1.5²) = 2.5 m s⁻¹","Time to cross = 40 / 2.0 = 20 s","Downstream distance = 1.5 × 20","= 30 m"],tip:"Treat the two perpendicular motions independently."}]});
+
+T("mot",3,"3.1","Motion",{
+ pts:["Displacement, speed, velocity and acceleration; distance–time, displacement–time, velocity–time and acceleration–time graphs.","Gradients and areas under motion graphs.","Equations for constant acceleration (suvat) in a straight line.","Free fall and determining g.","Projectile motion: independent horizontal and vertical components.","Stopping distance = thinking distance + braking distance."],
+ eq:[["Final speed","v = u + at"],["Displacement","s = ut + ½at²"],["No time","v² = u² + 2as"],["Average velocity","s = ½(u + v)t"]],
+ tips:["Choose a positive direction first and keep to it (up is positive, so g = −9.81 m s⁻²).","suvat only works for constant acceleration."],
+ cards:[
+  ["What do the gradient and area of a velocity–time graph represent?","Gradient = acceleration; area under the graph = displacement."],
+  ["What does the gradient of a displacement–time graph represent?","Velocity (instantaneous velocity is the gradient of the tangent)."],
+  ["Describe the horizontal and vertical motion of a projectile (no air resistance).","Horizontal: constant velocity (v cosθ). Vertical: constant acceleration g downwards, initial velocity v sinθ."],
+  ["If the speed of a car doubles, what happens to thinking and braking distance?","Thinking distance doubles (constant reaction time); braking distance quadruples (v² = 2as)."],
+  ["State the conditions needed to use the suvat equations.","Constant acceleration in a straight line."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"The velocity–time graph for a car is shown. Calculate (i) the acceleration during the first 8.0 s, (ii) the total distance travelled and (iii) the average speed for the whole journey.",fig:["vt",{pts:[[0,0],[8,20],[20,20],[25,0]]}],
+   ms:["a = 20/8.0 = 2.5 m s⁻²","Distance = area under graph: ½ × 8.0 × 20 + 20 × 12 + ½ × 5.0 × 20","= 80 + 240 + 50 = 370 m","Average speed = 370 / 25 = 15 m s⁻¹ (14.8)"],tip:"Split the area into a triangle, a rectangle and a triangle."},
+  {m:5,cw:"Calculate",q:"A footballer kicks a ball from level ground with an initial speed of 18 m s⁻¹ at 35° above the horizontal. Ignore air resistance. Calculate the time of flight and the horizontal range.",fig:["proj",{v:18,th:35}],
+   ms:["Vertical component = 18 sin35° = 10.3 m s⁻¹","Time to return to ground: 0 = 10.3t − ½(9.81)t² (or t = 2u/g)","t = 2.1 s","Horizontal component = 18 cos35° = 14.7 m s⁻¹","Range = 14.7 × 2.1 = 31 m"],tip:"Time is the link between the vertical and horizontal motion."}]});
+
+T("frc",3,"3.2","Forces in action",{
+ pts:["Weight, normal contact force, tension, upthrust, friction and drag; free-body diagrams.","Centre of mass and centre of gravity.","Moments, the principle of moments, couples and torque.","Equilibrium: resultant force and resultant moment both zero; triangle of forces.","Density, pressure in fluids, upthrust (Archimedes), drag and terminal velocity."],
+ eq:[["Moment","force × perpendicular distance from the pivot"],["Torque of a couple","force × perpendicular separation of the forces"],["Pressure","p = F/A ; p = hρg"],["Upthrust","U = ρVg (weight of fluid displaced)"],["Weight","W = mg"]],
+ tips:["Take moments about a point where an unknown force acts, so that force drops out.","Use the perpendicular distance to the line of action of the force."],
+ cards:[
+  ["State the conditions for equilibrium.","The resultant force is zero and the resultant moment about any point is zero."],
+  ["State the principle of moments.","For a body in equilibrium, the sum of the clockwise moments about any point equals the sum of the anticlockwise moments about the same point."],
+  ["Define a couple.","A pair of equal and opposite coplanar forces that do not act along the same line. Torque = one force × perpendicular distance between the forces."],
+  ["Explain the origin of upthrust.","Pressure increases with depth (p = hρg), so the upward force on the bottom surface is greater than the downward force on the top surface."],
+  ["Describe the motion of a falling object that reaches terminal velocity.","Initially a = g. As speed rises drag rises, resultant force and acceleration fall. At terminal velocity drag = weight, resultant force is zero and speed is constant."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A uniform plank of weight 100 N and length 5.0 m rests on two supports A and B as shown. A person of weight 600 N stands 1.0 m from the left-hand end. Calculate the reaction forces at A and at B.",fig:["beam",{L:5,sup:[0.5,4.0],loads:[{x:1.0,l:"600 N"}],W:"100 N",names:["A","B"]}],
+   ms:["Take moments about A (or B): clockwise = anticlockwise","R_B × 3.5 = 100 × 2.0 + 600 × 0.5","R_B = 143 N","R_A = 700 − 143 = 557 N (resultant force zero)"],tip:"Pick the pivot at one unknown to eliminate it."},
+  {m:4,cw:"Explain",q:"A skydiver jumps from an aeroplane and falls through the air. Sketch of her velocity against time is shown. Explain the shape of the graph.",fig:["termvel"],
+   ms:["At t = 0 the only force is weight, so a = g (gradient is steepest)","As speed increases the drag force increases","Resultant force decreases so the acceleration decreases (gradient falls)","At terminal velocity drag = weight, resultant force is zero and velocity is constant"],tip:"Link each change in gradient to the resultant force."}]});
+
+T("wep",3,"3.3","Work, energy and power",{
+ pts:["Work done by a force, W = Fs cosθ; area under a force–displacement graph.","Kinetic energy and gravitational potential energy changes.","Conservation of energy; efficiency.","Power as rate of doing work; P = Fv."],
+ eq:[["Work done","W = Fs cosθ"],["Kinetic energy","Eₖ = ½mv²"],["Gravitational PE change","ΔE = mgΔh"],["Power","P = W/t = Fv"],["Efficiency","useful output ÷ total input"]],
+ tips:["A force perpendicular to the motion does no work.","Efficiency is a ratio of like quantities (energy or power), never mix them."],
+ cards:[
+  ["Define work done by a force.","Energy transferred when a force moves its point of application in the direction of the force; W = Fs cosθ."],
+  ["Why does a centripetal force do no work on a body in uniform circular motion?","The force is always perpendicular to the displacement, so cosθ = 0."],
+  ["A car travels at constant speed v against a drag force F. What is the power output?","P = Fv."],
+  ["State the principle of conservation of energy.","Energy cannot be created or destroyed, only transferred from one form to another; the total energy of a closed system is constant."],
+  ["What does the area under a force–extension graph represent?","The work done on the material (elastic strain energy if deformation is elastic)."]],
+ qs:[
+  {m:3,cw:"Calculate",q:"A car of mass 1200 kg travelling at 25 m s⁻¹ brakes to rest in a distance of 50 m. Calculate the average braking force.",
+   ms:["Initial kinetic energy = ½ × 1200 × 25² = 3.75 × 10⁵ J","Work done by brakes = Fs = loss of kinetic energy","F = 3.75 × 10⁵ / 50 = 7.5 × 10³ N"],tip:"Energy method is shorter than suvat plus F = ma."},
+  {m:4,cw:"Calculate",q:"A roller-coaster car of mass 400 kg is released from rest at a height of 30 m above the lowest point of the track. 15% of the initial gravitational potential energy is dissipated as thermal energy. Calculate the speed of the car at the lowest point.",
+   ms:["Initial GPE = mgh = 400 × 9.81 × 30 = 1.18 × 10⁵ J","Kinetic energy at bottom = 0.85 × 1.18 × 10⁵ = 1.00 × 10⁵ J","½mv² = 1.00 × 10⁵","v = 22 m s⁻¹"],tip:"The mass cancels if you work with fractions of mgh."}]});
+
+T("mat",3,"3.4","Materials",{
+ pts:["Hooke's law, spring constant, force–extension graphs for springs and wires.","Elastic and plastic deformation; elastic limit; limit of proportionality.","Stress, strain and the Young modulus.","Stress–strain graphs: yield, ultimate tensile stress, fracture; brittle, ductile and polymeric materials.","Elastic strain energy as area under a force–extension graph."],
+ eq:[["Hooke's law","F = kx"],["Stress","σ = F/A"],["Strain","ε = x/L"],["Young modulus","E = σ/ε = FL/(Ax)"],["Elastic energy","E = ½Fx = ½kx²"]],
+ tips:["Area A is πd²/4 with d in metres (convert mm properly).","½Fx only holds while Hooke's law is obeyed."],
+ cards:[
+  ["Define the Young modulus.","The ratio of tensile stress to tensile strain for a material, within the limit of proportionality. Unit: Pa."],
+  ["Describe an experiment to determine the Young modulus of a metal wire.","Long thin wire fixed at one end over a pulley, masses added in steps. Measure diameter with a micrometer (several places), original length with a ruler, extension with a marker and scale or vernier. Plot stress against strain (or F against x); gradient gives E (or EA/L)."],
+  ["Distinguish elastic and plastic deformation.","Elastic: material returns to its original shape when the force is removed. Plastic: permanent deformation remains."],
+  ["Describe ductile, brittle and polymeric behaviour.","Ductile: large plastic deformation before fracture. Brittle: fractures with little or no plastic deformation. Polymeric: non-linear extension, often with a large extension and hysteresis."],
+  ["What does the area under a force–extension graph represent?","Work done on the material = energy stored (elastic strain energy if elastic)."]],
+ qs:[
+  {m:5,cw:"Calculate",q:"A steel wire of length 2.50 m and diameter 0.60 mm is stretched by a force of 80 N and extends by 3.5 mm. Calculate (i) the stress, (ii) the strain, (iii) the Young modulus of the steel and (iv) the energy stored in the wire.",
+   ms:["A = π(0.30 × 10⁻³)² = 2.83 × 10⁻⁷ m² and stress = 80/A = 2.8 × 10⁸ Pa","Strain = 3.5 × 10⁻³ / 2.50 = 1.4 × 10⁻³","E = stress/strain = 2.0 × 10¹¹ Pa","Energy = ½Fx = ½ × 80 × 3.5 × 10⁻³","= 0.14 J"],tip:"Radius = half the diameter before squaring."},
+  {m:4,cw:"Describe",q:"The stress–strain graph for a metal wire is shown. Describe and explain the behaviour of the wire between O and S.",fig:["stress"],
+   ms:["O to P: straight line through the origin, stress ∝ strain (Hooke's law obeyed); P is the limit of proportionality","At Q the yield point: strain increases a lot with little increase in stress, the wire deforms plastically (permanent extension)","R is the ultimate tensile stress: the maximum stress the wire can withstand","S: fracture; if unloaded beyond the elastic limit the wire does not return to its original length"],tip:"Name each labelled point as you describe it."}]});
+
+T("newt",3,"3.5","Newton's laws and momentum",{
+ pts:["Newton's three laws of motion; F = ma, F = Δp/Δt.","Linear momentum and its conservation in collisions and explosions.","Elastic and inelastic collisions in one and two dimensions.","Impulse and force–time graphs."],
+ eq:[["Momentum","p = mv"],["Second law","F = Δp/Δt"],["Impulse","FΔt = Δp"],["Elastic collision (1D)","relative speed of approach = relative speed of separation"]],
+ tips:["Momentum is a vector, so use a sign convention for direction.","Kinetic energy is not conserved in inelastic collisions, momentum is conserved in all closed-system collisions."],
+ cards:[
+  ["State Newton's third law.","When body A exerts a force on body B, B exerts an equal and opposite force on A. The forces are the same type, act on different bodies and lie along the same line."],
+  ["Why are weight and normal contact force on a book on a table NOT a third-law pair?","They act on the same body and are different types of force. The pair for weight is the book's pull on Earth."],
+  ["Define impulse.","Force × time for which it acts, FΔt, equal to the change in momentum. It is the area under a force–time graph."],
+  ["State the principle of conservation of momentum.","In a closed system (no external resultant force) the total momentum before an interaction equals the total momentum after."],
+  ["What is an elastic collision?","One in which total kinetic energy is conserved (and momentum, as in all closed collisions)."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A trolley of mass 1.2 kg moving at 0.80 m s⁻¹ collides with a stationary trolley of mass 0.60 kg. The trolleys stick together. Calculate (i) their common speed and (ii) the kinetic energy lost.",
+   ms:["Momentum before = 1.2 × 0.80 = 0.96 N s, equals momentum after (1.8 v)","v = 0.53 m s⁻¹","KE before = ½ × 1.2 × 0.80² = 0.384 J, KE after = ½ × 1.8 × 0.533² = 0.256 J","KE lost = 0.13 J"],tip:"Show momentum conservation before the algebra."},
+  {m:4,cw:"Calculate",q:"A ball of mass 0.15 kg strikes a wall at 12 m s⁻¹ and rebounds along the same line at 9.0 m s⁻¹. The contact time is 8.0 ms. Calculate the average force exerted on the ball by the wall.",
+   ms:["Take towards the wall as positive: Δp = 0.15 × (−9.0) − 0.15 × 12 (directions opposite)","Magnitude of change in momentum = 0.15 × 21 = 3.15 N s","F = Δp/Δt = 3.15 / 8.0 × 10⁻³","F = 3.9 × 10² N"],tip:"A rebound means the velocities have opposite signs, so add the magnitudes."}]});
+T("chg",4,"4.1","Charge and current",{
+ pts:["Electric current as rate of flow of charge; charge is quantised (e = 1.60 × 10⁻¹⁹ C).","Conventional current and electron flow.","Kirchhoff's first law as conservation of charge.","Mean drift velocity: I = nAvq.","Conductors, semiconductors and insulators in terms of n."],
+ eq:[["Charge","ΔQ = IΔt"],["Drift velocity","I = nAvq"],["Elementary charge","e = 1.60 × 10⁻¹⁹ C"]],
+ tips:["In I = nAvq, n is the number per cubic metre of charge carriers, not the number in the wire."],
+ cards:[
+  ["State Kirchhoff's first law.","The sum of the currents into a junction equals the sum of the currents out of it (conservation of charge)."],
+  ["Define the coulomb.","The charge that flows past a point in one second when the current is one ampere."],
+  ["In I = nAvq what does n represent?","The number density of charge carriers (number per unit volume)."],
+  ["Why is the drift velocity much bigger in a semiconductor than in a metal for the same current and cross-section?","A semiconductor has far fewer free charge carriers per unit volume (smaller n), so each must move faster: v = I/nAq."],
+  ["What is the typical order of magnitude of the drift velocity in a metal wire?","About 10⁻⁴ m s⁻¹ (a fraction of a millimetre per second)."]],
+ qs:[
+  {m:3,cw:"Calculate",q:"A copper wire of cross-sectional area 1.5 mm² carries a current of 3.0 A. The number density of free electrons in copper is 8.5 × 10²⁸ m⁻³. Calculate the mean drift velocity of the electrons.",
+   ms:["Use I = nAvq with A = 1.5 × 10⁻⁶ m²","v = I / (nAe) = 3.0 / (8.5 × 10²⁸ × 1.5 × 10⁻⁶ × 1.60 × 10⁻¹⁹)","v = 1.5 × 10⁻⁴ m s⁻¹"],tip:"Convert mm² to m² (× 10⁻⁶)."},
+  {m:2,cw:"Explain",q:"A lamp lights almost instantly when a switch is closed even though the drift velocity of the electrons is very small. Explain why.",
+   ms:["Free electrons are already present throughout the circuit","An electric field is established along the circuit (travelling at close to the speed of light) so all the electrons start to drift at (almost) the same time"],tip:"Don't say the electrons travel from the battery to the lamp."}]});
+
+T("res",4,"4.2","Energy, power and resistance",{
+ pts:["Potential difference, emf, resistance; Ohm's law.","I–V characteristics of a metallic conductor, filament lamp, diode, thermistor and LDR.","Resistivity: R = ρL/A.","Electrical power P = VI = I²R = V²/R and energy E = Pt; kilowatt-hour."],
+ eq:[["Potential difference","V = W/Q"],["Resistance","R = V/I"],["Resistivity","R = ρL/A"],["Power","P = VI = I²R = V²/R"],["Energy","E = Pt = VIt"]],
+ tips:["Resistance at a point on a curve is V/I (not the gradient of the I–V graph)."],
+ cards:[
+  ["Define potential difference.","The energy transferred (from electrical to other forms) per unit charge between two points: V = W/Q."],
+  ["State Ohm's law.","For a metallic conductor at constant temperature the current is directly proportional to the potential difference across it."],
+  ["Explain why the I–V curve of a filament lamp flattens at higher V.","The filament heats up, lattice ions vibrate with greater amplitude, more frequent collisions with electrons, so resistance increases (I rises less than V)."],
+  ["Explain why an NTC thermistor's resistance falls when heated.","More charge carriers are released (n increases) as temperature rises, so resistance decreases."],
+  ["Define resistivity.","For a material, ρ = RA/L: the resistance of a sample of unit length and unit cross-sectional area. Unit: Ω m."],
+  ["Describe how an LDR's resistance depends on light intensity.","Resistance decreases as light intensity increases because more charge carriers are released."]],
+ qs:[
+  {m:5,cw:"Explain",q:"The I–V graph for a filament lamp is shown. Calculate the resistance of the lamp at 6.0 V and at 12.0 V, and explain why the two values are different.",fig:["iv"],
+   ms:["R = V/I = 6.0/0.50 = 12 Ω","R = 12.0/0.78 = 15 Ω","The resistance increases as V (and so I) increases","Because the filament's temperature rises, ions vibrate with larger amplitude","More collisions between electrons and ions so resistivity (resistance) increases"],tip:"Use V/I at each point, do not use the gradient."},
+  {m:4,cw:"Calculate",q:"A nichrome wire of length 1.50 m and diameter 0.40 mm has resistivity 1.1 × 10⁻⁶ Ω m. Calculate (i) its resistance and (ii) the power dissipated when it is connected across a 6.0 V supply of negligible internal resistance.",
+   ms:["A = π(0.20 × 10⁻³)² = 1.26 × 10⁻⁷ m²","R = ρL/A = 1.1 × 10⁻⁶ × 1.50 / 1.26 × 10⁻⁷","= 13 Ω","P = V²/R = 36 / 13.1 = 2.7 W"],tip:"Keep the unrounded R for the power calculation."}]});
+
+T("circ",4,"4.3","Electrical circuits",{
+ pts:["Series and parallel circuits; combining resistors.","Kirchhoff's second law as conservation of energy.","emf, internal resistance and terminal potential difference.","Potential dividers, including with thermistors and LDRs."],
+ eq:[["Series","R = R₁ + R₂ + …"],["Parallel","1/R = 1/R₁ + 1/R₂ + …"],["emf","E = I(R + r) = V + Ir"],["Terminal pd","V = E − Ir"],["Potential divider","V_out = V_in × R₂ / (R₁ + R₂)"]],
+ tips:["Check the parallel answer is smaller than the smallest branch.","The terminal pd is the pd across the external circuit, not the emf."],
+ cards:[
+  ["State Kirchhoff's second law.","Around any closed loop the sum of the emfs equals the sum of the potential differences (conservation of energy)."],
+  ["Define emf.","Energy transferred per unit charge by a source in converting chemical (or other) energy to electrical energy; unlike p.d., it is the energy supplied to charge."],
+  ["Why does the terminal pd of a cell fall when current drawn increases?","Lost volts Ir across internal resistance increases, so V = E − Ir decreases."],
+  ["Describe how to find E and r experimentally.","Vary the external resistance, measure V and I, plot V against I. Gradient = −r, y-intercept = E."],
+  ["Why does adding a resistor in parallel decrease the total resistance?","It provides an additional path for current; more current flows for the same p.d."]],
+ qs:[
+  {m:5,cw:"Calculate",q:"A battery of emf 12.0 V and internal resistance 0.50 Ω is connected to a 4.0 Ω resistor in parallel with a 12 Ω resistor as shown. Calculate (i) the total resistance of the external circuit, (ii) the current from the battery, (iii) the terminal pd and (iv) the current in the 4.0 Ω resistor.",fig:["circ1"],
+   ms:["1/R = 1/4.0 + 1/12 giving R = 3.0 Ω","I = E/(R + r) = 12.0 / 3.5 = 3.4 A","Lost volts Ir = 3.43 × 0.50 = 1.7 V","Terminal pd = E − Ir = 12.0 − 1.7 = 10.3 V","I₄ = V/R = 10.3 / 4.0 = 2.6 A"],tip:"Terminal pd is also I × R_external = 3.43 × 3.0."},
+  {m:4,cw:"Calculate",q:"A potential divider is made from a 2.0 kΩ resistor in series with an NTC thermistor across a 5.0 V supply. The output voltage is taken across the 2.0 kΩ resistor. The thermistor resistance is 6.0 kΩ at 15 °C and 1.0 kΩ at 40 °C. Calculate the output voltage at each temperature and state how the output changes as the temperature rises.",fig:["divider"],
+   ms:["V_out = 5.0 × 2.0/(2.0 + 6.0) = 1.25 V at 15 °C","V_out = 5.0 × 2.0/(2.0 + 1.0) = 3.3 V at 40 °C","Output voltage increases as temperature increases","Because the thermistor's resistance falls so it takes a smaller share of the supply pd"],tip:"The component with the larger resistance gets the larger share of the pd."}]});
+
+T("wav",4,"4.4","Waves",{
+ pts:["Progressive transverse and longitudinal waves: amplitude, wavelength, frequency, period, phase, v = fλ.","Intensity I = P/A and I ∝ amplitude².","Polarisation as evidence for the transverse nature of light.","Refraction, refractive index, total internal reflection.","Superposition, coherence, interference and path difference.","Stationary waves on strings and in air columns.","Diffraction; double slit λ = ax/D; diffraction grating dsinθ = nλ."],
+ eq:[["Wave speed","v = fλ ; T = 1/f"],["Intensity","I = P/A ; I ∝ A²"],["Refractive index","n = sin i / sin r = c/v"],["Critical angle","sin C = 1/n"],["Double slit","λ = ax / D"],["Diffraction grating","d sinθ = nλ"],["String (fundamental)","f = (1/2L)√(T/μ)"]],
+ tips:["Fringe spacing x is between adjacent fringes; the formula's x is NOT the distance from the centre unless you divide.","Use the number of lines per metre for a grating: d = 1/N."],
+ cards:[
+  ["State the conditions for observing a stable interference pattern.","Coherent sources (constant phase difference, same frequency), similar amplitude, and waves of the same type (and same polarisation)."],
+  ["Conditions for constructive and destructive interference in terms of path difference?","Constructive: path difference = nλ. Destructive: (n + ½)λ."],
+  ["Compare stationary and progressive waves.","Stationary: no net energy transfer, nodes and antinodes, amplitude depends on position, particles between adjacent nodes in phase. Progressive: energy transferred, all particles same amplitude (with a phase lag)."],
+  ["How does the fringe spacing change if D increases / a decreases / blue light replaces red?","Increases / increases / decreases (x = λD/a and λ_blue < λ_red)."],
+  ["Why is a diffraction grating better than a double slit for measuring wavelengths?","Many slits give much sharper, brighter maxima at larger angles, so λ can be found with smaller percentage uncertainty."],
+  ["What does polarisation show about light?","Light is a transverse wave (oscillations perpendicular to the direction of travel); longitudinal waves cannot be polarised."],
+  ["Conditions for total internal reflection?","Light must travel from higher to lower refractive index and the angle of incidence must exceed the critical angle."]],
+ qs:[
+  {m:5,cw:"Calculate",q:"In a double-slit experiment the slit separation is 0.50 mm and the screen is 2.0 m from the slits. The fringe separation is 2.4 mm. (i) Calculate the wavelength of the light. (ii) The screen is moved closer to the slits. State and explain the effect on the fringe separation.",fig:["dslit"],
+   ms:["λ = ax/D","= 0.50 × 10⁻³ × 2.4 × 10⁻³ / 2.0","= 6.0 × 10⁻⁷ m (600 nm)","Fringe separation decreases","Because x ∝ D (for fixed λ and a)"],tip:"Convert mm to m for every length."},
+  {m:4,cw:"Calculate",q:"Light of wavelength 589 nm is incident normally on a diffraction grating with 600 lines per mm. Calculate the angle of the first-order maximum and the maximum number of orders that can be seen on one side of the central maximum.",
+   ms:["d = 1/(600 × 10³) = 1.67 × 10⁻⁶ m","sinθ = λ/d = 0.353, so θ = 20.7° ≈ 21°","Maximum n when sinθ = 1: n = d/λ = 2.83","So the maximum order is 2 (n must be a whole number)"],tip:"Always round the maximum order down."},
+  {m:3,cw:"Calculate",q:"A string of length 0.80 m is stretched between two fixed points and vibrates in its fundamental mode at 150 Hz as shown. Calculate the speed of the transverse waves on the string and the frequency of the third harmonic.",fig:["stringwave",{n:[1]}],
+   ms:["λ = 2L = 1.6 m","v = fλ = 150 × 1.6 = 240 m s⁻¹","Third harmonic frequency = 3 × 150 = 450 Hz"],tip:"Fundamental has half a wavelength between the fixed ends."}]});
+
+T("qua",4,"4.5","Quantum physics",{
+ pts:["Photon model: E = hf = hc/λ; the electronvolt.","Photoelectric effect: threshold frequency, work function, hf = φ + Eₖ(max); evidence for photons.","Wave–particle duality: electron diffraction and de Broglie λ = h/p.","Energy levels in atoms, line emission and absorption spectra; hf = E₂ − E₁."],
+ eq:[["Photon energy","E = hf = hc/λ"],["Photoelectric equation","hf = φ + Eₖ(max)"],["de Broglie","λ = h/p = h/mv"],["Photon from transition","hf = E₂ − E₁"],["Electronvolt","1 eV = 1.60 × 10⁻¹⁹ J"]],
+ tips:["Wave theory predicts a delay and no threshold; the photon model explains both.","Convert eV to J before using h in J s."],
+ cards:[
+  ["Define the work function of a metal.","The minimum energy required to remove an electron from the surface of the metal."],
+  ["Why can't wave theory explain the photoelectric effect?","It predicts emission at any frequency given enough intensity and time (no threshold, a delay), and KE depending on intensity; none of these is observed."],
+  ["Explain the threshold frequency using the photon model.","One photon interacts with one electron; the photon energy hf must be at least the work function φ, so there is a minimum frequency f₀ = φ/h."],
+  ["Above the threshold, what happens to KE(max) and the number of electrons emitted per second if the intensity is increased?","KE(max) is unchanged; the rate of emission increases (more photons per second)."],
+  ["What does electron diffraction demonstrate?","The wave nature of particles; the diffraction pattern is consistent with λ = h/p."],
+  ["What do line spectra tell us about atoms?","Electrons occupy discrete energy levels; photons emitted/absorbed have energies equal to the differences between levels."],
+  ["Define the electronvolt.","The kinetic energy gained by an electron accelerated through a potential difference of 1 V (1.60 × 10⁻¹⁹ J)."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"Ultraviolet light of wavelength 250 nm is incident on a metal surface of work function 4.3 eV. Calculate the maximum kinetic energy of the emitted electrons in joules.",
+   ms:["E = hc/λ = 6.63 × 10⁻³⁴ × 3.00 × 10⁸ / 250 × 10⁻⁹ = 7.96 × 10⁻¹⁹ J","φ = 4.3 × 1.60 × 10⁻¹⁹ = 6.88 × 10⁻¹⁹ J","KE(max) = hf − φ","= 1.1 × 10⁻¹⁹ J"],tip:"Convert eV to joules before subtracting."},
+  {m:5,cw:"Determine",q:"The graph shows the maximum kinetic energy of photoelectrons against the frequency of the incident radiation for a metal. Use the graph to determine the Planck constant (in J s) and the work function of the metal (in J).",fig:["pe"],
+   ms:["Gradient = h","Gradient = 2.9 eV / (7.0 × 10¹⁴ Hz) with conversion to J (× 1.60 × 10⁻¹⁹)","h = 6.6 × 10⁻³⁴ J s","Threshold frequency f₀ = 5.0 × 10¹⁴ Hz (x-intercept) so φ = hf₀","φ = 3.3 × 10⁻¹⁹ J"],tip:"The x-intercept is f₀. The y-intercept (extended) is −φ."},
+  {m:4,cw:"Calculate",q:"An electron is accelerated from rest through a potential difference of 150 V. Calculate its de Broglie wavelength.",
+   ms:["Kinetic energy = eV = 1.60 × 10⁻¹⁹ × 150 = 2.4 × 10⁻¹⁷ J","p = √(2mE) = √(2 × 9.11 × 10⁻³¹ × 2.4 × 10⁻¹⁷) = 6.6 × 10⁻²⁴ kg m s⁻¹","λ = h/p = 6.63 × 10⁻³⁴ / 6.6 × 10⁻²⁴","= 1.0 × 10⁻¹⁰ m"],tip:"Non-relativistic speeds are fine at this energy."},
+  {m:4,cw:"Calculate",q:"The energy levels of the hydrogen atom are shown. An electron falls from n = 3 to n = 2. Calculate the energy and the wavelength of the photon emitted, and state which region of the spectrum it is in.",fig:["levels"],
+   ms:["ΔE = −1.51 − (−3.40) = 1.89 eV","= 1.89 × 1.60 × 10⁻¹⁹ = 3.02 × 10⁻¹⁹ J","λ = hc/E = 6.63 × 10⁻³⁴ × 3.00 × 10⁸ / 3.02 × 10⁻¹⁹ = 6.6 × 10⁻⁷ m (658 nm)","Visible (red)"],tip:"Photon energy is the difference between the levels."}]});
+
+T("thm",5,"5.1","Thermal physics",{
+ pts:["Temperature scales; absolute zero; internal energy.","Specific heat capacity and specific latent heat; heating curves.","Ideal gas laws, pV = nRT and pV = NkT.","Kinetic theory: pV = ⅓Nm⟨c²⟩, ½m⟨c²⟩ = (3/2)kT.","Evidence for molecular motion: Brownian motion."],
+ eq:[["Heat energy","Q = mcΔθ"],["Latent heat","Q = mL"],["Ideal gas","pV = nRT = NkT"],["Kinetic theory","pV = ⅓Nm⟨c²⟩"],["Mean KE per molecule","½m⟨c²⟩ = (3/2)kT"]],
+ tips:["T in kelvin for gas laws.","Use ⟨c²⟩ (mean square speed) not the square of the mean speed."],
+ cards:[
+  ["Define internal energy.","The sum of the random distribution of kinetic and potential energies of the atoms or molecules of a system."],
+  ["What happens to temperature and internal energy while a substance melts?","Temperature is constant, internal energy increases (potential energy of molecules rises as bonds are broken)."],
+  ["List the assumptions of the kinetic theory of gases.","Large number of identical molecules in random motion; negligible volume compared with container; elastic collisions; no intermolecular forces except during collisions; collision time negligible; Newton's laws apply."],
+  ["Explain how molecules cause gas pressure.","Molecules collide with the walls, changing momentum; force = rate of change of momentum; the very large number of collisions gives a steady force over an area."],
+  ["Brownian motion is evidence for what?","The random motion of molecules: visible particles are knocked unevenly by invisible fast-moving molecules in the fluid."],
+  ["What is absolute zero?","0 K (−273 °C): the lowest possible temperature, where the molecules have minimum internal energy."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A heater of power 500 W is used to melt 0.20 kg of ice already at 0 °C. The specific latent heat of fusion of ice is 3.34 × 10⁵ J kg⁻¹. Calculate the time taken, assuming all energy goes into the ice, and explain why the temperature does not change while it melts.",fig:["heatcurve"],
+   ms:["Q = mL = 0.20 × 3.34 × 10⁵ = 6.7 × 10⁴ J","t = Q/P = 6.68 × 10⁴ / 500 = 1.3 × 10² s","Energy supplied increases the potential energy of the molecules as bonds break","Mean kinetic energy (so temperature) stays constant"],tip:"Link temperature to mean kinetic energy, not total energy."},
+  {m:4,cw:"Calculate",q:"A sealed container of volume 2.0 × 10⁻³ m³ holds 0.10 mol of an ideal gas at 300 K. Calculate (i) the pressure of the gas, (ii) the number of molecules and (iii) the mean kinetic energy of one molecule.",
+   ms:["p = nRT/V = 0.10 × 8.31 × 300 / 2.0 × 10⁻³ = 1.2 × 10⁵ Pa","N = nN_A = 0.10 × 6.02 × 10²³ = 6.0 × 10²² molecules","Mean KE = (3/2)kT","= 1.5 × 1.38 × 10⁻²³ × 300 = 6.2 × 10⁻²¹ J"],tip:"R = 8.31 J mol⁻¹ K⁻¹; k = 1.38 × 10⁻²³ J K⁻¹."}]});
+
+T("circm",5,"5.2","Circular motion",{
+ pts:["Radians; angular velocity ω = 2π/T = 2πf; v = ωr.","Centripetal acceleration a = v²/r = ω²r.","Centripetal force F = mv²/r = mω²r and the sources of the centripetal force in real situations."],
+ eq:[["Angular speed","ω = Δθ/Δt = 2πf = 2π/T"],["Linear speed","v = ωr"],["Centripetal acceleration","a = v²/r = ω²r"],["Centripetal force","F = mv²/r = mω²r"]],
+ tips:["Centripetal force is the resultant force towards the centre, not an extra force. Name the real force that provides it."],
+ cards:[
+  ["Why is a body in uniform circular motion accelerating?","Its velocity changes direction, so it has an acceleration towards the centre."],
+  ["Convert 90° and 180° to radians.","π/2 rad and π rad."],
+  ["Name the force providing the centripetal force for: a planet in orbit; a car on a flat bend; a conical pendulum.","Gravity; friction between tyres and road; the horizontal component of the tension."],
+  ["Why does the centripetal force do no work?","It acts perpendicular to the velocity so there is no displacement in the direction of the force."],
+  ["A mass on a string is whirled in a vertical circle. Condition at the top to just stay in a circle?","Tension is zero; weight alone provides the centripetal force: mg = mv²/r."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A car of mass 900 kg travels round a flat circular bend of radius 40 m at 15 m s⁻¹. Calculate (i) the centripetal force required and (ii) the maximum speed for which the car does not skid if the maximum frictional force is 0.60 of its weight.",fig:["circ"],
+   ms:["F = mv²/r = 900 × 15² / 40","= 5.1 × 10³ N","Max friction = 0.60 mg provides the centripetal force: 0.60 mg = mv²/r","v = √(0.60 × 9.81 × 40) = 15 m s⁻¹"],tip:"The mass cancels in part (ii)."},
+  {m:4,cw:"Calculate",q:"A mass of 0.20 kg is whirled in a horizontal circle of radius 0.80 m on a string with a period of 0.50 s. Calculate (i) the angular speed, (ii) the linear speed and (iii) the tension in the string, ignoring gravity.",
+   ms:["ω = 2π/T = 2π/0.50 = 13 rad s⁻¹","v = ωr = 12.6 × 0.80 = 10 m s⁻¹","Tension = centripetal force = mω²r","= 0.20 × 12.6² × 0.80 = 25 N"],tip:"Use ω rather than v when the period is given."}]});
+
+T("osc",5,"5.3","Oscillations",{
+ pts:["Simple harmonic motion: a ∝ −x; a = −ω²x; displacement, velocity and acceleration graphs.","Energy exchange between kinetic and potential energy.","Spring–mass and pendulum periods.","Free and forced oscillations, damping and resonance."],
+ eq:[["Defining equation","a = −ω²x"],["Displacement","x = A cos(ωt)"],["Velocity","v = ±ω√(A² − x²) ; v_max = ωA"],["Spring–mass","T = 2π√(m/k)"],["Pendulum","T = 2π√(l/g)"],["Total energy","E = ½mω²A²"]],
+ tips:["Calculator in radians for x = A cos ωt.","Maximum acceleration is at maximum displacement; maximum speed is at equilibrium."],
+ cards:[
+  ["State the conditions for simple harmonic motion.","Acceleration is proportional to displacement from the equilibrium position and directed towards it (a ∝ −x)."],
+  ["Where are speed and acceleration maximum in SHM?","Speed: at the equilibrium position. Acceleration: at maximum displacement (the amplitude)."],
+  ["Describe the energy changes in SHM.","KE is maximum at equilibrium and PE at the extremes; total energy is constant (undamped) and equals ½mω²A²."],
+  ["Describe resonance.","When the driving frequency equals the natural frequency, the amplitude of the oscillation is a maximum because energy transfer is most efficient (driver leads by π/2)."],
+  ["What does damping do and what is critical damping?","Damping removes energy so amplitude falls. Critical damping returns the system to equilibrium in the shortest time without oscillating."],
+  ["Give one example each of unwanted and useful resonance.","Unwanted: bridge or building vibrating in wind or earthquakes (damped by dampers). Useful: microwave oven, MRI, tuning a radio."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A mass of 0.25 kg on a spring of spring constant 40 N m⁻¹ oscillates with amplitude 6.0 cm as shown in the graph. Calculate (i) the period, (ii) the maximum speed and (iii) the maximum acceleration.",fig:["shm"],
+   ms:["T = 2π√(m/k) = 2π√(0.25/40) = 0.50 s","ω = 2π/T = 12.6 rad s⁻¹","v_max = ωA = 12.6 × 0.060 = 0.76 m s⁻¹","a_max = ω²A = 160 × 0.060 = 9.6 m s⁻²"],tip:"ω² = k/m gives 160 directly."},
+  {m:3,cw:"Explain",q:"The graph shows the energy of a mass undergoing SHM against its displacement from equilibrium. Identify the curves X, Y and Z and explain their shapes.",fig:["shmE"],
+   ms:["X is kinetic energy (maximum at x = 0, zero at the amplitude)","Y is total energy: constant (no dissipation)","Z is potential energy: ½mω²x², parabolic, zero at x = 0, maximum at ±A"],tip:"KE = total − PE so the two parabolas are mirror images."},
+  {m:4,cw:"Explain",q:"The graph shows the amplitude of a driven oscillator as the driving frequency is varied for two different amounts of damping, P and Q. State which curve has the heavier damping and describe the effect of damping on resonance.",fig:["reson"],
+   ms:["Q shows heavier damping (lower, broader peak)","Resonance occurs when the driving frequency equals the natural frequency f₀","Increasing damping reduces the amplitude at resonance","and the peak occurs at a slightly lower frequency and becomes broader"],tip:"Both peak height and sharpness change."}]});
+
+T("grav",5,"5.4","Gravitational fields",{
+ pts:["Radial and uniform gravitational fields; field lines.","Newton's law of gravitation; g = GM/r².","Gravitational potential and potential energy; work done.","Orbits of planets and satellites; Kepler's third law; geostationary orbits."],
+ eq:[["Force","F = Gm₁m₂/r²"],["Field strength","g = F/m = GM/r²"],["Potential","V = −GM/r"],["Energy change","ΔE = mΔV"],["Orbital speed","v = √(GM/r)"],["Kepler III","T² = (4π²/GM) r³"]],
+ tips:["r is the distance from the centre of the mass, not the height above the surface.","Gravitational potential is negative, so a smaller magnitude means higher up."],
+ cards:[
+  ["State Newton's law of gravitation.","Any two point masses attract with a force proportional to the product of their masses and inversely proportional to the square of their separation."],
+  ["Why is gravitational potential negative?","It is defined as zero at infinity and gravity is attractive, so work must be done against the field to move a mass to infinity; a mass nearer the source has lower (more negative) potential."],
+  ["State the features of a geostationary orbit.","Above the equator, orbits west to east, period 24 h, same angular speed as Earth, orbit radius about 4.2 × 10⁷ m."],
+  ["State Kepler's third law.","The square of the orbital period is proportional to the cube of the orbital radius, T² ∝ r³."],
+  ["What do the gradient of a V–r graph and the area under a g–r graph give?","Gradient of V–r = −g. Area under g–r = −ΔV."],
+  ["Define gravitational field strength.","Force per unit mass on a small test mass placed in the field."]],
+ qs:[
+  {m:5,cw:"Calculate",q:"The Earth has mass 5.97 × 10²⁴ kg and radius 6.37 × 10⁶ m. The International Space Station orbits 400 km above the surface. Calculate (i) g at the ISS, (ii) its orbital speed and (iii) its orbital period in minutes. (G = 6.67 × 10⁻¹¹ N m² kg⁻²)",
+   ms:["r = 6.37 × 10⁶ + 4.0 × 10⁵ = 6.77 × 10⁶ m","g = GM/r² = 8.7 m s⁻²","Gravity provides centripetal force: v = √(GM/r)","= 7.7 × 10³ m s⁻¹","T = 2πr/v = 5.5 × 10³ s = 92 minutes"],tip:"Add the radius of the Earth to the altitude."},
+  {m:4,cw:"Show that",q:"Show that the radius of orbit of a geostationary satellite is 4.2 × 10⁷ m.",
+   ms:["Period T = 24 h = 86 400 s","GMm/r² = mω²r so T² = 4π²r³/GM","r³ = GMT²/4π² = 6.67 × 10⁻¹¹ × 5.97 × 10²⁴ × 86400² / 4π²","r = 4.2 × 10⁷ m"],tip:"Use T = 86 400 s (or 23 h 56 min for sidereal day)."}]});
+
+T("astro",5,"5.5","Astrophysics and cosmology",{
+ pts:["Astronomical telescopes: refracting and reflecting (Cassegrain); magnification in normal adjustment; collecting power and resolving power.","Classification of stars, Hertzsprung–Russell diagram, Wien's law, Stefan–Boltzmann law.","Distances: parallax, light-year, parsec; standard candles.","Doppler effect and redshift, Hubble's law, the Big Bang, the cosmic microwave background."],
+ eq:[["Telescope magnification","M = f_o / f_e"],["Resolving power","θ ≈ λ/D"],["Stefan–Boltzmann","L = 4πr²σT⁴"],["Wien's law","λ_max T = 2.898 × 10⁻³ m K"],["Redshift","Δλ/λ ≈ v/c"],["Hubble's law","v = H₀d ; age ≈ 1/H₀"],["Intensity from a star","I = L/(4πd²)"]],
+ tips:["Wien's law gives the peak wavelength, not the colour at only one wavelength.","Redshift approximation only valid for v ≪ c."],
+ cards:[
+  ["State Wien's displacement law.","The peak wavelength of the emitted radiation is inversely proportional to the absolute temperature: λ_max T = constant (2.898 × 10⁻³ m K)."],
+  ["State the Stefan–Boltzmann law.","The luminosity of a black body is proportional to the surface area and the fourth power of surface temperature: L = 4πr²σT⁴."],
+  ["State Hubble's law and what it suggests.","Recession speed is proportional to distance, v = H₀d; the universe is expanding, from an initial hot dense state."],
+  ["Name three pieces of evidence for the Big Bang.","Hubble's law/galactic redshift; CMB radiation (2.7 K, uniform); the observed abundance of hydrogen and helium."],
+  ["What is plotted on an HR diagram?","Luminosity (or absolute magnitude) against surface temperature (or spectral class), with temperature decreasing along the x-axis."],
+  ["Define the light-year and the parsec.","Light-year: distance light travels in one year (9.46 × 10¹⁵ m). Parsec: distance at which one astronomical unit subtends an angle of one arcsecond (3.09 × 10¹⁶ m)."],
+  ["Why do larger telescope diameters improve resolution?","Resolving power θ ≈ λ/D, so larger D gives a smaller angle that can be resolved. Larger D also collects more light."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A star has a surface temperature of 12 000 K and a radius of 3.0 × 10⁹ m. Calculate its luminosity and the wavelength at which it emits most strongly. (σ = 5.67 × 10⁻⁸ W m⁻² K⁻⁴)",
+   ms:["L = 4πr²σT⁴","= 4π × (3.0 × 10⁹)² × 5.67 × 10⁻⁸ × (12000)⁴ = 1.3 × 10²⁹ W","λ_max = 2.898 × 10⁻³ / 12000","= 2.4 × 10⁻⁷ m (ultraviolet)"],tip:"Use the surface temperature in kelvin."},
+  {m:5,cw:"Calculate",q:"The hydrogen-alpha line has a wavelength of 656.3 nm in the laboratory. In the light from a distant galaxy it is observed at 662.9 nm. Calculate (i) the recession speed of the galaxy, (ii) its distance using H₀ = 2.2 × 10⁻¹⁸ s⁻¹ and (iii) the age of the universe implied by H₀ in years.",
+   ms:["Δλ = 6.6 nm","v = cΔλ/λ = 3.00 × 10⁸ × 6.6 / 656.3 = 3.0 × 10⁶ m s⁻¹","d = v/H₀ = 3.0 × 10⁶ / 2.2 × 10⁻¹⁸ = 1.4 × 10²⁴ m","Age ≈ 1/H₀ = 4.5 × 10¹⁷ s","= 1.4 × 10¹⁰ years"],tip:"Divide seconds by 3.16 × 10⁷ to convert to years."},
+  {m:4,cw:"Identify",q:"The Hertzsprung–Russell diagram shows regions X, Y and Z. Identify each region, state where the Sun lies, and describe how a star of the Sun's mass will move around the diagram during its life.",fig:["hr"],
+   ms:["X: red giants/supergiants (cool but very luminous, large radius)","Y: white dwarfs (hot but dim, small radius)","Z: main sequence, with the Sun lying in it","Sun leaves the main sequence to become a red giant, then a white dwarf (via a planetary nebula)"],tip:"L = 4πr²σT⁴ explains why cool stars can be luminous."}]});
+T("cap",6,"6.1","Capacitors",{
+ pts:["Capacitance C = Q/V; capacitors in series and parallel.","Energy stored: area under a V–Q graph; W = ½QV = ½CV².","Charging and discharging through a resistor; exponential decay; time constant τ = RC."],
+ eq:[["Capacitance","C = Q/V"],["Energy stored","W = ½QV = ½CV² = ½Q²/C"],["Series","1/C = 1/C₁ + 1/C₂ + …"],["Parallel","C = C₁ + C₂ + …"],["Discharge","Q = Q₀e^(−t/RC) (same form for V and I)"],["Time constant","τ = RC ; t½ = RC ln2"]],
+ tips:["Capacitor combinations are the reverse of resistor combinations.","For ln graphs: ln V = ln V₀ − t/RC gives a straight line of gradient −1/RC."],
+ cards:[
+  ["Define capacitance.","Charge stored per unit potential difference across the capacitor: C = Q/V. Unit: farad (F = C V⁻¹)."],
+  ["Define the time constant of a discharging capacitor.","τ = RC: the time for the charge (or p.d. or current) to fall to 1/e (about 37%) of its initial value."],
+  ["Why does the current in a discharging capacitor decrease exponentially?","As charge flows the p.d. falls, so current (V/R) falls; the rate of decrease is proportional to the amount remaining."],
+  ["What does the area under a V–Q graph represent?","The energy stored on the capacitor."],
+  ["How do you find the time for the p.d. to halve?","t½ = RC ln 2 = 0.69 RC."]],
+ qs:[
+  {m:5,cw:"Calculate",q:"A 470 μF capacitor is charged to 12 V and then discharged through a 22 kΩ resistor. Calculate (i) the energy initially stored, (ii) the time constant and (iii) the p.d. 20 s after the discharge begins.",
+   ms:["E = ½CV² = ½ × 470 × 10⁻⁶ × 12²","= 0.034 J","τ = RC = 22 × 10³ × 470 × 10⁻⁶ = 10 s","V = V₀e^(−t/RC) = 12e^(−20/10.3)","= 1.7 V"],tip:"Keep the exponent unrounded."},
+  {m:4,cw:"Determine",q:"The graph shows how the p.d. across a capacitor changes as it discharges through a resistor. Determine the time constant from the graph and describe how a straight-line graph could be used to find the time constant.",fig:["capdis",{v0:8,tau:5}],
+   ms:["Read V₀ = 8.0 V and find the time when V = V₀/e = 2.9 V","τ ≈ 5.0 s","Plot ln V against t","Straight line with gradient −1/RC = −1/τ"],tip:"Mark the reading on the graph to show your method."}]});
+
+T("efld",6,"6.2","Electric fields",{
+ pts:["Electric field strength E = F/Q; field lines.","Coulomb's law and the field of a point charge.","Uniform field between parallel plates, E = V/d; motion of charged particles.","Electric potential and potential energy; comparison with gravitational fields."],
+ eq:[["Field strength","E = F/Q"],["Coulomb's law","F = Qq/(4πε₀r²)"],["Point charge field","E = Q/(4πε₀r²)"],["Uniform field","E = V/d"],["Potential","V = Q/(4πε₀r)"]],
+ tips:["1/(4πε₀) = 8.99 × 10⁹ N m² C⁻².","Use signs of charge to decide attraction or repulsion; the formula magnitude is positive."],
+ cards:[
+  ["Define electric field strength.","Force per unit positive charge placed at that point: E = F/Q."],
+  ["Compare electric and gravitational fields.","Both are inverse-square (radial) fields. Gravity is always attractive and depends on mass; electric forces may attract or repel and depend on charge. The electric force between charged particles is far larger."],
+  ["Describe the path of a charged particle entering a uniform electric field perpendicular to the field.","A parabola (constant force perpendicular to initial velocity, as for a projectile)."],
+  ["What do the gradient of a V–r graph and the area under an E–r graph give?","Gradient of V–r = −E. Area under E–r = −ΔV."],
+  ["What is the direction of the electric field lines?","In the direction a positive charge would move: away from positive charges, towards negative."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"Two horizontal parallel plates 5.0 cm apart have a potential difference of 2.0 kV across them. An electron is between them. Calculate (i) the electric field strength, (ii) the force on the electron and (iii) its acceleration.",fig:["platefield"],
+   ms:["E = V/d = 2000 / 0.050 = 4.0 × 10⁴ V m⁻¹","F = eE = 1.60 × 10⁻¹⁹ × 4.0 × 10⁴","= 6.4 × 10⁻¹⁵ N","a = F/m = 6.4 × 10⁻¹⁵ / 9.11 × 10⁻³¹ = 7.0 × 10¹⁵ m s⁻²"],tip:"Weight is negligible compared with the electric force."},
+  {m:3,cw:"Calculate",q:"Two small spheres carry charges of +3.0 nC and +5.0 nC and are 0.10 m apart in a vacuum. Calculate the electrostatic force between them and state whether it is attractive or repulsive.",
+   ms:["F = Qq/(4πε₀r²) with Q, q in coulombs","= 8.99 × 10⁹ × 3.0 × 10⁻⁹ × 5.0 × 10⁻⁹ / (0.10)² = 1.4 × 10⁻⁵ N","Repulsive (like charges)"],tip:"nC = 10⁻⁹ C."}]});
+
+T("emag",6,"6.3","Electromagnetism",{
+ pts:["Magnetic flux density; force on a current-carrying wire and a moving charge.","Circular motion of charged particles in a magnetic field.","Magnetic flux and flux linkage; Faraday's and Lenz's laws.","Alternating currents, transformers and power transmission."],
+ eq:[["Force on wire","F = BIL sinθ"],["Force on charge","F = Bqv sinθ"],["Radius in B","r = mv/(Bq) = p/(Bq)"],["Flux","Φ = BA cosθ ; flux linkage = NΦ"],["Faraday","ε = −N ΔΦ/Δt"],["Transformer","V_s/V_p = N_s/N_p"]],
+ tips:["Fleming's left hand rule for the force direction. Force on a charge: use conventional current direction (opposite for electrons).","The negative sign in Faraday's law is Lenz's law."],
+ cards:[
+  ["State Faraday's law.","The induced emf is directly proportional to the rate of change of magnetic flux linkage."],
+  ["State Lenz's law and explain why it follows from conservation of energy.","The induced emf acts in a direction to oppose the change that produced it; otherwise energy could be created from nothing."],
+  ["Why are cables used at high voltage for power transmission?","For the same power P = VI, higher V gives smaller current so less power is lost as heat (I²R) in the cables."],
+  ["Why does a charged particle follow a circular path in a uniform magnetic field?","The force is perpendicular to the velocity, so it provides a centripetal force and does no work; the speed is constant."],
+  ["Define the tesla.","The magnetic flux density that produces a force of 1 N on a 1 m wire carrying 1 A perpendicular to the field."],
+  ["Why is a transformer core laminated and made of soft iron?","Soft iron is easily magnetised and demagnetised (low hysteresis loss); laminations reduce eddy currents and heating."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A proton is accelerated from rest through a potential difference of 2.0 kV and enters a uniform magnetic field of flux density 0.050 T perpendicular to its velocity. Calculate the radius of its path.",fig:["bfield"],
+   ms:["eV = ½mv² so v = √(2eV/m)","v = √(2 × 1.60 × 10⁻¹⁹ × 2000 / 1.67 × 10⁻²⁷) = 6.2 × 10⁵ m s⁻¹","Bqv = mv²/r so r = mv/(Bq)","r = 0.13 m"],tip:"Equate the magnetic force to the centripetal force."},
+  {m:4,cw:"Calculate",q:"A transformer reduces 230 V mains to 12 V. The primary coil has 1150 turns. (i) Calculate the number of turns on the secondary. (ii) The secondary delivers 36 W and the transformer is 92% efficient. Calculate the primary current.",
+   ms:["N_s = N_p × V_s/V_p = 1150 × 12/230","= 60 turns","Input power = 36 / 0.92 = 39 W","I_p = P/V = 39 / 230 = 0.17 A"],tip:"Efficiency = output power ÷ input power."},
+  {m:3,cw:"Calculate",q:"A coil of 200 turns and area 4.0 × 10⁻³ m² is perpendicular to a uniform magnetic field of 0.50 T. The field falls uniformly to zero in 0.10 s. Calculate the magnitude of the induced emf.",
+   ms:["Change in flux linkage = NBA = 200 × 0.50 × 4.0 × 10⁻³ = 0.40 Wb turns","emf = ΔNΦ/Δt = 0.40 / 0.10","= 4.0 V"],tip:"Include N in the flux linkage."}]});
+
+T("part",6,"6.4a","Particles: the nucleus, quarks and leptons",{
+ pts:["Rutherford scattering and the structure of the atom; isotopes; nuclear notation.","Strong nuclear force (range, attractive and repulsive).","Hadrons (baryons, mesons) and leptons; quarks and antiquarks; antiparticles.","Beta decay, the neutrino, conservation laws and the weak interaction; Feynman diagrams."],
+ eq:[["Nuclear notation","ᴬ_Z X: A = nucleon number, Z = proton number"],["Proton","uud (charge +1)"],["Neutron","udd (charge 0)"],["β⁻ decay","n → p + e⁻ + ν̄ₑ"],["β⁺ decay","p → n + e⁺ + νₑ"]],
+ tips:["Check charge, baryon number and lepton number are conserved in every equation.","Antineutrino with β⁻, neutrino with β⁺."],
+ cards:[
+  ["Give the quark composition of the proton and neutron, and quark charges.","Proton uud, neutron udd. Up has charge +2/3 e, down −1/3 e."],
+  ["Distinguish hadrons and leptons.","Hadrons are made of quarks and feel the strong force (baryons: three quarks; mesons: quark–antiquark). Leptons (e.g. electron, neutrino) are fundamental and do not feel the strong force."],
+  ["Write the equation for β⁻ decay and the quark-level change.","n → p + e⁻ + ν̄ₑ ; d → u + e⁻ + ν̄ₑ via the weak interaction."],
+  ["Why was the neutrino proposed?","Beta particles have a continuous range of energies, so energy and momentum conservation required a third emitted particle."],
+  ["Which quantities are conserved in all particle interactions?","Charge, baryon number, lepton number (and energy and momentum)."],
+  ["What did Rutherford scattering show?","Most alpha particles pass straight through (atom mostly empty space); a few are deflected through large angles, a very few rebound (small, dense, positively charged nucleus)."]],
+ qs:[
+  {m:4,cw:"Explain",q:"In the Rutherford scattering experiment alpha particles are fired at a thin gold foil as shown. Explain what each of the following observations shows about the atom: (i) most pass straight through, (ii) a few are deflected through large angles, (iii) a very small number rebound.",fig:["ruth"],
+   ms:["Most pass through: the atom is mostly empty space","Large deflections: there is a concentrated positive charge (the nucleus), which repels alpha particles","Rebound: almost all of the atom's mass is concentrated in a very small nucleus (the nucleus is much more massive than an alpha particle)","The nucleus is very small compared with the atom (very few direct hits)"],tip:"Link each observation to a property of the nucleus."},
+  {m:4,cw:"Explain",q:"Carbon-14 is a β⁻ emitter. (i) Complete the decay equation ¹⁴₆C → ?N + ?e + ν̄ₑ. (ii) State the quark change that occurs and name the interaction responsible. (iii) Identify the exchange particle shown in the Feynman diagram.",fig:["feynman"],
+   ms:["¹⁴₆C → ¹⁴₇N + ⁰₋₁e + ν̄ₑ (nucleon number and charge conserved)","d → u + e⁻ + ν̄ₑ (a neutron changes to a proton)","Weak interaction","The exchange particle is the W⁻ boson"],tip:"Check A and Z balance on both sides."}]});
+
+T("rad",6,"6.4b","Radioactive decay",{
+ pts:["Alpha, beta and gamma radiation: properties, ionising ability and penetration.","Random and spontaneous decay; activity and the decay constant.","Exponential decay, N = N₀e^(−λt), half-life t½ = ln2/λ.","Background radiation and corrected count rate."],
+ eq:[["Activity","A = −dN/dt = λN (becquerel)"],["Decay law","N = N₀e^(−λt) ; A = A₀e^(−λt)"],["Half-life","t½ = ln2 / λ"]],
+ tips:["Convert half-life to seconds when you need λ in s⁻¹ and the activity in Bq.","Subtract background count rate before finding half-life."],
+ cards:[
+  ["Compare the penetration and ionising power of α, β and γ.","α: strongly ionising, stopped by paper/few cm of air. β: moderately ionising, stopped by a few mm of aluminium. γ: weakly ionising, very penetrating (reduced by thick lead)."],
+  ["Define activity and the decay constant.","Activity: number of decays per second (Bq). Decay constant: probability of decay of a nucleus per unit time."],
+  ["Define half-life.","The time taken for half of the radioactive nuclei in a sample to decay (or for the activity to fall to half)."],
+  ["What does it mean that radioactive decay is random and spontaneous?","It is impossible to predict when a particular nucleus will decay (random) and decay is not affected by external factors such as temperature or pressure (spontaneous)."],
+  ["Give some sources of background radiation.","Radon gas, rocks and soil, cosmic rays, medical uses, nuclear fall-out and food/building materials."]],
+ qs:[
+  {m:5,cw:"Calculate",q:"A sample contains 1.0 × 10¹⁵ nuclei of an isotope with half-life 6.0 hours. Calculate (i) the decay constant, (ii) the initial activity and (iii) the activity after 24 hours.",
+   ms:["t½ = 6.0 × 3600 = 2.16 × 10⁴ s","λ = ln2/t½ = 3.2 × 10⁻⁵ s⁻¹","A₀ = λN₀ = 3.2 × 10⁻⁵ × 1.0 × 10¹⁵ = 3.2 × 10¹⁰ Bq","24 h is four half-lives so the activity falls by factor 2⁴ = 16","A = 2.0 × 10⁹ Bq"],tip:"Four half-lives means (½)⁴."},
+  {m:3,cw:"Determine",q:"The graph shows the count rate from a radioactive sample over time. Determine the half-life of the sample using the graph.",fig:["decay"],
+   ms:["Initial count rate 640 min⁻¹ so half is 320 min⁻¹","Read the time at which the rate is 320 min⁻¹","Half-life = 15 minutes (confirmed by a second half-life, e.g. 320 → 160)"],tip:"Repeat for another pair of values to check the exponential."}]});
+
+T("bind",6,"6.4c","Binding energy, fission and fusion",{
+ pts:["Mass–energy equivalence ΔE = Δmc².","Mass defect and binding energy per nucleon; the binding-energy curve.","Fission and fusion: energy released and conditions needed.","Nuclear reactors: moderator, control rods, coolant."],
+ eq:[["Mass–energy","E = mc²"],["Binding energy","E_B = Δmc²"],["Atomic mass unit","1 u = 1.66 × 10⁻²⁷ kg = 931.5 MeV/c²"]],
+ tips:["Use nuclear masses (or subtract electron masses carefully if atomic masses are given).","Energy per nucleon is what you compare for stability."],
+ cards:[
+  ["Define mass defect and binding energy.","Mass defect: the difference between the mass of the separated nucleons and the mass of the nucleus. Binding energy: the energy equivalent of that mass (Δmc²), the energy needed to separate the nucleus into its nucleons."],
+  ["Describe the shape of the binding energy per nucleon against nucleon number graph.","Rises steeply for light nuclei, peaks around iron-56 (about 8.8 MeV per nucleon), then declines gently for heavy nuclei."],
+  ["Explain why fission and fusion both release energy.","Both processes produce nuclei with higher binding energy per nucleon (closer to the peak), so the total binding energy increases and the difference is released."],
+  ["Why is fusion hard to achieve?","The nuclei repel electrostatically; very high temperature and pressure are needed so that nuclei can get close enough for the strong force to act."],
+  ["Roles of moderator, control rods and coolant in a fission reactor?","Moderator slows neutrons so they can cause fission; control rods absorb neutrons to regulate the chain reaction; coolant removes thermal energy."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"The nuclear mass of a helium-4 nucleus is 4.00151 u. The mass of a proton is 1.00728 u and of a neutron is 1.00867 u. Calculate the binding energy of the nucleus and the binding energy per nucleon in MeV. (1 u = 931.5 MeV)",
+   ms:["Mass of separate nucleons = 2 × 1.00728 + 2 × 1.00867 = 4.03190 u","Mass defect = 4.03190 − 4.00151 = 0.03039 u","Binding energy = 0.03039 × 931.5 = 28.3 MeV","Per nucleon = 28.3 / 4 = 7.08 MeV"],tip:"Divide by A for the per-nucleon value."},
+  {m:4,cw:"Explain",q:"The graph shows how the binding energy per nucleon varies with nucleon number. Use the graph to explain why energy is released in both nuclear fusion and nuclear fission.",fig:["bec"],
+   ms:["Binding energy per nucleon increases from light nuclei up to a maximum near iron-56","In fusion light nuclei combine to form a nucleus with a higher binding energy per nucleon","In fission a heavy nucleus splits into two medium nuclei with a higher binding energy per nucleon","The increase in total binding energy (decrease in mass) is released as energy, E = Δmc²"],tip:"Name which side of the peak each process starts on."}]});
+
+T("med",6,"6.5","Medical imaging",{
+ pts:["X-ray production and attenuation I = I₀e^(−μx); contrast media.","CT scanning: rotating X-ray source and detectors, image reconstruction.","Gamma camera: radioactive tracers such as technetium-99m.","PET scanning: positron annihilation and detection of gamma pairs.","Ultrasound: pulse–echo, acoustic impedance and reflection.","MRI: strong magnetic fields, radio-frequency pulses and the detection of relaxation signals (qualitative)."],
+ eq:[["Attenuation","I = I₀e^(−μx)"],["Half-value thickness","x½ = ln2 / μ"],["Acoustic impedance","Z = ρc"],["Intensity reflection","I_r/I₀ = (Z₂ − Z₁)² / (Z₂ + Z₁)²"],["Annihilation energy","each photon ≈ 0.511 MeV"]],
+ tips:["μ has units of m⁻¹ (or cm⁻¹), so x must be in matching units.","Echo time covers the journey there and back, so halve it."],
+ cards:[
+  ["State the attenuation equation and what μ represents.","I = I₀e^(−μx). μ is the linear attenuation coefficient, larger for denser or higher-Z materials such as bone."],
+  ["Why is a barium meal used in X-ray imaging of the gut?","Soft tissues attenuate X-rays similarly so there's little contrast; barium has a high attenuation coefficient, making the organ visible."],
+  ["Explain the principle of PET.","A positron-emitting tracer is injected; positrons annihilate with electrons producing two γ photons (each 0.511 MeV) emitted back to back; detectors register coincident photons to locate the source along a line."],
+  ["Why is gel applied between an ultrasound probe and the skin?","It matches acoustic impedances of probe and skin, reducing reflection at the boundary so more energy enters the body (air would reflect almost all)."],
+  ["Why is technetium-99m a suitable tracer?","It emits γ rays that are detectable and weakly ionising (no α/β), has a half-life of about 6 hours (long enough to image, short enough to limit dose) and can be bound to many compounds."],
+  ["Outline how a CT scan produces an image.","An X-ray source and detectors rotate around the patient, taking many attenuation measurements from different angles; a computer reconstructs cross-sectional slices (which can be assembled into a 3D image)."]],
+ qs:[
+  {m:4,cw:"Calculate",q:"A beam of X-rays passes through 4.0 cm of tissue with a linear attenuation coefficient of 0.35 cm⁻¹. Calculate (i) the fraction of intensity transmitted and (ii) the half-value thickness of the tissue.",
+   ms:["I/I₀ = e^(−μx) = e^(−0.35 × 4.0)","= 0.25 (25%)","x½ = ln2/μ","= 0.693/0.35 = 2.0 cm"],tip:"Use matching units for μ and x."},
+  {m:5,cw:"Calculate",q:"An ultrasound pulse travels through soft tissue (speed 1540 m s⁻¹) and reflects from the boundary with a bone. The echo is received 52 μs after the pulse is sent. The acoustic impedance of soft tissue is 1.63 × 10⁶ kg m⁻² s⁻¹ and of bone is 7.8 × 10⁶ kg m⁻² s⁻¹. Calculate (i) the depth of the bone and (ii) the fraction of the intensity that is reflected.",
+   ms:["Distance travelled = 1540 × 52 × 10⁻⁶ = 0.080 m","Depth = 0.080 / 2 = 0.040 m (pulse travels there and back)","Fraction = (Z₂ − Z₁)²/(Z₂ + Z₁)²","= (6.17)²/(9.43)²","= 0.43"],tip:"The round trip is why you halve the distance."}]});
+/* ---------- Diagram library (inline SVG, themed with CSS variables) ---------- */
+const DEFS='<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="inkf"/></marker><marker id="ahA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="accf"/></marker></defs>';
+function svg(W,H,inner,alt){return `<svg class="fig" viewBox="0 0 ${W} ${H}" role="img" aria-label="${alt||'Diagram'}">${DEFS}${inner}</svg>`}
+const nf=v=>String(+(+v).toFixed(3));
+function graph(o){
+  const W=o.W||380,H=o.H||240,l=52,r=16,t=14,b=44;
+  const X=v=>l+(v-o.x[0])/(o.x[1]-o.x[0])*(W-l-r), Y=v=>H-b-(v-o.y[0])/(o.y[1]-o.y[0])*(H-t-b);
+  let s='';
+  for(let v=o.x[0];v<=o.x[1]+1e-9;v+=o.x[2]){v=+v.toFixed(6);s+=`<line class="gr" x1="${X(v)}" y1="${t}" x2="${X(v)}" y2="${H-b}"/>`+(o.nox?'':`<text x="${X(v)}" y="${H-b+14}" text-anchor="middle" class="tk">${nf(v)}</text>`)}
+  for(let v=o.y[0];v<=o.y[1]+1e-9;v+=o.y[2]){v=+v.toFixed(6);s+=`<line class="gr" x1="${l}" y1="${Y(v)}" x2="${W-r}" y2="${Y(v)}"/>`+(o.noy?'':`<text x="${l-6}" y="${Y(v)+4}" text-anchor="end" class="tk">${nf(v)}</text>`)}
+  const x0=o.x[0]<0&&o.x[1]>0?X(0):l, y0=o.y[0]<0&&o.y[1]>0?Y(0):H-b;
+  s+=`<path class="ax" d="M${x0} ${t} V${H-b}M${l} ${y0} H${W-r}"/>`;
+  s+=`<text x="${(l+W-r)/2}" y="${H-6}" text-anchor="middle">${o.x[3]||''}</text>`;
+  s+=`<text transform="translate(12 ${(t+H-b)/2}) rotate(-90)" text-anchor="middle">${o.y[3]||''}</text>`;
+  s+=o.body(X,Y);
+  return svg(W,H,s,o.alt);
+}
+const pl=(pts,X,Y,cls)=>`<polyline class="${cls||'c1'}" points="${pts.map(p=>X(p[0])+','+Y(p[1])).join(' ')}"/>`;
+const curve=(f,a,b,n,X,Y,cls)=>{const p=[];for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;p.push([x,f(x)])}return pl(p,X,Y,cls)};
+const tx=(x,y,t,a,c)=>`<text x="${x}" y="${y}" text-anchor="${a||'start'}" class="${c||''}">${t}</text>`;
+const arrow=(x1,y1,x2,y2,cls)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="ink" marker-end="url(#ah)" ${cls?`style="${cls}"`:''}/>`;
+
+const FIG={
+vt:p=>graph({alt:'Velocity-time graph',x:[0,25,5,'time / s'],y:[0,25,5,'velocity / m s⁻¹'],body:(X,Y)=>{
+  const pts=p.pts;const poly=pts.map(q=>X(q[0])+','+Y(q[1])).join(' ');
+  return `<polygon class="fill" points="${poly} ${X(pts[pts.length-1][0])},${Y(0)}"/>`+pl(pts,X,Y)}}),
+proj:p=>{const th=p.th*Math.PI/180;const ex=30+66*Math.cos(th),ey=170-66*Math.sin(th);
+  return svg(380,200,`<line class="ink" x1="10" y1="170" x2="370" y2="170"/><path class="c1" d="M30 170 Q185 -30 340 170"/>`+
+  arrow(30,170,ex,ey)+`<path class="thin" d="M${30+40} 170 A40 40 0 0 0 ${30+40*Math.cos(th)} ${170-40*Math.sin(th)}"/>`+
+  tx(80,163,p.th+'°','start','lbl')+tx(ex+6,ey-4,p.v+' m s⁻¹','start','lbl')+tx(185,188,'range R = ?','middle')+tx(185,64,'path (no air resistance)','middle'),'Projectile path')},
+beam:p=>{const x0=30,x1=350,k=(x1-x0)/p.L,xx=m=>x0+m*k;let s=`<rect class="box" x="${x0}" y="86" width="${x1-x0}" height="14"/>`;
+  p.sup.forEach((m,i)=>{s+=`<polygon class="box" points="${xx(m)},100 ${xx(m)-11},122 ${xx(m)+11},122"/>`+tx(xx(m),138,p.names[i],'middle','lbl')});
+  (p.loads||[]).forEach(L=>{s+=arrow(xx(L.x),38,xx(L.x),84)+tx(xx(L.x),30,L.l,'middle','lbl')});
+  s+=arrow(xx(p.L/2),38,xx(p.L/2),84,'stroke:var(--accent)')+tx(xx(p.L/2),30,'weight '+p.W,'middle','lblA');
+  s+=`<line class="thin" x1="${x0}" y1="168" x2="${x1}" y2="168"/>`;
+  [0,...p.sup,...(p.loads||[]).map(l=>l.x),p.L].forEach(m=>{s+=`<line class="thin" x1="${xx(m)}" y1="163" x2="${xx(m)}" y2="173"/>`+tx(xx(m),186,nf(m),'middle')});
+  return svg(380,200,s+tx(x1,158,'distance from left end / m','end'),'Uniform plank on two supports')},
+termvel:()=>graph({alt:'Velocity-time sketch',x:[0,10,2,'time'],y:[0,10,2,'velocity'],nox:1,noy:1,body:(X,Y)=>
+  `<line class="dash" x1="${X(0)}" y1="${Y(8)}" x2="${X(10)}" y2="${Y(8)}"/>`+curve(t=>8*(1-Math.exp(-t/2.2)),0,10,40,X,Y)+tx(X(10),Y(8)-5,'terminal velocity','end')}),
+stress:()=>graph({alt:'Stress-strain graph',x:[0,10,2,'strain'],y:[0,8,2,'stress'],nox:1,noy:1,body:(X,Y)=>{
+  const P=[[0,0],[2,4],[2.5,4.5],[3.1,4.9],[3.5,4.5],[4.2,4.6],[5,5.2],[6,6.3],[7,6.9],[7.8,6.7],[8.6,5.4]];
+  const lab=(n,i,dx,dy)=>`<circle class="accf" cx="${X(P[i][0])}" cy="${Y(P[i][1])}" r="3.5"/>`+tx(X(P[i][0])+dx,Y(P[i][1])+dy,n,'middle','lbl');
+  return pl(P,X,Y)+lab('P',1,-9,-6)+lab('Q',3,-2,-9)+lab('R',8,0,-9)+lab('S',10,10,4)+tx(X(0)-4,Y(0)+4,'O','end','lbl')}}),
+errbar:()=>graph({alt:'Graph with error bars',x:[0,7,1,'x'],y:[0,16,2,'y'],body:(X,Y)=>{
+  const d=[[1,2.4],[2,4.9],[3,6.3],[4,9.2],[5,10.4],[6,13.1]];let s='';
+  d.forEach(q=>{s+=`<line class="ink" x1="${X(q[0])}" y1="${Y(q[1]-.6)}" x2="${X(q[0])}" y2="${Y(q[1]+.6)}"/><line class="ink" x1="${X(q[0])-3}" y1="${Y(q[1]-.6)}" x2="${X(q[0])+3}" y2="${Y(q[1]-.6)}"/><line class="ink" x1="${X(q[0])-3}" y1="${Y(q[1]+.6)}" x2="${X(q[0])+3}" y2="${Y(q[1]+.6)}"/><circle class="accf" cx="${X(q[0])}" cy="${Y(q[1])}" r="2.8"/>`});
+  s+=pl([[0.3,.3+2.1*.3],[6.5,.3+2.1*6.5]],X,Y)+pl([[0.5,1.8+2.38*(-.5)],[6.3,1.8+2.38*5.3]],X,Y,'c2')+pl([[0.5,3.0+1.9*(-.5)],[6.3,3.0+1.9*5.3]],X,Y,'c2');return s}}),
+vecadd:()=>svg(380,200,arrow(60,150,260,150)+arrow(60,150,60,66)+`<line class="dash" x1="60" y1="150" x2="260" y2="66"/>`+tx(160,170,'12 N','middle','lbl')+tx(48,112,'5.0 N','end','lbl')+tx(180,96,'resultant R','start')+tx(250,42,'(forces act at right angles)','middle'),'Two perpendicular forces'),
+iv:()=>graph({alt:'I-V graph for a filament lamp',x:[0,12,2,'V / V'],y:[0,1,.2,'I / A'],body:(X,Y)=>
+  curve(v=>.5*Math.pow(v/6,.65),0,12,40,X,Y)+[[6,.5],[12,.78]].map(q=>`<circle class="accf" cx="${X(q[0])}" cy="${Y(q[1])}" r="3.5"/>`+tx(X(q[0])+(q[0]==6?6:-6),Y(q[1])+(q[0]==6?16:18),`(${q[0]}, ${q[1]})`,q[0]==6?'start':'end','lbl')).join('')}),
+circ1:()=>{const rb=(x,y,w,h)=>`<rect class="box" x="${x}" y="${y}" width="${w}" height="${h}"/>`;
+  return svg(380,210,`<path class="ink" d="M60 40H290M60 40V72M60 90V112M60 140V180H290M200 40V85M200 135V180M290 40V85M290 135V180"/>`+
+  `<line class="ink" x1="46" y1="72" x2="74" y2="72"/><line class="ink" x1="52" y1="82" x2="68" y2="82" style="stroke-width:3"/><path class="ink" d="M60 82V112"/>`+
+  rb(52,112,16,28)+`<rect x="36" y="58" width="48" height="94" rx="4" class="dash"/>`+
+  rb(192,85,16,50)+rb(282,85,16,50)+tx(92,80,'12.0 V','start','lbl')+tx(92,130,'r = 0.50 Ω','start','lbl')+tx(216,114,'4.0 Ω','start','lbl')+tx(250,196,'','middle')+tx(306,114,'12 Ω','start','lbl')+tx(38,196,'battery','start')+
+  `<circle class="inkf" cx="200" cy="40" r="3"/><circle class="inkf" cx="200" cy="180" r="3"/>`,'Circuit with a cell with internal resistance and two parallel resistors')},
+divider:()=>svg(380,230,`<path class="ink" d="M130 30V50M130 50V54M130 110V135M130 175V205M130 135H260"/><rect class="box" x="122" y="54" width="16" height="56"/><line class="ink" x1="108" y1="104" x2="152" y2="60"/><rect class="box" x="122" y="135" width="16" height="40"/>`+
+  tx(130,22,'+5.0 V','middle','lbl')+tx(130,222,'0 V','middle','lbl')+tx(154,86,'NTC thermistor','start','lbl')+tx(154,160,'2.0 kΩ','start','lbl')+`<circle class="inkf" cx="130" cy="135" r="3"/>`+tx(268,139,'V_out','start','lbl'),'Potential divider with a thermistor'),
+dslit:()=>{let s=`<rect class="box" x="108" y="12" width="6" height="84"/><rect class="box" x="108" y="106" width="6" height="18"/><rect class="box" x="108" y="134" width="6" height="64"/>`;
+  [20,50,80].forEach(x=>s+=`<line class="dash" x1="${x}" y1="60" x2="${x}" y2="160"/>`);s+=arrow(10,110,40,110);
+  [-3,-2,-1,0,1,2,3].forEach(k=>{s+=`<rect class="accf" x="324" y="${110+k*28-5}" width="10" height="10" style="opacity:${k%2?.35:.9}"/>`});
+  s+=`<rect class="accf" x="324" y="${110-3*28-5}" width="10" height="10" opacity="0"/>`;
+  s+=`<line class="ink" x1="322" y1="12" x2="322" y2="198"/>`+tx(112,10,'slits','middle')+tx(330,10,'screen','middle')+
+     `<line class="thin" x1="120" y1="184" x2="320" y2="184" marker-end="url(#ah)" marker-start="url(#ah)"/>`+tx(220,178,'D','middle','lbl')+
+     `<line class="thin" x1="100" y1="110" x2="100" y2="110"/>`+tx(104,102,'','end')+`<line class="thin" x1="134" y1="96" x2="134" y2="124" marker-end="url(#ah)" marker-start="url(#ah)"/>`+tx(140,114,'a','start','lbl')+
+     `<line class="thin" x1="348" y1="110" x2="348" y2="138" marker-end="url(#ah)" marker-start="url(#ah)"/>`+tx(342,128,'x','end','lbl')+tx(220,196,'(not to scale)','middle');
+  return svg(380,206,s,'Young double slit arrangement')},
+stringwave:p=>{let s='';const n=p.n;const hh=n.length;n.forEach((k,i)=>{const y=60+i*100;
+  const f=(sg)=>{let d='';for(let j=0;j<=60;j++){const x=50+260*j/60;d+=(j?'L':'M')+x+' '+(y+sg*38*Math.sin(Math.PI*k*j/60))}return d};
+  s+=`<path class="c1" d="${f(1)}"/><path class="c1" d="${f(-1)}" style="opacity:.55"/><circle class="inkf" cx="50" cy="${y}" r="4"/><circle class="inkf" cx="310" cy="${y}" r="4"/>`});
+  s+=`<line class="thin" x1="50" y1="${60+(hh-1)*100+54}" x2="310" y2="${60+(hh-1)*100+54}" marker-start="url(#ah)" marker-end="url(#ah)"/>`+tx(180,60+(hh-1)*100+70,'L = 0.80 m','middle','lbl');
+  return svg(360,60+(hh-1)*100+82,s,'Stationary wave on a string')},
+pe:()=>graph({alt:'Maximum kinetic energy against frequency',x:[0,12,2,'f / 10¹⁴ Hz'],y:[-3,4,1,'KE(max) / eV'],body:(X,Y)=>
+  curve(f=>.414*(f-5),0,12.2,2,X,Y,'c2')+curve(f=>.414*(f-5),5,12,2,X,Y)+[[6,.41],[8,1.24],[10,2.07],[12,2.9]].map(q=>`<circle class="accf" cx="${X(q[0])}" cy="${Y(q[1])}" r="3.5"/>`).join('')+tx(X(12)-4,Y(2.9)-8,'(12.0, 2.9)','end','lbl')+tx(X(5),Y(0)+16,'5.0','middle','lbl')}),
+levels:()=>{const Y={0:20,'-0.85':52,'-1.51':84,'-3.4':124,'-13.6':186};const L=[[-13.6,'n = 1'],[-3.40,'n = 2'],[-1.51,'n = 3'],[-0.85,'n = 4'],[0,'ionisation']];let s='';
+  L.forEach(q=>{const y=Y[q[0]];s+=`<line class="ink" x1="110" y1="${y}" x2="260" y2="${y}"/>`+tx(100,y+4,q[1],'end','lbl')+tx(268,y+4,q[0].toFixed(q[0]==-0.85||q[0]==-1.51?2:q[0]==0?0:1)+' eV','start','lbl')});
+  s+=arrow(185,Y['-1.51'],185,Y['-3.4']-3,'stroke:var(--accent)')+tx(190,206,'(not to scale)','middle');return svg(380,212,s,'Hydrogen energy levels')},
+heatcurve:()=>graph({alt:'Temperature against time for heating ice',x:[0,10,2,'time'],y:[-20,120,20,'temperature / °C'],nox:1,body:(X,Y)=>
+  pl([[0,-10],[1.5,0],[4,0],[7.5,100],[10,100]],X,Y)+tx(X(2.75),Y(0)-8,'melting','middle','lbl')+tx(X(9),Y(100)-8,'boiling','middle','lbl')}),
+circ:()=>svg(380,220,`<circle class="dash" cx="190" cy="110" r="76"/><circle class="inkf" cx="190" cy="110" r="3"/>`+
+  `<rect class="box" x="258" y="100" width="18" height="20" rx="3"/>`+arrow(267,98,267,44)+arrow(256,110,208,110,'stroke:var(--accent)')+tx(272,44,'v','start','lbl')+tx(232,104,'F','middle','lblA')+`<line class="thin" x1="190" y1="110" x2="190" y2="110"/>`+tx(210,130,'r = 40 m','start')+tx(190,208,'(plan view, car on a flat bend)','middle'),'Car on a circular bend'),
+shm:()=>graph({alt:'Displacement-time graph',x:[0,1,.25,'t / s'],y:[-6,6,2,'x / cm'],body:(X,Y)=>curve(t=>6*Math.cos(2*Math.PI*t/.5),0,1,100,X,Y)}),
+shmE:()=>graph({alt:'Energy against displacement',x:[-1,1,.5,'x / A'],y:[0,1.2,.2,'energy'],nox:0,body:(X,Y)=>
+  curve(x=>1-x*x,-1,1,40,X,Y,'c2')+pl([[-1,1],[1,1]],X,Y)+curve(x=>x*x,-1,1,40,X,Y,'c3')+tx(X(.5),Y(1)-6,'Y','middle','lbl')+tx(X(-.6),Y(.64)-6,'X','end','lbl')+tx(X(.62),Y(.384)+16,'Z','start','lbl')}),
+reson:()=>graph({alt:'Amplitude against driving frequency',x:[0,2,.5,'f / f₀'],y:[0,5,1,'amplitude'],noy:1,body:(X,Y)=>{const a=(r,z)=>1/Math.sqrt((1-r*r)**2+(2*z*r)**2);
+  return curve(r=>a(r,.1),0,2,120,X,Y)+curve(r=>a(r,.4),0,2,120,X,Y,'c2')+tx(X(1)+8,Y(4.8),'P','start','lbl')+tx(X(1)+6,Y(1.35),'Q','start','lbl')}}),
+platefield:()=>{let s=`<rect class="box" x="60" y="40" width="260" height="8"/><rect class="box" x="60" y="152" width="260" height="8"/>`+tx(190,32,'+ 2.0 kV','middle','lbl')+tx(190,180,'0 V','middle','lbl');
+  for(let x=90;x<=290;x+=40)s+=arrow(x,56,x,142,'stroke:var(--ink2)');
+  s+=`<circle class="accf" cx="190" cy="100" r="6"/>`+tx(204,104,'e⁻','start','lblA')+arrow(190,92,190,70,'stroke:var(--accent)')+`<line class="thin" x1="340" y1="48" x2="340" y2="152" marker-start="url(#ah)" marker-end="url(#ah)"/>`+tx(334,104,'5.0 cm','end','lbl');
+  return svg(380,196,s,'Charged parallel plates')},
+capdis:p=>graph({alt:'Capacitor discharge graph',x:[0,25,5,'t / s'],y:[0,8,2,'V / V'],body:(X,Y)=>curve(t=>p.v0*Math.exp(-t/p.tau),0,25,80,X,Y)}),
+bfield:()=>{let s='';for(let x=130;x<=350;x+=36)for(let y=36;y<=190;y+=38)s+=`<path class="thin" d="M${x-4} ${y-4}L${x+4} ${y+4}M${x+4} ${y-4}L${x-4} ${y+4}"/>`;
+  s+=`<path class="c1" d="M20 170H110A60 60 0 0 0 110 50H20"/>`+arrow(40,170,80,170,'stroke:var(--accent)')+`<line class="dash" x1="110" y1="20" x2="110" y2="205"/>`+tx(160,114,'r','start','lbl')+`<line class="thin" x1="110" y1="110" x2="170" y2="110"/>`+tx(24,162,'proton','start','lbl')+tx(300,26,'B into page','end','lbl');
+  return svg(380,215,s,'Proton moving in a magnetic field')},
+ruth:()=>{let s=`<rect class="box" x="186" y="14" width="8" height="182"/><circle class="inkf" cx="190" cy="105" r="3"/>`+tx(190,10,'gold foil','middle');
+  ['M10 40H370','M10 70H370','M10 150H370','M10 180H370','M10 96H168Q192 96 204 130T240 200','M10 108H180Q196 106 182 98L110 40'].forEach(d=>s+=`<path class="c1" d="${d}"/>`);
+  return svg(380,206,s+tx(14,28,'α particles','start','lblA'),'Alpha particle scattering')},
+feynman:()=>svg(380,230,`<line class="ink" x1="30" y1="190" x2="150" y2="110" marker-end="url(#ah)"/><line class="ink" x1="150" y1="110" x2="260" y2="36" marker-end="url(#ah)"/>`+
+  `<path class="c1" d="M150 110q10 -8 16 2t16 4t16 4t16 4t16 4t16 4"/><line class="ink" x1="248" y1="134" x2="340" y2="100" marker-end="url(#ah)"/><line class="ink" x1="340" y1="190" x2="248" y2="134" marker-end="url(#ah)"/>`+
+  tx(24,206,'d','start','lbl')+tx(268,34,'u','start','lbl')+tx(190,98,'?','middle','lblA')+tx(346,102,'e⁻','start','lbl')+tx(346,196,'ν̄ₑ','start','lbl')+arrow(30,222,110,222)+tx(120,226,'time','start'),'Feynman diagram of beta-minus decay'),
+decay:()=>graph({alt:'Count rate against time',x:[0,60,10,'t / min'],y:[0,700,100,'count rate / min⁻¹'],body:(X,Y)=>curve(t=>640*Math.exp(-Math.LN2*t/15),0,60,80,X,Y)}),
+bec:()=>graph({alt:'Binding energy per nucleon curve',x:[0,250,50,'nucleon number A'],y:[0,10,2,'BE per nucleon / MeV'],body:(X,Y)=>{
+  const P=[[0,0],[2,1.1],[4,7.07],[8,7.5],[12,7.68],[16,7.98],[30,8.5],[56,8.79],[100,8.5],[150,8.2],[200,7.9],[238,7.6]];
+  return pl(P,X,Y)+`<circle class="accf" cx="${X(56)}" cy="${Y(8.79)}" r="3.5"/>`+tx(X(56),Y(8.79)-8,'⁵⁶Fe','middle','lbl')+tx(X(6),Y(3.2),'fusion →','start')+tx(X(190),Y(5.4),'← fission','middle')}}),
+hr:()=>{const W=380,H=250,l=52,r=14,t=14,b=44;const X=v=>l+v/4.2*(W-l-r),Y=v=>t+(6.5-v)/10.5*(H-t-b);let s='';
+  [[0,'40000'],[1,'20000'],[2,'10000'],[3,'5000'],[4,'2500']].forEach(q=>s+=`<line class="gr" x1="${X(q[0])}" y1="${t}" x2="${X(q[0])}" y2="${H-b}"/>`+tx(X(q[0]),H-b+14,q[1],'middle','tk'));
+  [-4,-2,0,2,4,6].forEach(v=>s+=`<line class="gr" x1="${l}" y1="${Y(v)}" x2="${W-r}" y2="${Y(v)}"/>`+tx(l-6,Y(v)+4,'10'+(v<0?'⁻':'')+String(Math.abs(v)).replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]),'end','tk'));
+  s+=`<path class="ax" d="M${l} ${t}V${H-b}H${W-r}"/>`+tx((l+W-r)/2,H-6,'surface temperature / K (decreasing)','middle')+`<text transform="translate(12 ${(t+H-b)/2}) rotate(-90)" text-anchor="middle">luminosity / L☉</text>`;
+  s+=`<polyline class="c1" points="${[[.3,5.2],[1.2,3.2],[2.2,.8],[3,-1],[3.7,-3]].map(q=>X(q[0])+','+Y(q[1])).join(' ')}" style="stroke-width:10;opacity:.28;stroke-linecap:round"/>`+tx(X(1.4),Y(2.2)-10,'Z','middle','lbl')+
+     `<ellipse cx="${X(3.5)}" cy="${Y(2.8)}" rx="24" ry="22" class="fill"/>`+tx(X(3.5),Y(2.8)+4,'X','middle','lbl')+`<ellipse cx="${X(.9)}" cy="${Y(-2.6)}" rx="22" ry="14" class="fill"/>`+tx(X(.9),Y(-2.6)+4,'Y','middle','lbl')+
+     `<circle class="accf" cx="${X(2.79)}" cy="${Y(0)}" r="3.5"/>`+tx(X(2.79)+7,Y(0)+14,'Sun','start','lbl');
+  return svg(W,H,s,'Hertzsprung-Russell diagram')}
+};
+function figHTML(f){if(!f)return'';try{return `<div class="fig-box">${FIG[f[0]](f[1]||{})}</div>`}catch(e){return''}}
+/* ---------- Randomised numerical practice (each call produces fresh values) ---------- */
+const rnd=(a,b,st)=>{st=st||1;const n=Math.floor((b-a)/st);return +(a+st*Math.floor(Math.random()*(n+1))).toFixed(6)};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function sf(x,n){n=n||3;if(!isFinite(x)||x===0)return String(x);const e=Math.floor(Math.log10(Math.abs(x)));if(e>=5||e<=-3){const m=x/Math.pow(10,e);return (+m.toPrecision(n))+' × 10'+String(e).replace(/-/g,'⁻').replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d])}return String(+x.toPrecision(n))}
+const SUP=s=>s;
+const CALCS=[
+ {t:"mot",f:()=>{const u=rnd(4,20),v=rnd(25,40),s=rnd(80,200,10);const a=(v*v-u*u)/(2*s);return{q:`A car accelerates uniformly from ${u} m s⁻¹ to ${v} m s⁻¹ over a distance of ${s} m. Calculate its acceleration.`,a,u:"m s⁻²",sol:`v² = u² + 2as → a = (v² − u²)/2s = (${v}² − ${u}²)/(2 × ${s}) = ${sf(a)} m s⁻²`}}},
+ {t:"mot",f:()=>{const u=rnd(12,30);const h=u*u/(2*9.81);return{q:`A ball is thrown vertically upwards at ${u} m s⁻¹. Ignoring air resistance, calculate the maximum height reached (g = 9.81 m s⁻²).`,a:h,u:"m",sol:`At the top v = 0: v² = u² − 2gh → h = u²/2g = ${u}²/(2 × 9.81) = ${sf(h)} m`}}},
+ {t:"vec",f:()=>{const F=rnd(20,90,5),th=rnd(20,60,5);const a=F*Math.cos(th*Math.PI/180);return{q:`A force of ${F} N acts at ${th}° above the horizontal. Calculate its horizontal component.`,a,u:"N",sol:`F cosθ = ${F} × cos${th}° = ${sf(a)} N`}}},
+ {t:"frc",f:()=>{const h=rnd(5,40),rho=pick([1000,1030,13600]);const p=h*rho*9.81;return{q:`Calculate the pressure due to a liquid of density ${rho} kg m⁻³ at a depth of ${h} m (g = 9.81 m s⁻²). Give your answer in Pa.`,a:p,u:"Pa",sol:`p = hρg = ${h} × ${rho} × 9.81 = ${sf(p)} Pa`}}},
+ {t:"wep",f:()=>{const m=rnd(400,1500,50),v=rnd(10,35);const E=.5*m*v*v;return{q:`Calculate the kinetic energy (in joules) of a ${m} kg car travelling at ${v} m s⁻¹.`,a:E,u:"J",sol:`E = ½mv² = 0.5 × ${m} × ${v}² = ${sf(E)} J`}}},
+ {t:"wep",f:()=>{const m=rnd(60,400,20),h=rnd(8,40),t=rnd(10,40);const P=m*9.81*h/t;return{q:`A motor lifts a ${m} kg load through ${h} m in ${t} s at constant speed. Calculate the useful power output (g = 9.81 m s⁻²).`,a:P,u:"W",sol:`P = mgh/t = ${m} × 9.81 × ${h} / ${t} = ${sf(P)} W`}}},
+ {t:"mat",f:()=>{const F=rnd(40,200,10),d=rnd(.3,1.2,.1);const A=Math.PI*Math.pow(d*1e-3/2,2);const s=F/A;return{q:`A wire of diameter ${d} mm carries a tension of ${F} N. Calculate the stress in the wire in Pa.`,a:s,u:"Pa",sol:`A = π(d/2)² = π(${d} × 10⁻³ / 2)² = ${sf(A)} m². Stress = F/A = ${F}/${sf(A)} = ${sf(s)} Pa`}}},
+ {t:"newt",f:()=>{const m1=rnd(1,4,.5),u=rnd(1,6),m2=rnd(.5,3,.5);const v=m1*u/(m1+m2);return{q:`A ${m1} kg trolley moving at ${u} m s⁻¹ collides with a stationary ${m2} kg trolley and they stick together. Calculate their common speed.`,a:v,u:"m s⁻¹",sol:`m₁u = (m₁ + m₂)v → v = ${m1} × ${u} / ${m1+m2} = ${sf(v)} m s⁻¹`}}},
+ {t:"chg",f:()=>{const I=rnd(.5,5,.5),t=rnd(20,300,10);const Q=I*t;return{q:`A current of ${I} A flows for ${t} s. How much charge passes a point in the circuit (in coulombs)?`,a:Q,u:"C",sol:`Q = It = ${I} × ${t} = ${sf(Q)} C`}}},
+ {t:"res",f:()=>{const L=rnd(.5,3,.1),d=rnd(.2,.8,.1),rho=pick([1.7e-8,1.1e-6,2.8e-8]);const A=Math.PI*Math.pow(d*1e-3/2,2);const R=rho*L/A;return{q:`A wire of length ${L} m, diameter ${d} mm and resistivity ${sf(rho,2)} Ω m. Calculate its resistance.`,a:R,u:"Ω",sol:`A = π(${d} × 10⁻³ / 2)² = ${sf(A)} m². R = ρL/A = ${sf(rho,2)} × ${L} / ${sf(A)} = ${sf(R)} Ω`}}},
+ {t:"circ",f:()=>{const a=rnd(2,20),b=rnd(2,20);const R=a*b/(a+b);return{q:`A ${a} Ω resistor is connected in parallel with a ${b} Ω resistor. Calculate the combined resistance.`,a:R,u:"Ω",sol:`1/R = 1/${a} + 1/${b} → R = ${a} × ${b}/(${a} + ${b}) = ${sf(R)} Ω`}}},
+ {t:"circ",f:()=>{const V=rnd(3,12),R1=rnd(1,10),R2=rnd(1,10);const o=V*R2/(R1+R2);return{q:`A ${V} V supply is connected across a potential divider: ${R1} kΩ in series with ${R2} kΩ. Calculate the voltage across the ${R2} kΩ resistor.`,a:o,u:"V",sol:`V = V_in × R₂/(R₁ + R₂) = ${V} × ${R2}/${R1+R2} = ${sf(o)} V`}}},
+ {t:"wav",f:()=>{const lam=rnd(450,700,10),N=rnd(300,800,50);const d=1e-3/N;const th=Math.asin(lam*1e-9/d)*180/Math.PI;return{q:`Light of wavelength ${lam} nm is incident normally on a diffraction grating with ${N} lines per mm. Calculate the angle (in degrees) of the first-order maximum.`,a:th,u:"°",sol:`d = 1/(${N} × 10³) = ${sf(d)} m. sinθ = λ/d = ${lam} × 10⁻⁹ / ${sf(d)} = ${sf(lam*1e-9/d)} → θ = ${sf(th)}°`}}},
+ {t:"qua",f:()=>{const lam=rnd(200,600,20);const E=6.63e-34*3e8/(lam*1e-9)/1.6e-19;return{q:`Calculate the energy in eV of a photon of wavelength ${lam} nm. (h = 6.63 × 10⁻³⁴ J s, c = 3.00 × 10⁸ m s⁻¹, e = 1.60 × 10⁻¹⁹ C)`,a:E,u:"eV",sol:`E = hc/λ = 6.63 × 10⁻³⁴ × 3.00 × 10⁸ / (${lam} × 10⁻⁹) = ${sf(E*1.6e-19)} J = ${sf(E)} eV`}}},
+ {t:"qua",f:()=>{const v=rnd(1,9)*1e6;const l=6.63e-34/(9.11e-31*v);return{q:`Calculate the de Broglie wavelength (in metres) of an electron moving at ${sf(v,2)} m s⁻¹. (h = 6.63 × 10⁻³⁴ J s, m = 9.11 × 10⁻³¹ kg)`,a:l,u:"m",sol:`λ = h/mv = 6.63 × 10⁻³⁴ / (9.11 × 10⁻³¹ × ${sf(v,2)}) = ${sf(l)} m`}}},
+ {t:"thm",f:()=>{const m=rnd(.2,2,.1),dT=rnd(10,80,5);const Q=m*4180*dT;return{q:`How much energy (in joules) is needed to raise the temperature of ${m} kg of water by ${dT} °C? (c = 4180 J kg⁻¹ K⁻¹)`,a:Q,u:"J",sol:`Q = mcΔθ = ${m} × 4180 × ${dT} = ${sf(Q)} J`}}},
+ {t:"thm",f:()=>{const n=rnd(.05,.5,.05),T=rnd(250,450,10),V=rnd(1,5,.5)*1e-3;const p=n*8.31*T/V;return{q:`Calculate the pressure (in Pa) of ${n} mol of an ideal gas at ${T} K in a volume of ${sf(V*1e3,2)} × 10⁻³ m³. (R = 8.31 J mol⁻¹ K⁻¹)`,a:p,u:"Pa",sol:`p = nRT/V = ${n} × 8.31 × ${T} / ${sf(V)} = ${sf(p)} Pa`}}},
+ {t:"circm",f:()=>{const m=rnd(.1,2,.1),v=rnd(2,15),r=rnd(.5,5,.5);const F=m*v*v/r;return{q:`A ${m} kg mass moves in a horizontal circle of radius ${r} m at a constant speed of ${v} m s⁻¹. Calculate the centripetal force.`,a:F,u:"N",sol:`F = mv²/r = ${m} × ${v}² / ${r} = ${sf(F)} N`}}},
+ {t:"osc",f:()=>{const m=rnd(.1,1,.05),k=rnd(10,80,5);const T=2*Math.PI*Math.sqrt(m/k);return{q:`A ${m} kg mass oscillates on a spring of spring constant ${k} N m⁻¹. Calculate the period of oscillation.`,a:T,u:"s",sol:`T = 2π√(m/k) = 2π√(${m}/${k}) = ${sf(T)} s`}}},
+ {t:"grav",f:()=>{const h=rnd(200,2000,100);const r=6.37e6+h*1e3;const v=Math.sqrt(6.67e-11*5.97e24/r);return{q:`Calculate the orbital speed (in m s⁻¹) of a satellite orbiting ${h} km above the Earth's surface. (G = 6.67 × 10⁻¹¹ N m² kg⁻², M = 5.97 × 10²⁴ kg, R = 6.37 × 10⁶ m)`,a:v,u:"m s⁻¹",sol:`r = ${sf(r)} m. v = √(GM/r) = √(6.67 × 10⁻¹¹ × 5.97 × 10²⁴ / ${sf(r)}) = ${sf(v)} m s⁻¹`}}},
+ {t:"astro",f:()=>{const T=rnd(3000,20000,500);const l=2.898e-3/T;return{q:`A star has a surface temperature of ${T} K. Use Wien's law (λ_max T = 2.898 × 10⁻³ m K) to calculate the peak wavelength of its radiation in metres.`,a:l,u:"m",sol:`λ_max = 2.898 × 10⁻³ / ${T} = ${sf(l)} m`}}},
+ {t:"cap",f:()=>{const C=rnd(100,2200,100),V=rnd(3,15);const E=.5*C*1e-6*V*V;return{q:`Calculate the energy stored (in joules) in a ${C} μF capacitor charged to ${V} V.`,a:E,u:"J",sol:`E = ½CV² = 0.5 × ${C} × 10⁻⁶ × ${V}² = ${sf(E)} J`}}},
+ {t:"cap",f:()=>{const C=rnd(100,1000,100),R=rnd(10,100,10),V0=rnd(6,12),t=rnd(1,5);const tau=R*1e3*C*1e-6;const V=V0*Math.exp(-t/tau);return{q:`A ${C} μF capacitor charged to ${V0} V discharges through a ${R} kΩ resistor. Calculate the p.d. after ${t} s.`,a:V,u:"V",sol:`τ = RC = ${R} × 10³ × ${C} × 10⁻⁶ = ${sf(tau)} s. V = V₀e^(−t/τ) = ${V0} × e^(−${t}/${sf(tau)}) = ${sf(V)} V`}}},
+ {t:"efld",f:()=>{const V=rnd(100,5000,100),d=rnd(1,10);const E=V/(d*1e-2);return{q:`A potential difference of ${V} V is applied across parallel plates ${d} cm apart. Calculate the magnitude of the electric field strength in V m⁻¹.`,a:E,u:"V m⁻¹",sol:`E = V/d = ${V} / (${d} × 10⁻²) = ${sf(E)} V m⁻¹`}}},
+ {t:"emag",f:()=>{const B=rnd(.05,.5,.05),I=rnd(1,10),L=rnd(.05,.5,.05);const F=B*I*L;return{q:`A straight wire of length ${L} m carrying ${I} A is perpendicular to a uniform magnetic field of ${B} T. Calculate the force on the wire.`,a:F,u:"N",sol:`F = BIL = ${B} × ${I} × ${L} = ${sf(F)} N`}}},
+ {t:"rad",f:()=>{const A0=rnd(200,5000,100),th=rnd(2,10),n=rnd(2,6);const A=A0/Math.pow(2,n);return{q:`A source has an initial activity of ${A0} Bq and a half-life of ${th} hours. Calculate its activity after ${n*th} hours.`,a:A,u:"Bq",sol:`${n*th} h is ${n} half-lives, so A = ${A0} / 2^${n} = ${sf(A)} Bq`}}},
+ {t:"bind",f:()=>{const dm=rnd(.01,.2,.01);const E=dm*931.5;return{q:`The mass defect of a nucleus is ${dm} u. Calculate its binding energy in MeV. (1 u = 931.5 MeV)`,a:E,u:"MeV",sol:`E = Δm × 931.5 = ${dm} × 931.5 = ${sf(E)} MeV`}}},
+ {t:"med",f:()=>{const mu=rnd(.1,0.6,.05),x=rnd(1,6);const f=Math.exp(-mu*x)*100;return{q:`X-rays pass through ${x} cm of tissue with linear attenuation coefficient ${mu} cm⁻¹. Calculate the percentage of the intensity transmitted.`,a:f,u:"%",sol:`I/I₀ = e^(−μx) = e^(−${mu} × ${x}) = ${sf(f/100)} → ${sf(f)}%`}}},
+ {t:"meas",f:()=>{const d=rnd(.5,2,.1),dd=rnd(.01,.05,.01),n=pick([2,3]);const pc=dd/d*100*n;return{q:`The radius of a sphere is ${d} ± ${dd} cm. Calculate the percentage uncertainty in its ${n==2?'surface area (∝ r²)':'volume (∝ r³)'}.`,a:pc,u:"%",sol:`% uncertainty in r = ${dd}/${d} × 100 = ${sf(dd/d*100)}%. Multiply by the power ${n}: ${sf(pc)}%`}}}
+];
+function makeCalc(topics){const pool=CALCS.filter(c=>!topics||topics.includes(c.t));if(!pool.length)return null;const c=pick(pool);const o=c.f();o.topic=c.t;o.id='calc-'+c.t;return o}
+/* ---------- App ---------- */
+const $=(s,r)=>(r||document).querySelector(s), $$=(s,r)=>[...(r||document).querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today=()=>ymd(new Date());
+const parseD=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const diffDays=(a,b)=>Math.round((parseD(b)-parseD(a))/864e5);
+const addDays=(s,n)=>{const d=parseD(s);d.setDate(d.getDate()+n);return ymd(d)};
+const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fmtDate=s=>{const d=parseD(s);return `${DOW[d.getDay()]} ${d.getDate()} ${MON[d.getMonth()]}`};
+const fmtInt=n=>n<=0?'today':n===1?'1 day':n<30?n+' days':n<365?Math.round(n/30)+' mo':'1 yr+';
+
+/* ----- state ----- */
+const LS='ocrphys.v1';
+let S,canSave=true;
+const fresh=()=>({v:1,settings:{newPerDay:8,target:'A'},topics:{},tests:[],sr:{},log:[],days:{},calc:{}});
+function load(){
+  try{const r=localStorage.getItem(LS);S=r?JSON.parse(r):fresh();localStorage.setItem(LS+'.probe','1');localStorage.removeItem(LS+'.probe')}catch(e){canSave=false;if(!S)S=fresh()}
+  S=Object.assign(fresh(),S);S.settings=Object.assign(fresh().settings,S.settings);
+}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){canSave=false}}
+load();
+
+/* ----- items ----- */
+const ITEMS=[],BY={},TB={};
+TOPICS.forEach(t=>{TB[t.id]=t;
+  t.cards.forEach((c,i)=>{const it={id:t.id+'-c'+i,topic:t.id,type:'card',q:c[0],a:c[1]};ITEMS.push(it);BY[it.id]=it});
+  t.qs.forEach((q,i)=>{const it=Object.assign({id:t.id+'-q'+i,topic:t.id,type:'q'},q);ITEMS.push(it);BY[it.id]=it})});
+const itemsOf=id=>ITEMS.filter(i=>i.topic===id);
+const tget=id=>S.topics[id]||{status:0,conf:0,note:''};
+const tset=(id,p)=>{S.topics[id]=Object.assign({status:0,conf:0,note:''},S.topics[id],p);save()};
+
+/* ----- scheduling (SM-2 style with exam-date cap) ----- */
+function nextTestDays(topic){let best=null;for(const t of S.tests){if(!t.topics.includes(topic))continue;const d=diffDays(today(),t.date);if(d>=0&&(best===null||d<best))best=d}return best}
+function examCap(topic){const d=nextTestDays(topic);if(d===null||d>60)return null;return Math.max(1,Math.floor((d-1)/2))}
+function nextState(r0,g,topic){
+  const r=Object.assign({ease:2.5,int:0,reps:0,lapses:0,n:0},r0||{});
+  if(g===0){r.lapses++;r.reps=0;r.ease=Math.max(1.3,r.ease-.2);r.int=0}
+  else{
+    if(r.reps===0)r.int=g===3?4:1;
+    else if(r.reps===1)r.int=g===1?2:g===2?3:6;
+    else{const b=Math.max(1,r.int);r.int=Math.round(g===1?b*1.2:g===2?b*r.ease:b*r.ease*1.35);if(r.int<=b)r.int=b+1}
+    r.reps++;if(g===1)r.ease=Math.max(1.3,r.ease-.15);if(g===3)r.ease+=.15;
+    const cap=examCap(topic);if(cap!==null)r.int=Math.min(r.int,cap);
+  }
+  r.due=addDays(today(),r.int);r.last=today();r.n++;return r;
+}
+function retr(it){const r=S.sr[it.id];if(!r)return 0;const el=Math.max(0,diffDays(r.last,today()));return Math.pow(.9,el/Math.max(1,r.int))}
+function mastery(id){
+  const its=itemsOf(id),seen=its.filter(i=>S.sr[i.id]);const c=tget(id).conf/5;
+  if(!seen.length)return c*.25;
+  const avg=seen.reduce((a,i)=>a+retr(i),0)/seen.length,cov=seen.length/its.length;
+  const ev=avg*Math.min(1,cov*1.4);
+  return c?.7*ev+.3*c:ev;
+}
+const mcol=m=>m<.4?'bad':m<.65?'warn':'good';
+const pct=x=>Math.round(x*100);
+function readiness(test){const ts=test.topics;return ts.length?ts.reduce((a,t)=>a+mastery(t),0)/ts.length:0}
+
+/* ----- queues ----- */
+const dueItems=()=>{const t=today();return ITEMS.filter(i=>{const r=S.sr[i.id];return r&&r.due<=t})};
+const urg=topic=>{const d=nextTestDays(topic);return d===null?999:d};
+function interleave(list){
+  const g={};list.forEach(i=>(g[i.topic]=g[i.topic]||[]).push(i));
+  const keys=Object.keys(g);const out=[];let more=true;
+  while(more){more=false;keys.forEach(k=>{if(g[k].length){out.push(g[k].shift());more=true}})}
+  return out}
+function smartQueue(){
+  const t=today();
+  const due=dueItems().sort((a,b)=>urg(a.topic)-urg(b.topic)||S.sr[a.id].due.localeCompare(S.sr[b.id].due)).slice(0,25);
+  const left=Math.max(0,S.settings.newPerDay-((S.days[t]||{}).n||0));
+  const nc=ITEMS.filter(i=>!S.sr[i.id]&&tget(i.topic).status>=1)
+    .sort((a,b)=>urg(a.topic)-urg(b.topic)||mastery(a.topic)-mastery(b.topic)||(a.type==='card'?-1:1)-(b.type==='card'?-1:1)).slice(0,left);
+  return interleave(due).concat(interleave(nc));
+}
+function estMin(q){return Math.max(1,Math.round(q.reduce((a,i)=>a+(i.type==='q'?i.m*1.35+.5:.7),0)))}
+function streak(){let n=0,d=today();if(!(S.days[d]||{}).rev)d=addDays(d,-1);while((S.days[d]||{}).rev){n++;d=addDays(d,-1)}return n}
+
+/* ----- study plan ----- */
+function buildPlan(span){
+  const t0=today();const up=S.tests.filter(x=>diffDays(t0,x.date)>=0).sort((a,b)=>a.date.localeCompare(b.date));
+  const map={};up.forEach(te=>te.topics.forEach(tp=>{if(!map[tp])map[tp]=te.date}));
+  let L=Object.keys(map).map(id=>({id,date:map[id],m:mastery(id)})).sort((a,b)=>a.date.localeCompare(b.date)||a.m-b.m);
+  if(!L.length){L=TOPICS.filter(x=>tget(x.id).status>=1).map(x=>({id:x.id,date:null,m:mastery(x.id)})).sort((a,b)=>a.m-b.m)}
+  const W=[];[1,.6,.35].forEach((th,k)=>L.forEach(x=>{if(k===0||x.m<th)W.push(x)}));
+  const days=[];let ptr=0;
+  for(let i=0;i<span;i++){
+    const d=addDays(t0,i);const tests=up.filter(x=>x.date===d);const tasks=[];
+    const dueThen=ITEMS.filter(it=>{const r=S.sr[it.id];return r&&r.due<=d&&(i>0||true)}).length;
+    if(i===0||dueThen)tasks.push({k:'rev',t:i===0?`Clear today's scheduled reviews (${dueItems().length} due)`:`Scheduled reviews (about ${dueThen} items by then)`});
+    const left=x=>diffDays(d,x);
+    const active=W.filter(x=>x.date===null||left(x.date)>=0);
+    const nextT=up.find(x=>diffDays(d,x.date)>=0);
+    const dt=nextT?diffDays(d,nextT.date):null;
+    if(tests.length){tasks.push({k:'test',t:`Test day: ${tests.map(x=>esc(x.name)).join(', ')}. Skim your equation list, then trust your preparation.`})}
+    else if(dt===1)tasks.push({k:'light',t:`Light retrieval only: flashcards on ${esc(nextT.name)} topics. Stop early and sleep well.`});
+    else if(dt===2)tasks.push({k:'fix',t:`Fix the gaps from your mini-paper: redo missed mark points for ${esc(nextT.name)}.`});
+    else if(dt===3)tasks.push({k:'paper',t:`Timed mini-paper (exam practice) on ${esc(nextT.name)} topics.`});
+    else if(active.length){
+      const pickd=[];let guard=0;
+      while(pickd.length<Math.min(2,new Set(active.map(x=>x.id)).size)&&guard++<20){const c=active[ptr%active.length];ptr++;if(!pickd.find(p=>p.id===c.id))pickd.push(c)}
+      pickd.forEach(c=>{const tp=TB[c.id],st=tget(c.id).status;
+        tasks.push(st===0?{k:'learn',t:`Learn and write notes: ${tp.ref} ${tp.title}`,id:c.id}
+          :c.m<.5?{k:'weak',t:`Retrieval and exam questions: ${tp.ref} ${tp.title} (needs work)`,id:c.id}
+          :{k:'mix',t:`Mixed retrieval: ${tp.ref} ${tp.title}`,id:c.id})});
+    }
+    days.push({d,tasks,tests});
+  }
+  return days;
+}
+
+/* ----- UI state ----- */
+const UI={tab:'today',open:{},sess:null,sel:null,msg:''};
+const TABS=[['today','Today'],['topics','Topics'],['tests','Tests'],['practice','Practice'],['progress','Progress'],['guide','Guide']];
+function defaultSel(){
+  const up=S.tests.filter(x=>diffDays(today(),x.date)>=0).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  if(up)return new Set(up.topics);
+  const l=TOPICS.filter(x=>tget(x.id).status>=1).map(x=>x.id);return new Set(l);
+}
+function render(){
+  const due=dueItems().length;
+  $('#nav').innerHTML=TABS.map(([k,l])=>`<button data-act="tab" data-v="${k}" aria-current="${UI.tab===k&&!UI.sess}">${l}${k==='today'&&due?`<span class="badge">${due}</span>`:''}</button>`).join('');
+  $('#view').innerHTML=(!canSave?`<div class="warnbox" style="margin-bottom:16px">This browser is not letting the page save progress. Use Export on the Guide tab to keep a copy of your data.</div>`:'')+(UI.sess?vSession():({today:vToday,topics:vTopics,tests:vTests,practice:vPractice,progress:vProgress,guide:vGuide}[UI.tab])());
+  if(UI.sess&&UI.sess.kind==='exam')tickTimer();
+}
+
+/* ----- Today ----- */
+function topicChip(id){return `<span class="chip">${TB[id].ref} ${esc(TB[id].title.split(':')[0])}</span>`}
+function vToday(){
+  const t=today(),q=smartQueue(),due=dueItems().length,learned=TOPICS.filter(x=>tget(x.id).status>=1).length;
+  const newN=q.filter(i=>!S.sr[i.id]).length;
+  const up=S.tests.filter(x=>diffDays(t,x.date)>=0).sort((a,b)=>a.date.localeCompare(b.date));
+  const dt=new Date();const greet=dt.getHours()<12?'Morning':dt.getHours()<18?'Afternoon':'Evening';
+  let h=`<div class="stack"><div><div class="eyebrow">${fmtDate(t)}</div><h2>${greet}, here is today's revision</h2></div>`;
+  if(!learned){
+    h+=`<div class="card"><h3>Start by telling the app what you have covered</h3><p class="muted" style="margin-top:6px;max-width:62ch">Revision items only appear for topics you have marked as learning or learned, so you are tested on material you have seen. Tick topics off on the Topics tab, add your test dates, and the plan builds itself.</p>
+    <div class="row" style="margin-top:12px"><button class="btn" data-act="tab" data-v="topics">Mark topics I've covered</button><button class="btn ghost" data-act="tab" data-v="tests">Add a test</button><button class="btn ghost" data-act="example">Try with example data</button></div></div>`;
+  }
+  h+=`<div class="card"><div class="hero">
+    <div><span class="eyebrow">Reviews due</span><span class="readout">${due}</span></div>
+    <div><span class="eyebrow">New items today</span><span class="readout">${newN}</span></div>
+    <div><span class="eyebrow">Study streak</span><span class="readout">${streak()}<small>days</small></span></div>
+    <div><span class="eyebrow">Session length</span><span class="readout">${q.length?estMin(q):0}<small>min</small></span></div></div>
+    <div class="row" style="margin-top:16px"><button class="btn" data-act="smart" ${q.length?'':'disabled'}>${q.length?'Start today\'s session':'Nothing due'}</button>
+    <span class="note">${q.length?`${q.length} items, mixed across topics (interleaved). Reviews first, then new material.`:learned?'You are up to date. Add topics or try extra practice.':'Mark some topics as learned to unlock items.'}</span></div></div>`;
+  h+=`<div class="grid2"><div class="card"><div class="row sp"><h3>Upcoming tests</h3><button class="btn ghost sm" data-act="tab" data-v="tests">Manage</button></div>`;
+  if(!up.length)h+=`<div class="empty" style="margin-top:10px">No tests added. Add a date and the topics on it and the plan will prioritise them.</div>`;
+  else h+=up.slice(0,3).map(te=>{const d=diffDays(t,te.date),r=readiness(te);return `<div style="margin-top:12px"><div class="row sp"><b>${esc(te.name)}</b><span class="chip ${d<=3?'bad':d<=10?'warn':''}">${d===0?'today':d+' days'}</span></div>
+    <div class="row" style="margin-top:6px;flex-wrap:nowrap"><div class="bar ${mcol(r)}" style="flex:1"><i style="width:${pct(r)}%"></i></div><span class="mono small">${pct(r)}% ready</span></div></div>`}).join('');
+  h+=`</div><div class="card"><div class="row sp"><h3>Reviews, last 14 days</h3></div>${last14()}</div></div>`;
+  h+=`<div class="card"><div class="row sp"><h3>Your next 7 days</h3><span class="note">Weakest topics first, nearest test first</span></div>${agenda(buildPlan(7))}</div></div>`;
+  return h;
+}
+function last14(){
+  let max=1;const a=[];for(let i=13;i>=0;i--){const d=addDays(today(),-i),n=(S.days[d]||{}).rev||0;max=Math.max(max,n);a.push([d,n])}
+  return `<div class="fc" style="margin-top:12px">${a.map(([d,n])=>`<div title="${fmtDate(d)}: ${n}"><i style="height:${Math.max(2,n/max*70)}px;${n?'':'opacity:.25'}"></i><span>${parseD(d).getDate()}</span></div>`).join('')}</div>`;
+}
+function agenda(days){
+  if(!days.some(d=>d.tasks.length))return `<div class="empty" style="margin-top:10px">Mark topics as learned or add a test to see a day-by-day plan.</div>`;
+  return `<div class="agenda" style="margin-top:8px">${days.map((x,i)=>`<div class="day"><div class="d">${i===0?'<b>Today</b>':`<b>${DOW[parseD(x.d).getDay()]}</b>`}${parseD(x.d).getDate()} ${MON[parseD(x.d).getMonth()]}</div><ul>${x.tasks.length?x.tasks.map(k=>`<li>${k.id?`<button class="btn ghost sm" data-act="drilltopic" data-id="${k.id}" style="margin-right:8px">Practise</button>`:''}${k.t}</li>`).join(''):'<li class="muted">Rest day, or free practice.</li>'}</ul></div>`).join('')}</div>`;
+}
+
+/* ----- Topics ----- */
+function vTopics(){
+  let h=`<div class="stack"><div class="row sp"><div><h2>Topics</h2><p class="muted">Mark what you've covered. Items for a topic only enter your reviews once it is marked Learning or Learned.</p></div></div>`;
+  [1,2,3,4,5,6].forEach(m=>{
+    const ts=TOPICS.filter(x=>x.mod===m);
+    h+=`<section class="mod"><div class="mod-h"><h3>${MODULES[m]}</h3><div class="row"><span class="chip">${MOD_PAPERS[m].map(p=>'P'+p).join(' · ')}</span><button class="btn ghost sm" data-act="modall" data-m="${m}" data-v="2">Mark all learned</button><button class="btn ghost sm" data-act="modall" data-m="${m}" data-v="0">Reset</button></div></div>`;
+    ts.forEach(tp=>{
+      const st=tget(tp.id),mm=mastery(tp.id),open=UI.open[tp.id],its=itemsOf(tp.id),seen=its.filter(i=>S.sr[i.id]).length,due=its.filter(i=>S.sr[i.id]&&S.sr[i.id].due<=today()).length,nd=nextTestDays(tp.id);
+      h+=`<div class="topic"><div class="topic-h"><button class="t" data-act="toggle" data-id="${tp.id}" aria-expanded="${!!open}"><span class="eyebrow">Spec ${tp.ref}${nd!==null?` · test in ${nd} d`:''}</span><b>${tp.title}</b><span class="note">${seen}/${its.length} items started${due?` · ${due} due`:''}</span></button>
+        <div class="topic-ctl"><div class="seg" role="group" aria-label="Status">${['Not yet','Learning','Learned'].map((l,i)=>`<button data-act="status" data-id="${tp.id}" data-v="${i}" aria-pressed="${st.status===i}">${l}</button>`).join('')}</div>
+        <div class="dots c${st.conf}" role="group" aria-label="Confidence">${[1,2,3,4,5].map(n=>`<button class="${st.conf>=n?'on':''}" data-act="conf" data-id="${tp.id}" data-v="${st.conf===n?0:n}" title="Confidence ${n} of 5" aria-label="Confidence ${n}"></button>`).join('')}</div>
+        <div style="width:70px"><div class="bar ${mcol(mm)}"><i style="width:${pct(mm)}%"></i></div></div></div></div>`;
+      if(open)h+=`<div class="topic-b"><div><h4>What the specification asks for</h4><ul>${tp.pts.map(p=>`<li>${p}</li>`).join('')}</ul>${tp.tips.map(x=>`<div class="pit">${x}</div>`).join('')}</div>
+        <div><h4>Key equations</h4><dl class="eq">${tp.eq.map(e=>`<dt>${e[0]}</dt><dd>${e[1]}</dd>`).join('')}</dl><p class="note" style="margin-top:8px">Check which relationships are given in the OCR data, formulae and relationships booklet and learn the rest.</p></div>
+        <div><h4>My notes and weak points</h4><textarea id="note-${tp.id}" data-chg="note" data-id="${tp.id}" placeholder="Write the bits you keep getting wrong…">${esc(st.note)}</textarea>
+        <div class="row" style="margin-top:8px"><button class="btn sm" data-act="drilltopic" data-id="${tp.id}">Practise this topic</button><span class="note">${tp.cards.length} flashcards · ${tp.qs.length} exam questions</span></div></div></div>`;
+      h+=`</div>`});
+    h+=`</section>`});
+  return h+`</div>`;
+}
+
+/* ----- Tests ----- */
+function vTests(){
+  const t=today(),list=[...S.tests].sort((a,b)=>a.date.localeCompare(b.date));
+  let h=`<div class="stack"><div><h2>Tests and exams</h2><p class="muted">Add each test with the topics it covers. Review intervals for those topics are shortened so you see them again before the test.</p></div>
+  <div class="card"><h3>Add a test</h3><div class="grid2" style="margin-top:10px"><label class="f">Name<input type="text" id="tn" placeholder="e.g. Mechanics end-of-unit test" maxlength="60"></label><label class="f">Date<input type="date" id="td" value="${addDays(t,14)}"></label></div>
+  <h4 style="margin-top:14px">Topics on the test</h4><div class="row" style="margin:6px 0"><button class="btn ghost sm" data-act="selmods" data-m="all">Tick all learned</button>${[2,3,4,5,6].map(m=>`<button class="btn ghost sm" data-act="selmods" data-m="${m}">Module ${m}</button>`).join('')}<button class="btn ghost sm" data-act="selmods" data-m="none">Clear</button></div>
+  <div class="checks" id="tt">${TOPICS.map(x=>`<label><input type="checkbox" value="${x.id}"><span><span class="mono small muted">${x.ref}</span> ${x.title}</span></label>`).join('')}</div>
+  <div class="row" style="margin-top:14px"><button class="btn" data-act="addtest">Add test</button><span class="note" id="tmsg">${esc(UI.msg)}</span></div></div>`;
+  h+=`<div class="stack">`;
+  if(!list.length)h+=`<div class="empty">No tests yet. Your plan will use every topic you've learned until you add one.</div>`;
+  list.forEach(te=>{const d=diffDays(t,te.date),r=readiness(te),past=d<0,unl=te.topics.filter(x=>tget(x).status===0);
+    h+=`<div class="card" style="${past?'opacity:.6':''}"><div class="row sp"><div><h3>${esc(te.name)}</h3><span class="note">${fmtDate(te.date)} · ${past?'finished':d===0?'today':d+' days away'}</span></div><div class="row"><button class="btn sm" data-act="exam" data-t="${te.id}">Timed mini-paper</button><button class="btn ghost sm" data-act="drilltest" data-t="${te.id}">Drill</button><button class="btn danger sm" data-act="deltest" data-t="${te.id}">${UI.confirm===te.id?'Confirm delete':'Delete'}</button></div></div>
+    <div class="row" style="margin-top:10px;flex-wrap:nowrap"><div class="bar ${mcol(r)}" style="flex:1"><i style="width:${pct(r)}%"></i></div><span class="mono small">${pct(r)}% ready</span></div>
+    ${unl.length?`<div class="warnbox" style="margin-top:10px">${unl.length} topic${unl.length>1?'s':''} on this test not yet marked as learned: ${unl.map(x=>TB[x].title.split(':')[0]).join(', ')}.</div>`:''}
+    <div class="row" style="margin-top:10px;gap:6px">${te.topics.map(x=>`<span class="chip ${mcol(mastery(x))}">${TB[x].ref} ${esc(TB[x].title.split(' and ')[0])} ${pct(mastery(x))}%</span>`).join('')}</div></div>`});
+  h+=`</div><div class="card"><h3>Revision plan</h3><p class="note">Next 14 days.</p>${agenda(buildPlan(14))}</div></div>`;
+  return h;
+}
+
+/* ----- Practice ----- */
+function vPractice(){
+  if(!UI.sel)UI.sel=defaultSel();
+  const learned=TOPICS.filter(x=>tget(x.id).status>=1).length;
+  const up=S.tests.filter(x=>diffDays(today(),x.date)>=0).sort((a,b)=>a.date.localeCompare(b.date));
+  const n=UI.sel.size;
+  return `<div class="stack"><div><h2>Practice</h2><p class="muted">Choose the topics, then a mode. Active recall and mixed practice beat re-reading.</p></div>
+  <div class="card"><div class="row sp"><h3>Topics to practise</h3><span class="chip acc" id="selcount">${n} selected</span></div>
+  <div class="row" style="margin:8px 0">${up.length?`<button class="btn ghost sm" data-act="pickt" data-t="${up[0].id}">Next test</button>`:''}<button class="btn ghost sm" data-act="pickset" data-v="learned">Learned topics</button><button class="btn ghost sm" data-act="pickset" data-v="weak">Weakest five</button><button class="btn ghost sm" data-act="pickset" data-v="all">All</button><button class="btn ghost sm" data-act="pickset" data-v="none">Clear</button></div>
+  <div class="checks">${TOPICS.map(x=>`<label><input type="checkbox" data-chg="pick" value="${x.id}" ${UI.sel.has(x.id)?'checked':''}><span><span class="mono small muted">${x.ref}</span> ${x.title}</span></label>`).join('')}</div></div>
+  <div class="modes">
+   <div class="card mode"><h3>Smart session</h3><p class="muted small">Everything the spaced-repetition schedule says is due, plus a few new items from topics you've learned.</p><button class="btn" data-act="smart" ${smartQueue().length?'':'disabled'}>Start (${smartQueue().length})</button></div>
+   <div class="card mode"><h3>Topic drill</h3><p class="muted small">Mixed questions from the selected topics, weakest and unseen first.</p>
+     <div class="row"><select id="dr-ty" style="width:auto"><option value="all">Cards and questions</option><option value="card">Flashcards only</option><option value="q">Exam questions only</option></select><select id="dr-n" style="width:auto"><option>10</option><option selected>20</option><option>30</option></select></div><button class="btn" data-act="drill">Start drill</button></div>
+   <div class="card mode"><h3>Timed mini-paper</h3><p class="muted small">Exam questions with a countdown at about 1.35 minutes per mark, as in the real papers. Self-mark against the scheme.</p>
+     <select id="ex-m" style="width:auto"><option value="15">15 marks</option><option value="30" selected>30 marks</option><option value="50">50 marks</option></select><button class="btn" data-act="exam">Start paper</button></div>
+   <div class="card mode"><h3>Calculation practice</h3><p class="muted small">Fresh numbers every time, with worked solutions. Builds the procedural fluency that scores marks.</p>
+     <select id="ca-n" style="width:auto"><option>5</option><option selected>10</option><option>15</option></select><button class="btn" data-act="calc">Start calculations</button></div>
+  </div>${learned?'':'<p class="note">Tip: mark topics as learned so the smart session has material.</p>'}</div>`;
+}
+
+/* ----- starting sessions ----- */
+function startSess(kind,queue,extra){
+  if(!queue.length){UI.msg='No items match that choice.';alert_inline('Nothing to practise for that selection. Choose more topics.');return}
+  UI.sess=Object.assign({kind,queue,i:0,step:'ask',res:[],t0:Date.now(),re:{},draft:''},extra||{});
+  window.scrollTo(0,0);render();
+  if(kind==='exam'){clearInterval(UI.tm);UI.tm=setInterval(tickTimer,1000)}
+}
+function alert_inline(msg){const e=$('#view');const d=document.createElement('div');d.className='warnbox';d.style.marginBottom='16px';d.textContent=msg;e.prepend(d);setTimeout(()=>d.remove(),4000)}
+function selTopics(){return UI.sel&&UI.sel.size?[...UI.sel]:[]}
+function rankFor(list){return list.sort((a,b)=>{const ra=S.sr[a.id]?retr(a):-1,rb=S.sr[b.id]?retr(b):-1;return ra-rb||Math.random()-.5})}
+function shuf(a){return a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1])}
+
+/* ----- Session UI ----- */
+function tickTimer(){const s=UI.sess;if(!s||s.kind!=='exam'){clearInterval(UI.tm);return}const el=$('#timer');if(!el)return;const left=s.limit-(Date.now()-s.t0)/1000;const a=Math.abs(left),m=Math.floor(a/60),sec=Math.floor(a%60);el.textContent=(left<0?'+':'')+pad(m)+':'+pad(sec);el.className='timer '+(left<0?'over':'')}
+function sessHead(s){
+  const n=s.queue.length;
+  return `<div class="stack" style="margin-bottom:16px"><div class="row sp"><button class="btn ghost sm" data-act="exit">Finish and exit</button><div class="row">${s.kind==='exam'?`<span class="timer" id="timer">--:--</span>`:''}<span class="mono small">${Math.min(s.i+1,n)} / ${n}</span></div></div><div class="prog"><i style="width:${s.i/n*100}%"></i></div></div>`}
+function vSession(){
+  const s=UI.sess;if(s.i>=s.queue.length)return vSummary();
+  const it=s.queue[s.i];const tp=TB[it.topic];
+  let h=`<div class="sess">${sessHead(s)}<div class="card sess-card"><div class="row" style="gap:6px"><span class="chip acc">${tp.ref} ${esc(tp.title.split(' and ')[0])}</span>`;
+  if(it.type==='q')h+=`<span class="chip">${it.m} mark${it.m>1?'s':''}</span><span class="chip">${it.cw}</span>`;
+  if(it.type==='card')h+=`<span class="chip">Flashcard</span>`;
+  if(it.type==='calc')h+=`<span class="chip">Calculation</span>`;
+  if(it.type!=='calc'&&!S.sr[it.id])h+=`<span class="chip good">New</span>`;
+  h+=`</div>`;
+  if(it.type==='card'){
+    h+=`<p class="qtext">${it.q}</p>`;
+    if(s.step==='ask')h+=`<p class="note">Say or write the answer first, then check. Producing the answer is what builds memory. <kbd>Space</kbd> reveals.</p><button class="btn" data-act="show">Show answer</button>`;
+    else h+=`<div class="answer">${it.a}</div><p class="note">How well did you recall it before looking?</p>${gradeBtns(it)}`;
+  }else if(it.type==='q'){
+    h+=`<p class="qtext">${it.q}</p>${figHTML(it.fig)}`;
+    if(s.step==='ask')h+=`<textarea id="ans" placeholder="Write your answer and working here (on paper is fine too), then reveal the mark scheme."></textarea><div class="row"><button class="btn" data-act="show">Reveal mark scheme</button><span class="note">About ${Math.max(1,Math.round(it.m*1.35))} min in the exam.</span></div>`;
+    else h+=`<textarea readonly style="min-height:70px">${esc(s.draft)}</textarea><h4>Mark scheme: tick only the points you really made</h4><ul class="ms">${it.ms.map((p,i)=>`<li><label><input type="checkbox" data-chg="mp" value="${i}"><span>${p}</span></label></li>`).join('')}</ul>${it.tip?`<div class="pit"><b>Examiner tip.</b> ${it.tip}</div>`:''}<div class="row"><button class="btn" data-act="submitq" id="sq">Save ${0}/${it.m}</button></div>`;
+  }else{
+    h+=`<p class="qtext">${it.q}</p>`;
+    if(s.step==='ask')h+=`<div class="row" style="flex-wrap:nowrap"><input type="text" id="cin" inputmode="decimal" autocomplete="off" placeholder="Answer, e.g. 12.5 or 3.2e-5" aria-label="Your answer"><span class="mono">${it.u}</span></div><div class="row"><button class="btn" data-act="check">Check</button><button class="btn ghost" data-act="giveup">Show solution</button></div><p class="note">Accepted if within 2% of the exact answer. Use e-notation for powers of ten.</p>`;
+    else h+=`<div class="chip ${s.ok?'good':'bad'}" style="align-self:flex-start">${s.ok?'Correct':'Not quite'}${s.given!=null&&!isNaN(s.given)?` · you entered ${sf(s.given)}`:''}</div><div class="answer"><b>${sf(it.a)} ${it.u}</b><div class="small" style="margin-top:6px">${it.sol}</div></div><button class="btn" data-act="nextcalc">Next</button>`;
+  }
+  return h+`</div></div>`;
+}
+function gradeBtns(it){
+  const r=S.sr[it.id],early=r&&r.due>today();
+  const L=['Again','Hard','Good','Easy'];
+  return `<div class="grades">${L.map((l,g)=>{const n=nextState(r,g,it.topic);return `<button data-act="grade" data-v="${g}">${l}<small>${early&&g>0?'no change':fmtInt(n.int)}</small><small>${g+1}</small></button>`}).join('')}</div>`;
+}
+function record(it,g,score,extra){
+  const t=today();const day=S.days[t]||(S.days[t]={n:0,rev:0});
+  const r=S.sr[it.id],early=r&&r.due>t;
+  if(!r)day.n=(day.n||0)+1;
+  if(!early||g===0)S.sr[it.id]=nextState(r,g,it.topic);
+  day.rev=(day.rev||0)+1;
+  S.log.push(Object.assign({d:t,i:it.id,tp:it.topic,ty:it.type,s:score,g},extra||{}));
+  if(S.log.length>3000)S.log=S.log.slice(-3000);
+  save();
+}
+const A={}; // actions
+function advance(){const s=UI.sess;s.i++;s.step='ask';s.draft='';s.ok=null;render();window.scrollTo(0,0)}
+function reQueue(it,g){const s=UI.sess;if(g===0&&(s.kind==='smart'||s.kind==='drill')){s.re[it.id]=(s.re[it.id]||0)+1;if(s.re[it.id]<=2)s.queue.push(it)}}
+function vSummary(){
+  const s=UI.sess;clearInterval(UI.tm);
+  const res=s.res,n=res.length,ok=res.filter(r=>r.s>=.6).length;
+  let h=`<div class="sess stack"><div class="card"><div class="eyebrow">Session complete</div><h2 style="margin:6px 0 12px">${n?`${ok} of ${n} recalled well`:'Session ended'}</h2>`;
+  if(n){
+    h+=`<div class="hero"><div><span class="eyebrow">Accuracy</span><span class="readout">${pct(ok/n)}<small>%</small></span></div><div><span class="eyebrow">Time</span><span class="readout">${Math.max(1,Math.round((Date.now()-s.t0)/60000))}<small>min</small></span></div>`;
+    const qs=res.filter(r=>r.tot);if(qs.length){const g=qs.reduce((a,r)=>a+r.got,0),t=qs.reduce((a,r)=>a+r.tot,0);h+=`<div><span class="eyebrow">Exam marks</span><span class="readout">${g}<small>/ ${t}</small></span></div>`}
+    h+=`</div>`;
+    const byT={};res.forEach(r=>{const b=byT[r.topic]||(byT[r.topic]={n:0,ok:0});b.n++;if(r.s>=.6)b.ok++});
+    h+=`<h4 style="margin-top:16px">By topic</h4><div class="tw"><table class="tb"><tbody>${Object.keys(byT).map(k=>`<tr><td>${TB[k].ref} ${TB[k].title}</td><td class="mono">${byT[k].ok}/${byT[k].n}</td><td style="width:120px"><div class="bar ${mcol(byT[k].ok/byT[k].n)}"><i style="width:${pct(byT[k].ok/byT[k].n)}%"></i></div></td></tr>`).join('')}</tbody></table></div>`;
+    const miss=res.filter(r=>r.missed&&r.missed.length);
+    if(miss.length)h+=`<h4 style="margin-top:16px">Mark points to fix</h4>${miss.map(r=>`<div class="pit"><b>${TB[r.topic].title}</b><ul style="margin:4px 0 0;padding-left:18px">${r.missed.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}`;
+  }
+  const dues=ITEMS.filter(i=>S.sr[i.id]).map(i=>S.sr[i.id].due).sort();const nd=dues.find(d=>d>today());
+  h+=`<p class="note" style="margin-top:14px">${nd?`Next scheduled review: ${fmtDate(nd)}.`:''}</p><div class="row" style="margin-top:12px"><button class="btn" data-act="done">Back to Today</button><button class="btn ghost" data-act="tab" data-v="practice">More practice</button></div></div></div>`;
+  return h;
+}
+
+/* ----- Progress ----- */
+function vProgress(){
+  const t=today(),log=S.log,from=addDays(t,-30),recent=log.filter(l=>l.d>=from);
+  const acc=recent.length?recent.filter(l=>l.s>=.6).length/recent.length:null;
+  const learned=TOPICS.filter(x=>tget(x.id).status>=1);
+  const avg=learned.length?learned.reduce((a,x)=>a+mastery(x.id),0)/learned.length:0;
+  const band=avg>=.8?'A*':avg>=.68?'A':avg>=.56?'B':avg>=.45?'C':avg>=.35?'D':avg>=.25?'E':'U';
+  const totalRev=log.length,seen=ITEMS.filter(i=>S.sr[i.id]).length;
+  let h=`<div class="stack"><h2>Progress</h2>`;
+  if(!log.length&&!learned.length)h+=`<div class="empty">Your progress appears here once you've marked topics and done some retrieval practice.</div>`;
+  h+=`<div class="card"><div class="hero"><div><span class="eyebrow">Topics learned</span><span class="readout">${learned.length}<small>/ ${TOPICS.length}</small></span></div>
+   <div><span class="eyebrow">Items started</span><span class="readout">${seen}<small>/ ${ITEMS.length}</small></span></div>
+   <div><span class="eyebrow">Recall, 30 days</span><span class="readout">${acc===null?'–':pct(acc)+'<small>%</small>'}</span></div>
+   <div><span class="eyebrow">Total reviews</span><span class="readout">${totalRev}</span></div></div></div>`;
+  h+=`<div class="card"><div class="row sp"><h3>Indicative grade on what you've covered</h3><span class="readout" style="font-size:2rem">${learned.length?band:'–'}</span></div><p class="note" style="margin-top:6px">A rough guide from the average mastery of your learned topics (${pct(avg)}%), against a target of <b>${esc(S.settings.target)}</b>. It estimates retention of the items in this app, not an exam result. Treat it as a prompt about where to spend time.</p></div>`;
+  const ranked=TOPICS.map(x=>({x,m:mastery(x.id),st:tget(x.id).status})).sort((a,b)=>(b.st>0)-(a.st>0)||a.m-b.m);
+  h+=`<div class="grid2"><div class="card"><h3>Mastery by topic</h3><div class="tw"><table class="tb" style="margin-top:6px"><tbody>${ranked.map(r=>{const ex=exam(r.x.id);return `<tr><td>${r.x.ref} ${r.x.title}</td><td style="width:90px"><div class="bar ${mcol(r.m)}"><i style="width:${pct(r.m)}%"></i></div></td><td class="mono small">${r.st?pct(r.m)+'%':'–'}</td></tr>`}).join('')}</tbody></table></div></div>
+  <div class="stack"><div class="card"><h3>Reviews due, next 14 days</h3>${forecast()}</div>
+  <div class="card"><h3>Weakest learned topics</h3>${(()=>{const w=ranked.filter(r=>r.st>0).slice(0,5);return w.length?w.map(r=>`<div class="row sp" style="margin-top:8px"><span>${r.x.title}</span><button class="btn ghost sm" data-act="drilltopic" data-id="${r.x.id}">Drill</button></div>`).join(''):'<div class="empty" style="margin-top:8px">Mark topics as learned to see these.</div>'})()}</div>
+  <div class="card"><h3>Exam-question marks by topic</h3>${examTable()}</div></div></div>`;
+  h+=`<div class="card"><h3>Activity, last 12 weeks</h3>${heat()}</div></div>`;
+  return h;
+}
+function exam(id){return 0}
+function examTable(){
+  const by={};S.log.filter(l=>l.ty==='q'&&l.tot).forEach(l=>{const b=by[l.tp]||(by[l.tp]={g:0,t:0});b.g+=l.got;b.t+=l.tot});
+  const k=Object.keys(by);if(!k.length)return `<div class="empty" style="margin-top:8px">Answer some exam questions to see your marks.</div>`;
+  return `<div class="tw"><table class="tb"><tbody>${k.map(id=>`<tr><td>${TB[id].ref} ${TB[id].title.split(' and ')[0]}</td><td class="mono">${by[id].g}/${by[id].t}</td><td style="width:70px"><div class="bar ${mcol(by[id].g/by[id].t)}"><i style="width:${pct(by[id].g/by[id].t)}%"></i></div></td></tr>`).join('')}</tbody></table></div>`;
+}
+function forecast(){
+  const t=today();const a=[];let max=1;
+  for(let i=0;i<14;i++){const d=addDays(t,i);const n=ITEMS.filter(it=>{const r=S.sr[it.id];return r&&(i===0?r.due<=d:r.due===d)}).length;max=Math.max(max,n);a.push([d,n])}
+  return `<div class="fc" style="margin-top:12px">${a.map(([d,n])=>`<div title="${fmtDate(d)}: ${n} due"><span>${n||''}</span><i style="height:${Math.max(2,n/max*60)}px;${n?'':'opacity:.25'}"></i><span>${parseD(d).getDate()}</span></div>`).join('')}</div>`;
+}
+function heat(){
+  const t=today();const start=addDays(t,-(12*7-1)-parseD(t).getDay());let max=1;const cells=[];
+  for(let i=0;i<13*7;i++){const d=addDays(start,i);if(d>t){cells.push(null);continue}const n=(S.days[d]||{}).rev||0;max=Math.max(max,n);cells.push([d,n])}
+  return `<div class="heat">${cells.map(c=>c?`<i title="${fmtDate(c[0])}: ${c[1]} reviews">${c[1]?`<b style="opacity:${.25+.75*c[1]/max}"></b>`:''}</i>`:'<i style="visibility:hidden"></i>').join('')}</div>`;
+}
+
+/* ----- Guide ----- */
+function vGuide(){
+  const M=[
+   ['Retrieval practice','Trying to recall an answer strengthens memory far more than re-reading. Every flashcard and question here asks you to answer before you see the solution.'],
+   ['Spaced repetition','Each item returns just as you are about to forget it. Correct answers push the next review further out (about 1, 3, then growing by your ease factor); misses bring it back today. Intervals for topics in a test you have added are capped so you see them again before the date.'],
+   ['Interleaving','Sessions mix topics instead of blocking one at a time. It feels harder and it improves your ability to pick the right method, which is what exam questions test.'],
+   ['Self-explanation and elaboration','Mark schemes and examiner tips here push you to say why: link each step to a physical idea rather than memorising a pattern.'],
+   ['Worked examples then practice','Calculation practice gives fresh numbers each time with a worked solution to compare against.'],
+   ['Dual coding','Questions come with diagrams and graphs. Sketch the situation yourself, then compare.'],
+   ['Test-day readiness','The planner moves from learning to retrieval, then a timed mini-paper three days before, gap fixing, and a light review the day before.']];
+  const CW=[['State / Give / Name','A short fact, no explanation.'],['Define','A precise definition including units where relevant.'],['Describe','What happens or how something looks or is done; no need to explain why.'],['Explain','Give reasons using physics principles; use "because" and "so".'],['Calculate','Numerical answer with working and unit.'],['Determine','Use data or a graph to find a quantity; show how.'],['Show that','Work to the value given. Show every step and quote your answer to more significant figures than the given value.'],['Suggest','Apply your knowledge to an unfamiliar situation.'],['Evaluate','Weigh evidence for and against, then reach a conclusion.']];
+  return `<div class="stack"><div><h2>Guide</h2><p class="muted">How this app works, the exam structure and your data.</p></div>
+  <div class="grid2"><div class="card"><h3>Evidence-based methods used</h3><div class="stack" style="gap:10px;margin-top:8px">${M.map(m=>`<div><h4>${m[0]}</h4><p class="small muted">${m[1]}</p></div>`).join('')}</div></div>
+  <div class="stack"><div class="card"><h3>OCR A Level Physics A (H556)</h3><dl class="eq" style="grid-template-columns:auto 1fr"><dt>Paper 1</dt><dd>Modelling physics · 2 h 15 · 100 marks · 37%<br>Modules 1, 2, 3, 5</dd><dt>Paper 2</dt><dd>Exploring physics · 2 h 15 · 100 marks · 37%<br>Modules 1, 2, 4, 6</dd><dt>Paper 3</dt><dd>Unified physics · 1 h 30 · 70 marks · 26%<br>All modules</dd></dl><p class="note" style="margin-top:8px">Time per mark is about 1.35 minutes on Papers 1 and 2. The practical endorsement is assessed separately. Content here is paraphrased from the specification; always check the official wording on the <a href="https://www.ocr.org.uk/qualifications/as-and-a-level/physics-a-h156-h556-from-2015/" target="_blank" rel="noopener">OCR Physics A page</a>.</p></div>
+  <div class="card"><h3>Command words</h3><dl class="eq">${CW.map(c=>`<dt>${c[0]}</dt><dd style="font-family:var(--f-body);font-size:.85rem">${c[1]}</dd>`).join('')}</dl></div></div></div>
+  <div class="card"><h3>Settings and backup</h3><div class="grid2" style="margin-top:10px"><label class="f">New items per day<select id="s-new" data-chg="setnew">${[4,6,8,10,15,20].map(n=>`<option ${S.settings.newPerDay===n?'selected':''}>${n}</option>`).join('')}</select></label>
+  <label class="f">Target grade<select id="s-tg" data-chg="settg">${['A*','A','B','C','D','E'].map(n=>`<option ${S.settings.target===n?'selected':''}>${n}</option>`).join('')}</select></label></div>
+  <p class="note" style="margin:12px 0 6px">Your data is stored in this browser only. Copy the backup text somewhere safe, and paste it back here to restore it on another device.</p>
+  <textarea id="bk" style="min-height:70px;font-family:var(--f-mono);font-size:.78rem" placeholder="Backup text appears here after you press Export"></textarea>
+  <div class="row" style="margin-top:8px"><button class="btn sm" data-act="export">Export</button><button class="btn ghost sm" data-act="copy">Copy</button><button class="btn ghost sm" data-act="import">Import from box</button><button class="btn danger sm" data-act="reset">${UI.confirm==='reset'?'Confirm: erase everything':'Reset all data'}</button><span class="note" id="bmsg"></span></div></div></div>`;
+}
+/* ---------- Actions ---------- */
+function parseNum(s){
+  s=String(s).trim().replace(/[−–]/g,'-').replace(/\s+/g,'').replace(/(?:×|x|\*)10\^?(-?\d+)/i,'e$1').replace(/,/g,'');
+  const v=Number(s);return s===''?NaN:v;
+}
+function buildDrill(topics,type,n){
+  let pool=ITEMS.filter(i=>topics.includes(i.topic)&&(type==='all'||i.type===type));
+  return interleave(rankFor(pool).slice(0,n));
+}
+function buildExam(topics,marks){
+  const pool=rankFor(ITEMS.filter(i=>i.type==='q'&&topics.includes(i.topic)));
+  const out=[];let got=0;for(const q of pool){if(got>=marks)break;out.push(q);got+=q.m}
+  return {queue:shuf(out),total:got};
+}
+function recordCalc(it,ok){
+  const t=today();const day=S.days[t]||(S.days[t]={n:0,rev:0});day.rev=(day.rev||0)+1;
+  const c=S.calc[it.topic]||(S.calc[it.topic]={n:0,ok:0});c.n++;if(ok)c.ok++;
+  S.log.push({d:t,i:'calc-'+it.topic,tp:it.topic,ty:'calc',s:ok?1:0,g:ok?2:0});if(S.log.length>3000)S.log=S.log.slice(-3000);save();
+}
+const ACT={
+  tab(b){UI.sess=null;clearInterval(UI.tm);UI.tab=b.dataset.v;window.scrollTo(0,0);render()},
+  toggle(b){UI.open[b.dataset.id]=!UI.open[b.dataset.id];render()},
+  status(b){tset(b.dataset.id,{status:+b.dataset.v});render()},
+  conf(b){tset(b.dataset.id,{conf:+b.dataset.v});render()},
+  modall(b){TOPICS.filter(x=>x.mod===+b.dataset.m).forEach(x=>{S.topics[x.id]=Object.assign({status:0,conf:0,note:''},S.topics[x.id],{status:+b.dataset.v})});save();render()},
+  example(){
+    ['units','meas','vec','mot','frc','wep','newt','mat'].forEach((id,i)=>{S.topics[id]=Object.assign({status:2,conf:[3,3,4,3,2,3,3,2][i],note:''},S.topics[id])});
+    if(!S.tests.some(t=>t.name.startsWith('Example')))S.tests.push({id:'ex'+Date.now().toString(36),name:'Example: Mechanics test (delete me)',date:addDays(today(),14),topics:['vec','mot','frc','wep','newt','mat']});
+    save();render()},
+  smart(){startSess('smart',smartQueue())},
+  drilltopic(b){UI.sel=new Set([b.dataset.id]);startSess('drill',buildDrill([b.dataset.id],'all',20))},
+  drill(){const tp=selTopics();if(!tp.length)return alert_inline('Choose at least one topic first.');startSess('drill',buildDrill(tp,$('#dr-ty').value,+$('#dr-n').value))},
+  drilltest(b){const te=S.tests.find(x=>x.id===b.dataset.t);if(!te)return;UI.sel=new Set(te.topics);startSess('drill',buildDrill(te.topics,'all',20))},
+  exam(b){
+    let tp;if(b.dataset.t){const te=S.tests.find(x=>x.id===b.dataset.t);tp=te?te.topics:[];UI.sel=new Set(tp)}else tp=selTopics();
+    if(!tp.length)return alert_inline('Choose at least one topic first.');
+    const m=$('#ex-m')?+$('#ex-m').value:30;const e=buildExam(tp,m);
+    startSess('exam',e.queue,{limit:e.total*1.35*60,total:e.total})},
+  calc(){
+    const tp=selTopics();const n=+$('#ca-n').value;const q=[];
+    for(let i=0;i<n*3&&q.length<n;i++){const c=makeCalc(tp.length?tp:null);if(!c)break;c.type='calc';c.id='calc-'+c.topic+'-'+i;q.push(c)}
+    if(!q.length)return alert_inline('No calculation templates for those topics. Pick a topic with numerical content, such as mechanics, electricity or waves.');
+    startSess('calc',q)},
+  pickset(b){const v=b.dataset.v;
+    UI.sel=v==='all'?new Set(TOPICS.map(x=>x.id)):v==='none'?new Set():v==='learned'?new Set(TOPICS.filter(x=>tget(x.id).status>=1).map(x=>x.id)):new Set(TOPICS.filter(x=>tget(x.id).status>=1).sort((a,c)=>mastery(a.id)-mastery(c.id)).slice(0,5).map(x=>x.id));render()},
+  pickt(b){const te=S.tests.find(x=>x.id===b.dataset.t);if(te){UI.sel=new Set(te.topics);render()}},
+  selmods(b){const m=b.dataset.m;$$('#tt input').forEach(c=>{const tp=TB[c.value];
+    if(m==='none')c.checked=false;else if(m==='all')c.checked=c.checked||tget(c.value).status>=1;else if(tp.mod===+m)c.checked=true})},
+  addtest(){
+    const name=$('#tn').value.trim(),date=$('#td').value,topics=$$('#tt input:checked').map(c=>c.value);
+    const msg=$('#tmsg');
+    if(!name){msg.textContent='Give the test a name.';return}
+    if(!date){msg.textContent='Choose the test date.';return}
+    if(!topics.length){msg.textContent='Tick at least one topic.';return}
+    S.tests.push({id:Date.now().toString(36),name,date,topics});save();UI.msg='Test added.';render();UI.msg=''},
+  deltest(b){const id=b.dataset.t;if(UI.confirm===id){S.tests=S.tests.filter(x=>x.id!==id);UI.confirm=null;save()}else UI.confirm=id;render()},
+  show(){const s=UI.sess,it=s.queue[s.i];if(it.type==='q'){const a=$('#ans');s.draft=a?a.value:''}s.step='reveal';render();
+    if(it.type==='q')updMarks()},
+  grade(b){const s=UI.sess,it=s.queue[s.i],g=+b.dataset.v,sc=[0,.4,.8,1][g];record(it,g,sc);s.res.push({topic:it.topic,s:sc,id:it.id});reQueue(it,g);advance()},
+  submitq(){const s=UI.sess,it=s.queue[s.i];const checked=$$('.ms input:checked').map(c=>+c.value);const got=checked.length,sc=got/it.m;
+    const g=sc<.4?0:sc<.7?1:sc<.9?2:3;const missed=it.ms.filter((p,i)=>!checked.includes(i));
+    record(it,g,sc,{got,tot:it.m});s.res.push({topic:it.topic,s:sc,got,tot:it.m,missed:s.kind==='exam'||got<it.m?missed:[]});reQueue(it,g);advance()},
+  check(){const s=UI.sess,it=s.queue[s.i];const v=parseNum($('#cin').value);if(isNaN(v)){$('#cin').focus();return}
+    const ok=Math.abs(v-it.a)<=Math.abs(it.a)*.02+1e-15;s.ok=ok;s.given=v;s.step='reveal';recordCalc(it,ok);s.res.push({topic:it.topic,s:ok?1:0});render()},
+  giveup(){const s=UI.sess,it=s.queue[s.i];s.ok=false;s.given=null;s.step='reveal';recordCalc(it,false);s.res.push({topic:it.topic,s:0});render()},
+  nextcalc(){advance()},
+  exit(){const s=UI.sess;if(s.res.length){s.i=s.queue.length;render()}else{UI.sess=null;clearInterval(UI.tm);render()}},
+  done(){UI.sess=null;UI.tab='today';clearInterval(UI.tm);window.scrollTo(0,0);render()},
+  export(){const t=$('#bk');t.value=JSON.stringify(S);t.select();$('#bmsg').textContent='Backup ready. Copy it somewhere safe.'},
+  copy(){const t=$('#bk');if(!t.value)ACT.export();t.select();
+    const done=()=>{$('#bmsg').textContent='Copied.'};
+    try{navigator.clipboard.writeText(t.value).then(done,()=>{$('#bmsg').textContent='Press Ctrl or Cmd + C to copy.'})}catch(e){$('#bmsg').textContent='Press Ctrl or Cmd + C to copy.'}},
+  import(){try{const o=JSON.parse($('#bk').value);if(!o||typeof o!=='object'||!o.sr||!o.topics)throw 0;S=Object.assign(fresh(),o);S.settings=Object.assign(fresh().settings,S.settings);save();UI.sel=null;render()}catch(e){$('#bmsg').textContent='That text is not a valid backup.'}},
+  reset(){if(UI.confirm==='reset'){S=fresh();save();UI.confirm=null;UI.sel=null;UI.open={};render()}else{UI.confirm='reset';render()}}
+};
+function updMarks(){const s=UI.sess,it=s.queue[s.i],k=$$('.ms input:checked').length,b=$('#sq');if(b)b.textContent=`Save ${k}/${it.m}`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const f=ACT[b.dataset.act];if(f){e.preventDefault();f(b)}});
+document.addEventListener('change',e=>{
+  const c=e.target.dataset&&e.target.dataset.chg;if(!c)return;
+  if(c==='note')tset(e.target.dataset.id,{note:e.target.value});
+  else if(c==='pick'){if(e.target.checked)UI.sel.add(e.target.value);else UI.sel.delete(e.target.value);const el=$('#selcount');if(el)el.textContent=UI.sel.size+' selected'}
+  else if(c==='mp')updMarks();
+  else if(c==='setnew'){S.settings.newPerDay=+e.target.value;save()}
+  else if(c==='settg'){S.settings.target=e.target.value;save()}
+});
+document.addEventListener('keydown',e=>{
+  const s=UI.sess;const tag=(e.target.tagName||'').toLowerCase();
+  if(e.key==='Enter'&&e.target.id==='cin'){e.preventDefault();ACT.check();return}
+  if(!s||s.i>=s.queue.length||tag==='textarea'||tag==='input'||tag==='select')return;
+  const it=s.queue[s.i];if(it.type!=='card')return;
+  if(s.step==='ask'&&(e.key===' '||e.key==='Enter')){e.preventDefault();ACT.show()}
+  else if(s.step==='reveal'&&'1234'.includes(e.key)&&e.key.length===1)ACT.grade({dataset:{v:String(+e.key-1)}});
+});
+render();
+</script>
+
+</body></html>
