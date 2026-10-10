@@ -175,11 +175,221 @@ kbd{font:500 .72rem var(--f-mono);border:1px solid var(--line);border-bottom-wid
   .topic-ctl{justify-content:flex-start}
   .day{grid-template-columns:62px minmax(0,1fr)}
 }
+
+/* ---- motion ---- */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes pop{from{opacity:0;transform:scale(.97) translateY(6px)}to{opacity:1;transform:none}}
+@keyframes slidein{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes drawln{to{stroke-dashoffset:0}}
+@keyframes wavemove{to{transform:translateX(-24px)}}
+@keyframes ring{from{stroke-dashoffset:264}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes flash{from{box-shadow:0 0 0 0 var(--accent)}to{box-shadow:0 0 0 12px transparent}}
+.logo{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.logo b{color:var(--ink)}
+.logo svg{overflow:hidden;flex:none}
+.logo .wave path{animation:wavemove 2.4s linear infinite}
+.anim .card,.anim .topic,.anim .empty,.anim .mod-h{animation:rise .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*50ms)}
+.anim .bar>i,.anim .prog>i{transform-origin:left;animation:grow .9s cubic-bezier(.2,.7,.2,1) both .2s}
+.anim .fc i{transform-origin:bottom;animation:pop .6s both .2s}
+.anim .heat i b{animation:pop .5s both .3s}
+.sess-card.slide{animation:slidein .34s cubic-bezier(.2,.7,.2,1) both}
+.answer{animation:pop .3s cubic-bezier(.2,.7,.2,1) both}
+.grades button,.ms li,.opts button{animation:rise .32s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*55ms)}
+.pit{animation:pop .35s both .1s}
+.fig .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:drawln 1s cubic-bezier(.3,.6,.2,1) forwards .15s}
+.btn,.seg button,.dots button,.nav button,.grades button,.opts button,.mode{transition:transform .12s ease,background-color .2s,border-color .2s,box-shadow .2s,filter .2s}
+.btn:active,.grades button:active,.opts button:active{transform:scale(.97)}
+.btn:not([disabled]):hover{box-shadow:0 4px 14px -6px var(--accent)}
+.mode:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px var(--ink)}
+.topic{transition:box-shadow .2s,border-color .2s}
+.topic:hover{border-color:var(--accent)}
+.topic-b{animation:pop .3s both}
+.dots button{transition:transform .15s,background-color .2s}
+.dots button:hover{transform:scale(1.25)}
+.nav button{transition:color .2s,border-color .25s}
+.bar>i,.prog>i{transition:width .6s cubic-bezier(.2,.7,.2,1)}
+/* multiple choice */
+.opts{display:grid;gap:8px}
+.opts button{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);font-size:1rem}
+.opts button b{font:500 .8rem var(--f-mono);border:1px solid var(--line);border-radius:4px;padding:1px 7px;color:var(--ink2);flex:none;margin-top:2px}
+.opts button:not([disabled]):hover{border-color:var(--accent);background:var(--accent-soft)}
+.opts button.right{border-color:var(--good);background:var(--good-soft);animation:flash .6s}
+.opts button.wrong{border-color:var(--bad);background:var(--bad-soft);animation:shake .35s}
+.opts button[disabled]{cursor:default}
+.opts button:not(.right):not(.wrong)[disabled]{opacity:.55}
+/* ring */
+.ringbox{position:relative;width:110px;height:110px}
+.ringbox svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ringbox circle{fill:none;stroke-width:9}
+.ringbox .rbg{stroke:var(--surface2)}
+.ringbox .rfg{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:264;animation:ring 1.1s cubic-bezier(.3,.6,.2,1) both .2s}
+.ringbox .rfg.good{stroke:var(--good)} .ringbox .rfg.warn{stroke:var(--warn)} .ringbox .rfg.bad{stroke:var(--bad)}
+.ringbox span{position:absolute;inset:0;display:grid;place-items:center;font:500 1.5rem var(--f-mono)}
+.chip.ext{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+details.model{border:1px solid var(--line);border-radius:6px;padding:8px 12px;background:var(--surface)}
+details.model summary{cursor:pointer;font-weight:600}
+details.model .answer{margin-top:8px}
+.hint{font-size:.78rem;color:var(--good);font-family:var(--f-mono);white-space:nowrap}
+
+/* ---- friendlier skin ---- */
+:root{--m1:#64748B;--m2:#0E9F9A;--m3:#3257F0;--m4:#D9800B;--m5:#7C5CE6;--m6:#D8407A;--sun:#F5A524;--coral:#F2604F;--mint:#10A878;
+  --ha:#2447D8;--hb:#1C86E0;--hc:#12AE9C;--blob1:rgba(36,71,216,.14);--blob2:rgba(18,174,156,.13);--r:16px;
+  --shadow:0 1px 2px rgba(15,27,48,.05),0 10px 26px -14px rgba(15,27,48,.22)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--m1:#94A3B8;--m2:#2DD4BF;--m3:#7C9BFF;--m4:#F5A524;--m5:#A78BFA;--m6:#F472B6;--sun:#FBBF24;--coral:#FB7185;--mint:#34D399;
+  --ha:#2A3FA8;--hb:#1B6BB8;--hc:#0E8F7E;--blob1:rgba(124,155,255,.12);--blob2:rgba(45,212,191,.09);--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px -14px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--m1:#94A3B8;--m2:#2DD4BF;--m3:#7C9BFF;--m4:#F5A524;--m5:#A78BFA;--m6:#F472B6;--sun:#FBBF24;--coral:#FB7185;--mint:#34D399;
+  --ha:#2A3FA8;--hb:#1B6BB8;--hc:#0E8F7E;--blob1:rgba(124,155,255,.12);--blob2:rgba(45,212,191,.09);--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px -14px rgba(0,0,0,.6)}
+body{font-size:16px;background-color:var(--bg);background-image:radial-gradient(48rem 26rem at 92% -6%,var(--blob1),transparent 62%),radial-gradient(44rem 24rem at -8% 26%,var(--blob2),transparent 62%);background-attachment:fixed}
+.card,.topic{border-radius:var(--r);box-shadow:var(--shadow);border-color:transparent}
+.card.flat{box-shadow:none}
+.btn{border-radius:999px;padding:9px 18px}
+.btn.sm{padding:5px 13px}
+.btn.big{padding:13px 26px;font-size:1.05rem;background:var(--sun);border-color:var(--sun);color:#2a1a00;box-shadow:0 8px 20px -8px var(--sun)}
+.btn.glass{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);color:#fff;backdrop-filter:blur(4px)}
+.btn.glass:hover{background:rgba(255,255,255,.28)}
+.seg,.chip,.fchip{border-radius:999px}
+.seg button{padding:6px 12px}
+.top{box-shadow:0 6px 20px -16px var(--ink)}
+.nav{gap:4px;padding-bottom:8px}
+.nav button{border:0;border-radius:999px;padding:7px 14px;font-weight:600}
+.nav button[aria-current="true"]{background:var(--accent);color:var(--accent-ink)}
+.nav button:not([aria-current="true"]):hover{background:var(--surface2)}
+.nav .badge{background:var(--coral);color:#fff}
+.nav button[aria-current="true"] .badge{background:#fff;color:var(--accent)}
+.brand .hdr{display:flex;align-items:center;gap:6px}
+.lvl{display:grid;grid-template-columns:auto auto;gap:0 8px;align-items:center;border:0;background:var(--surface2);border-radius:999px;padding:5px 12px 7px;position:relative;overflow:hidden}
+.lvl:hover{background:var(--accent-soft)}
+.lvn{font:500 .78rem var(--f-mono);color:var(--accent)} .lvt{font-weight:700;font-size:.82rem}
+.lvbar{grid-column:1/-1;height:3px;background:var(--line);border-radius:2px;margin-top:3px;overflow:hidden}
+.lvbar i{display:block;height:100%;background:var(--sun);border-radius:2px;transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.ib{width:34px;height:34px;border-radius:50%;border:0;background:var(--surface2);display:grid;place-items:center;color:var(--ink2);padding:0}
+.ib svg{width:18px;height:18px} .ib:hover{background:var(--accent-soft);color:var(--accent);transform:rotate(12deg)}
+.logo b{font-size:1.1rem}
+@media (max-width:520px){.lvt{display:none}.logo b{font-size:.95rem}}
+
+/* hero */
+.hero2{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:center;padding:26px 28px;border-radius:24px;color:#fff;overflow:hidden;
+  background:linear-gradient(120deg,var(--ha) 0%,var(--hb) 55%,var(--hc) 100%);box-shadow:0 24px 40px -26px var(--ha)}
+.hero2::before,.hero2::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.1);animation:drift 14s ease-in-out infinite alternate}
+.hero2::before{width:260px;height:260px;right:-60px;top:-110px}
+.hero2::after{width:170px;height:170px;left:34%;bottom:-100px;animation-delay:-6s}
+@keyframes drift{to{transform:translate(-26px,18px) scale(1.12)}}
+.hero2-txt{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.hero2 .eyebrow{color:rgba(255,255,255,.8)}
+.hero2 h1{font-size:clamp(1.7rem,4.6vw,2.5rem);font-weight:800;letter-spacing:-.02em}
+.hero2-art{position:relative;z-index:1;width:150px}
+.mascot{width:100%;height:auto;display:block;cursor:pointer;filter:drop-shadow(0 10px 14px rgba(0,0,0,.22));overflow:visible}
+.mascot:hover{animation:wob .6s}
+.mascot.bounce{animation:bounce .7s cubic-bezier(.3,1.6,.5,1)}
+.mascot .eyes{transform-origin:60px 56px;animation:blink 4.6s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@keyframes bounce{0%{transform:scale(1)}35%{transform:scale(1.18) rotate(-6deg)}70%{transform:scale(.96) rotate(3deg)}100%{transform:none}}
+@keyframes wob{25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+.bubble{position:relative;text-align:left;border:0;border-radius:18px 18px 18px 4px;background:rgba(255,255,255,.95);color:#10203f;padding:11px 15px;max-width:46ch;font-size:.98rem;display:flex;flex-direction:column;gap:2px;box-shadow:0 10px 20px -12px rgba(0,0,0,.45)}
+.bubble small{color:#5b6985;font:500 .7rem var(--f-mono)}
+.bubble:hover{transform:translateY(-2px)}
+.bubble.swap #bubtxt{animation:rise .35s both}
+@media (max-width:640px){.hero2{grid-template-columns:1fr;padding:20px}.hero2-art{width:96px;position:absolute;right:12px;top:12px}.hero2 h1{max-width:calc(100% - 96px)}}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:14px}
+@media(max-width:560px){.tiles{grid-template-columns:1fr 1fr;gap:10px}}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:var(--surface);border:0;border-radius:var(--r);box-shadow:var(--shadow);padding:16px;min-width:0;transition:transform .2s cubic-bezier(.3,1.5,.5,1),box-shadow .2s}
+.tile:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 18px 30px -18px var(--accent)}
+.tile .tn{font:500 2rem/1 var(--f-mono);display:flex;align-items:center;gap:6px;letter-spacing:-.03em}
+.tile .tn .readout{font-size:2rem}
+.tile .tl{font-weight:700} .tile .ts{font-size:.8rem;color:var(--ink2)}
+.tile .bar{width:100%;margin-top:4px}
+.flame{width:30px;height:30px;transform-origin:50% 90%;animation:flick 1.3s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scale(1) rotate(-3deg)}to{transform:scale(1.1,1.16) rotate(3deg)}}
+.trow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;margin-top:12px}
+.trow .ringbox{width:64px;height:64px}.trow .ringbox span{font-size:.9rem}
+
+/* module colour */
+.mdot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--mc);margin-right:8px}
+.mb{font:500 .74rem var(--f-mono);color:#fff;background:var(--mc,var(--accent));border-radius:8px;padding:2px 8px}
+.topic{--mc:var(--m1)}
+.mod[data-mod="1"] .topic{--mc:var(--m1)}.mod[data-mod="2"] .topic{--mc:var(--m2)}.mod[data-mod="3"] .topic{--mc:var(--m3)}.mod[data-mod="4"] .topic{--mc:var(--m4)}.mod[data-mod="5"] .topic{--mc:var(--m5)}.mod[data-mod="6"] .topic{--mc:var(--m6)}
+.topic:hover{border-color:var(--mc)}
+.topic .t{cursor:pointer}
+.chip.mc{background:var(--mc);color:#fff;border-color:transparent}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.toolbar input{max-width:300px;border-radius:999px;padding:9px 16px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{border:1.5px solid var(--line);background:var(--surface);padding:5px 13px;font-size:.85rem;font-weight:600;color:var(--ink2);display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.fchip:hover{border-color:var(--accent);color:var(--accent)}
+.fchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.fchip.pill input{margin:0}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;cursor:pointer}
+
+/* cards and grading */
+.cardface{display:flex;flex-direction:column;gap:10px;width:100%;text-align:left;border:0;border-radius:20px;padding:26px 24px;background:linear-gradient(160deg,var(--accent-soft),var(--surface));box-shadow:inset 0 0 0 2px var(--mc,var(--accent));min-height:150px;justify-content:center}
+.cardface.front{cursor:pointer;transition:transform .2s cubic-bezier(.3,1.5,.5,1)}
+.cardface.front:hover{transform:translateY(-3px) scale(1.01)}
+.cardface .tap{font:500 .78rem var(--f-mono);color:var(--ink2);margin-top:6px}
+.cardface.mini{min-height:0;padding:14px 18px;background:var(--surface2);box-shadow:none}
+.cardface.mini .qtext{font-size:.95rem}
+.cardface.back{background:linear-gradient(160deg,var(--good-soft),var(--surface));box-shadow:inset 0 0 0 2px var(--good);min-height:0}
+.flipin{transform-origin:top center;animation:flipin .5s cubic-bezier(.2,.8,.3,1) both}
+@keyframes flipin{from{opacity:0;transform:perspective(700px) rotateX(-70deg)}to{opacity:1;transform:perspective(700px) rotateX(0)}}
+.grades button{border-radius:14px;border-width:2px;padding:10px 4px;transition:transform .15s cubic-bezier(.3,1.5,.5,1),background .2s}
+.grades button span{font-weight:700}
+.grades button:hover{transform:translateY(-4px)}
+.grades .g0{border-color:var(--bad);color:var(--bad)} .grades .g0:hover{background:var(--bad-soft)}
+.grades .g1{border-color:var(--warn);color:var(--warn)} .grades .g1:hover{background:var(--warn-soft)}
+.grades .g2{border-color:var(--good);color:var(--good)} .grades .g2:hover{background:var(--good-soft)}
+.grades .g3{border-color:var(--accent);color:var(--accent)} .grades .g3:hover{background:var(--accent-soft)}
+.grades button small{color:var(--ink2)}
+.combo{display:inline-flex;align-items:center;gap:4px;background:var(--warn-soft);color:var(--warn);border-radius:999px;padding:3px 12px 3px 8px;font:500 .95rem var(--f-mono);animation:bounce .55s cubic-bezier(.3,1.6,.5,1)}
+.combo svg{width:20px;height:20px}
+.opts button{border-radius:14px;transition:transform .15s cubic-bezier(.3,1.5,.5,1),border-color .2s,background .2s}
+.opts button:not([disabled]):hover{transform:translateX(5px)}
+.sess-card{border-radius:22px;padding:22px}
+.prog{height:10px;border-radius:5px}
+.prog>i{background:linear-gradient(90deg,var(--accent),var(--mint));border-radius:5px;position:relative}
+.prog>i::after{content:"";position:absolute;right:-1px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--mint)}
+.ms label{border-radius:12px;transition:border-color .2s,background .2s,transform .15s}
+.ms label:hover{border-color:var(--accent)}
+.ms label:has(input:checked){background:var(--good-soft);border-color:var(--good);transform:scale(1.01)}
+.ms input{accent-color:var(--good);width:18px;height:18px}
+.answer{border-radius:14px}
+.pit{border-radius:12px}
+
+/* toasts, floaty, confetti */
+#toasts{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:60;align-items:center;width:min(92vw,420px);pointer-events:none}
+.toast{display:flex;gap:10px;align-items:center;background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:16px;box-shadow:0 14px 30px -12px rgba(0,0,0,.55);font-size:.92rem;animation:toastin .45s cubic-bezier(.3,1.5,.5,1) both;max-width:100%}
+.toast small{opacity:.8}
+.toast.out{animation:toastout .35s ease both}
+.toast svg{width:34px;height:34px;flex:none}
+.toast.fire svg{width:26px;height:26px}
+.toast.level,.toast.badge{background:linear-gradient(120deg,var(--ha),var(--hc));color:#fff}
+@keyframes toastin{from{opacity:0;transform:translateY(24px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes toastout{to{opacity:0;transform:translateY(10px) scale(.96)}}
+.floaty{position:fixed;z-index:70;pointer-events:none;font:800 1.15rem var(--f-display);transform:translate(-50%,-50%);animation:floatup 1s cubic-bezier(.2,.8,.3,1) forwards}
+.floaty.good{color:var(--mint);text-shadow:0 2px 0 rgba(255,255,255,.7)}
+.floaty.meh{color:var(--ink2)}
+@keyframes floatup{0%{opacity:0;transform:translate(-50%,-30%) scale(.6)}15%{opacity:1;transform:translate(-50%,-70%) scale(1.25)}100%{opacity:0;transform:translate(-50%,-260%) scale(1)}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:80}
+
+/* badges */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px;margin-top:12px}
+.bd{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:8px 4px;border-radius:14px;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.bd:hover{transform:translateY(-4px) rotate(-2deg)}
+.bd .bdg{width:58px;height:58px}
+.bd .bdg.on{filter:drop-shadow(0 6px 8px rgba(0,0,0,.2))}
+.bd b{font-size:.82rem}.bd small{font-size:.7rem;color:var(--ink2);line-height:1.3}
+.bd:not(.on){opacity:.7}
+.ringbox .rfg{stroke:url(#none)}
+.ringbox .rfg{stroke:var(--accent)}
+.ringbox .rfg.good{stroke:var(--good)}.ringbox .rfg.warn{stroke:var(--warn)}.ringbox .rfg.bad{stroke:var(--bad)}
+.ringbox span{font-size:1.15rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 <header class="top"><div class="top-in">
-  <div class="brand"><b>OCR Physics Revision Lab</b><span class="mono">H556 · A Level Physics A</span></div>
+  <div class="brand"><span class="logo"><svg class="wave" width="36" height="20" viewBox="0 0 36 20" aria-hidden="true"><path d="M0 10Q6 -2 12 10T24 10T36 10T48 10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><b>OCR Physics Revision Lab</b></span><div class="hdr" id="hdr"></div></div>
   <nav class="nav" id="nav" aria-label="Sections"></nav>
 </div></header>
 <main class="wrap" id="view"></main>
@@ -641,6 +851,374 @@ T("med",6,"6.5","Medical imaging",{
    ms:["I/I₀ = e^(−μx) = e^(−0.35 × 4.0)","= 0.25 (25%)","x½ = ln2/μ","= 0.693/0.35 = 2.0 cm"],tip:"Use matching units for μ and x."},
   {m:5,cw:"Calculate",q:"An ultrasound pulse travels through soft tissue (speed 1540 m s⁻¹) and reflects from the boundary with a bone. The echo is received 52 μs after the pulse is sent. The acoustic impedance of soft tissue is 1.63 × 10⁶ kg m⁻² s⁻¹ and of bone is 7.8 × 10⁶ kg m⁻² s⁻¹. Calculate (i) the depth of the bone and (ii) the fraction of the intensity that is reflected.",
    ms:["Distance travelled = 1540 × 52 × 10⁻⁶ = 0.080 m","Depth = 0.080 / 2 = 0.040 m (pulse travels there and back)","Fraction = (Z₂ − Z₁)²/(Z₂ + Z₁)²","= (6.17)²/(9.43)²","= 0.43"],tip:"The round trip is why you halve the distance."}]});
+/* ---------- Extra content: more flashcards and written-answer questions (appended after the originals so item ids stay stable) ---------- */
+function X(id,cards,qs){const t=TOPICS.find(x=>x.id===id);t.cards.push(...cards);t.qs.push(...qs)}
+
+X("prac",[
+ ["How do you choose between a ruler, vernier calliper and micrometer?","Match the resolution to the size being measured so the percentage uncertainty is small: ruler (1 mm) for lengths of tens of centimetres, vernier (0.1 or 0.02 mm) for centimetre-sized objects, micrometer (0.01 mm) for wire diameters."],
+ ["What is a control variable and why must it be kept constant?","Any quantity other than the independent variable that could affect the dependent variable. It is kept constant so that any change in the dependent variable can be attributed to the independent variable only (a fair test)."],
+ ["How should a table of results be presented?","Headings with quantity and unit (e.g. t / s), readings to a consistent number of decimal places matching the instrument resolution, repeats and means, and derived quantities such as T² calculated with a sensible number of significant figures."]],
+[
+ {m:4,cw:"Evaluate",q:"A student measures the resistance of a metal wire for different lengths using a voltmeter and ammeter. The resistance values are found to be too high and scattered. Evaluate the procedure by explaining two likely sources of error and a way to reduce each.",
+  ms:["The wire heats up as current flows, so its resistance increases (systematic error in R)","Reduce by using a small current and switching off between readings (or allowing the wire to cool)","Contact resistance and inaccurate length at the crocodile clips cause scatter (random error)","Reduce by making firm clean contacts, measuring length to the inner edge of the clip and repeating each reading to take a mean"],
+  tip:"Name the error, say whether it is random or systematic, then give a specific improvement."},
+ {m:6,cw:"Describe",q:"Plan an experiment to test whether the period T of a simple pendulum is related to its length l by T² ∝ l, and show how the results would be used to determine g. Your answer should include how you would reduce uncertainties.",
+  ms:["Clamp a string with a bob, measure l from the pivot to the centre of the bob with a metre rule, and keep the mass and the (small, below about 10°) release angle constant","Time a large number of oscillations (for example 20) using a fiducial marker at the centre of the swing, and divide to find T","Repeat each timing and take a mean, then vary l over a wide range to collect at least six different lengths","Calculate T² for each length","Plot T² against l: a straight line through the origin shows T² ∝ l","T² = 4π²l/g so the gradient = 4π²/g and g = 4π²/gradient"],
+  model:"I would hang a bob from a clamped string and measure the length from the pivot to the centre of the bob. With the angle kept small and the same each time, I would time 20 oscillations from the centre of the swing using a fiducial marker, repeat and average, then divide to get T. This large number of swings reduces the percentage uncertainty from reaction time. I would use at least six lengths, calculate T² and plot it against l. A straight line through the origin confirms T² ∝ l, and because T² = 4π²l/g the gradient equals 4π²/g, so g = 4π²/gradient.",
+  tip:"Level-of-response marking rewards a logical sequence: set-up, measurements, uncertainty reduction, then the analysis."}]);
+
+X("units",[
+ ["What is the difference between a base unit and a derived unit?","A base unit is one of the seven SI units defined independently (kg, m, s, A, K, mol, cd). A derived unit is a combination of base units, such as N = kg m s⁻²."],
+ ["Give orders of magnitude for: mass of a car, speed of a walking person, atmospheric pressure, wavelength of visible light.","About 10³ kg; 1.5 m s⁻¹; 10⁵ Pa; 5 × 10⁻⁷ m."]],
+[
+ {m:3,cw:"Determine",q:"The drag force F on a cyclist is modelled as F = kv², where v is the speed. Determine the SI base units of the constant k.",
+  ms:["k = F/v²","F has base units kg m s⁻² and v² has m² s⁻²","k has base units kg m⁻¹"],tip:"Rearrange first, then substitute the base units."},
+ {m:3,cw:"Estimate",q:"Estimate the kinetic energy of a sprinter running the 100 m in a school race. State the assumptions you make.",
+  ms:["Assume a mass of about 60–80 kg (for example 70 kg)","Assume an average speed of about 8–10 m s⁻¹ (100 m in roughly 10–12 s)","Ek = ½mv² ≈ ½ × 70 × 10² ≈ 3.5 × 10³ J (order of magnitude 10³ J)"],tip:"Examiners accept a range as long as the assumptions are sensible and stated."}]);
+
+X("meas",[
+ ["What is the uncertainty in a single reading from an analogue scale?","Typically ± half the smallest division (or ± one smallest division if the reading is hard to judge). For two readings, as in a length, add the uncertainties."],
+ ["How can you tell from a graph whether a relationship is consistent with y ∝ x?","The best-fit line should pass through the origin (the origin should lie within the error bars of the line)."],
+ ["Why should the uncertainty in a mean of repeat readings be quoted as half the range?","It indicates the spread of the repeats: (max − min)/2. It is a simple estimate that reflects the random variation."]],
+[
+ {m:3,cw:"Calculate",q:"The time for 10 oscillations of a pendulum is measured as 15.8 ± 0.2 s. Calculate the period with its percentage uncertainty and its absolute uncertainty.",
+  ms:["T = 15.8/10 = 1.58 s","Percentage uncertainty = 0.2/15.8 × 100 = 1.3% (unchanged by dividing by an exact number)","Absolute uncertainty in T = 0.013 × 1.58 = ± 0.02 s"],tip:"Dividing by an exact number changes the absolute uncertainty but not the percentage."},
+ {m:4,cw:"Explain",q:"Explain the difference between precision and accuracy for a set of repeated measurements, and describe how each could be improved.",
+  ms:["Precise: repeated readings are close together (small random error)","Accurate: readings are close to the true value (small systematic error)","Improve precision by using an instrument with finer resolution and repeating readings to average them","Improve accuracy by calibrating the instrument or removing zero or other systematic errors"],tip:"A set of results can be precise but not accurate."}]);
+
+X("vec",[
+ ["How do you find a resultant vector by scale drawing?","Choose a scale, draw the vectors head to tail at the correct angles, draw the resultant from the start of the first to the end of the last, then measure its length and angle and convert using the scale."],
+ ["Define displacement and distinguish it from distance.","Displacement is the straight-line distance from the start to the finish in a stated direction (vector). Distance is the total length of the path (scalar)."]],
+[
+ {m:4,cw:"Calculate",q:"A crate of mass 20 kg is pulled at constant speed along a horizontal floor by a rope that makes 30° with the horizontal. The tension in the rope is 80 N. Calculate the frictional force on the crate and the normal contact force from the floor.",
+  ms:["Constant speed so the resultant force is zero in both directions","Friction = horizontal component of tension = 80 cos30° = 69 N","Vertical: N + 80 sin30° = mg","N = 196 − 40 = 1.6 × 10² N (156 N)"],tip:"Resolve in two perpendicular directions and set each resultant to zero."},
+ {m:3,cw:"Explain",q:"Explain why vectors cannot be added by simply adding their magnitudes.",
+  ms:["Vectors have direction as well as magnitude","Vectors in different directions partly or fully cancel (for example opposite forces)","Magnitudes only add when the vectors are in the same direction; otherwise use head-to-tail addition or components"],tip:"Give an example such as two forces in opposite directions."}]);
+
+X("mot",[
+ ["How can g be determined using a falling object?","Release a ball with an electromagnet over a trapdoor; the timer starts as the current is cut and stops at impact. Measure h and t for several heights, plot h against t²; gradient = g/2."],
+ ["Describe the shape of a displacement–time graph for an object accelerating from rest.","A curve with increasing gradient (a parabola, s = ½at²), because the velocity (gradient) increases."]],
+[
+ {m:4,cw:"Describe",q:"Describe an experiment to determine the acceleration of free fall g in the laboratory. Explain how the results are analysed.",
+  ms:["Release a steel ball from rest using an electromagnet so that the timer starts when it is released and stops when it hits a trapdoor","Measure the drop height h with a metre rule and the time t, repeating to take a mean","Repeat for a range of heights","Plot h against t²: s = ½gt² so the gradient = g/2 and g = 2 × gradient"],tip:"Mention how timing starts and stops automatically to avoid reaction time."},
+ {m:3,cw:"Calculate",q:"A driver with a reaction time of 0.70 s is travelling at 20 m s⁻¹ and brakes with a constant deceleration of 6.0 m s⁻². Calculate the total stopping distance.",
+  ms:["Thinking distance = 20 × 0.70 = 14 m","Braking distance = v²/2a = 20²/(2 × 6.0) = 33 m","Total stopping distance = 47 m"],tip:"Thinking distance uses constant speed, braking distance uses suvat."}]);
+
+X("frc",[
+ ["Define the centre of gravity.","The point through which the entire weight of a body can be considered to act."],
+ ["State Archimedes' principle.","The upthrust on a body wholly or partly immersed in a fluid equals the weight of fluid displaced."]],
+[
+ {m:3,cw:"Explain",q:"Explain why a tall double-decker bus is more likely to topple than a low car when driven on a banked road at the same tilt.",
+  ms:["A body topples when the vertical line through its centre of gravity falls outside its base","A tall bus has a higher centre of gravity, so it needs a smaller tilt before this happens","The weight then produces a net moment about the edge of the base which tips the vehicle over"],tip:"Mention the line of action of the weight and the base."},
+ {m:4,cw:"Calculate",q:"A cube of cork of side 5.0 cm and density 240 kg m⁻³ floats in water of density 1000 kg m⁻³. Calculate the depth of the cube that is below the surface.",
+  ms:["Floating, so upthrust = weight","ρ_w V_sub g = ρ_c V g","V_sub/V = 240/1000 = 0.24","Depth = 0.24 × 5.0 cm = 1.2 cm"],tip:"The fraction submerged equals the ratio of the densities."}]);
+
+X("wep",[
+ ["Define efficiency.","The ratio of useful output energy (or power) to total input energy (or power), often given as a percentage."],
+ ["Describe the energy transfers for a swinging pendulum.","GPE ↔ KE as the bob swings, with total constant if there are no losses; with air resistance some energy is dissipated as thermal energy and the amplitude falls."]],
+[
+ {m:4,cw:"Explain",q:"The speed of a car doubles from 15 m s⁻¹ to 30 m s⁻¹. Explain the effect on its kinetic energy and its braking distance, and why this matters for road safety.",
+  ms:["Kinetic energy ∝ v² so it increases by a factor of 4","The brakes must do work equal to the kinetic energy, W = Fd, with the same braking force","So the braking distance also increases by a factor of 4","A modest increase in speed therefore greatly increases stopping distance and the severity of any collision"],tip:"Link KE to work done by the brakes."},
+ {m:3,cw:"Calculate",q:"A car engine delivers a constant power of 60 kW and the car travels at a constant 30 m s⁻¹. Calculate the total resistive force on the car.",
+  ms:["Constant speed so driving force = resistive force","P = Fv","F = 60 000/30 = 2.0 × 10³ N"],tip:"Constant velocity means zero resultant force."}]);
+
+X("mat",[
+ ["What is hysteresis in a rubber band?","The loading and unloading force–extension curves differ. The area between them equals the energy dissipated as thermal energy in one cycle."],
+ ["Why is stress rather than force used when comparing materials?","Stress is force per unit area, so it allows materials of different thicknesses to be compared fairly."]],
+[
+ {m:6,cw:"Describe",q:"Describe how you would determine the Young modulus of the metal in a long thin wire in the laboratory. Include how you would reduce the uncertainty in your measurements.",
+  ms:["Clamp a long wire at one end and pass it over a pulley with a hanger for masses; use a long wire so extensions are large","Measure the original length from the clamp to a marker with a metre rule","Measure the diameter with a micrometer at several places and in different orientations and take a mean, then find A = πd²/4","Add masses in equal steps and measure the extension each time (using a scale or vernier), unloading as well to check for elastic behaviour","Plot a graph of force against extension (or stress against strain), keeping within the elastic limit","E = gradient × L/A (or E is the gradient of stress against strain)"],
+  model:"I would clamp a long thin wire horizontally and pass it over a pulley, adding masses to the hanger in equal steps. The unstretched length is measured from the clamp to a marker with a metre rule, and the diameter is measured at several places with a micrometer so that the cross-sectional area A = πd²/4 can be found. For each load I measure the extension with a vernier or scale. A graph of force against extension is plotted, remaining below the elastic limit. The Young modulus is the gradient multiplied by L/A. Using a long wire gives larger extensions and a smaller percentage uncertainty.",
+  tip:"The diameter has the biggest effect on the uncertainty in E because A ∝ d²."},
+ {m:4,cw:"Compare",q:"Compare the force–extension behaviour of a metal wire and a rubber band as each is loaded and then unloaded.",
+  ms:["Metal wire (below the elastic limit): force proportional to extension, a straight line through the origin","On unloading it retraces the same line and returns to its original length","Rubber band: non-linear force–extension curve with a large extension","The unloading curve lies below the loading curve (hysteresis), and the area between them is energy dissipated as thermal energy"],tip:"Make a point about both materials each time."}]);
+
+X("newt",[
+ ["How do seat belts and crumple zones reduce injuries?","They increase the time over which the occupant's momentum changes, so the force F = Δp/Δt is smaller for the same change in momentum."],
+ ["Explain how a rocket accelerates in space.","Hot gas is expelled backwards, gaining momentum; by conservation of momentum the rocket gains an equal momentum forwards (and N3: the gas pushes back on the rocket)."]],
+[
+ {m:4,cw:"Explain",q:"Explain, using Newton's laws, how a crumple zone reduces the force on the occupants of a car in a collision.",
+  ms:["The occupants must change their momentum from mv to zero, a fixed change Δp","Force = rate of change of momentum, F = Δp/Δt (Newton's second law)","The crumple zone deforms and so increases the time of the collision","A longer time gives a smaller average force and a lower risk of injury"],tip:"Same Δp, longer Δt, smaller F."},
+ {m:3,cw:"Calculate",q:"A rifle of mass 4.0 kg fires a bullet of mass 0.020 kg at 400 m s⁻¹. Calculate the initial recoil speed of the rifle.",
+  ms:["Momentum is conserved and the initial total is zero","Momentum of bullet = 0.020 × 400 = 8.0 N s","Recoil speed = 8.0/4.0 = 2.0 m s⁻¹ in the opposite direction"],tip:"Total momentum before is zero."}]);
+
+X("chg",[
+ ["Compare conventional current and electron flow.","Conventional current is defined as flowing from positive to negative; electrons actually drift from negative to positive, the opposite direction."],
+ ["Why does the resistance of a semiconductor decrease as temperature rises?","More electrons gain enough energy to become free charge carriers so n increases significantly, which outweighs the increase in lattice vibrations."]],
+[
+ {m:3,cw:"Calculate",q:"A current of 0.50 A flows in a wire for 1.0 minute. Calculate the charge that flows and the number of electrons passing a point.",
+  ms:["Q = It = 0.50 × 60 = 30 C","N = Q/e","= 30/1.60 × 10⁻¹⁹ = 1.9 × 10²⁰ electrons"],tip:"Convert minutes to seconds."},
+ {m:3,cw:"Explain",q:"A copper wire and a germanium sample have the same cross-sectional area and carry the same current. Use I = nAvq to explain why the drift velocity is much larger in the germanium.",
+  ms:["I = nAvq, so v = I/nAq","I, A and q are the same in both materials","Germanium has far fewer free charge carriers per unit volume (smaller n), so the drift velocity must be greater"],tip:"Rearrange for v first."}]);
+
+X("res",[
+ ["Describe the I–V characteristic of a semiconductor diode.","Very small current in reverse bias; almost no current until about 0.6 V forward, then the current rises rapidly (low resistance)."],
+ ["How many joules are in one kilowatt-hour?","3.6 × 10⁶ J (1000 W × 3600 s)."]],
+[
+ {m:4,cw:"Describe",q:"Describe how you would obtain the I–V characteristic of a filament lamp, including the circuit you would use.",
+  ms:["Connect the lamp in series with an ammeter and a variable power supply, with a voltmeter in parallel with the lamp","Alternatively use a variable resistor as a potential divider so that the p.d. can be varied from zero","Increase the p.d. in steps, recording the current for each value","Reverse the connections to obtain negative values and plot I against V"],tip:"Voltmeter in parallel, ammeter in series."},
+ {m:3,cw:"Calculate",q:"A 2.5 kW kettle is used for 4.0 minutes. Electricity costs 15 p per kWh. Calculate the cost.",
+  ms:["Energy = 2.5 kW × (4.0/60) h = 0.17 kWh","Cost = 0.17 × 15 p","= 2.5 p"],tip:"Use kilowatts and hours directly."}]);
+
+X("circ",[
+ ["Why are household lamps connected in parallel?","Each lamp receives the full mains p.d., can be switched independently and one failing doesn't break the circuit."],
+ ["Explain how an LDR potential divider sensor works.","In bright light the LDR resistance falls, so it takes a smaller share of the supply p.d. and the p.d. across it falls (and rises across the fixed resistor); the output changes with light intensity."]],
+[
+ {m:4,cw:"Explain",q:"A battery with internal resistance is connected to a lamp. A second identical lamp is then connected in parallel with the first and both lamps become dimmer. Explain why.",
+  ms:["Adding a parallel branch reduces the total external resistance","The current drawn from the battery increases","The lost volts Ir across the internal resistance increases, so the terminal p.d. falls","The p.d. across each lamp falls so each lamp is dimmer"],tip:"Link the change to V = E − Ir."},
+ {m:6,cw:"Describe",q:"Describe how you would determine the emf and the internal resistance of a cell using a variable resistor, an ammeter and a voltmeter. Explain how the results are used.",
+  ms:["Connect the cell in series with a variable resistor and an ammeter, with the voltmeter across the terminals of the cell","Vary the resistance in steps and record the p.d. V and current I for each setting","Use at least six different values and switch off between readings (small currents) to avoid heating and changes in r","Plot V against I","V = E − Ir, so the y-intercept is the emf E","The gradient is −r so the internal resistance is minus the gradient"],
+  model:"I would connect the cell to a variable resistor and an ammeter in series, with a voltmeter across the cell. By changing the resistance I would record at least six pairs of V and I, switching off between readings so the cell does not heat up. A graph of V against I should be a straight line because V = E − Ir. The intercept on the V axis gives the emf and the gradient gives −r.",
+  tip:"Say what the gradient and intercept represent."}]);
+
+X("wav",[
+ ["Distinguish diffraction from interference.","Diffraction is the spreading of a wave as it passes through a gap or around an obstacle. Interference is the superposition of two or more coherent waves producing a pattern of reinforcement and cancellation."],
+ ["Describe how stationary waves can be shown using microwaves.","A microwave transmitter faces a reflecting metal plate; moving a detector along the line shows alternating maxima and minima, with nodes half a wavelength apart."]],
+[
+ {m:6,cw:"Describe",q:"Describe how you would measure the wavelength of light from a laser using a diffraction grating, and how you would analyse your results.",
+  ms:["Direct the laser beam normally at the grating (with a safe set-up and no looking into the beam)","Measure the distance D from grating to screen with a tape measure","Measure the distance between the same-order maxima either side of the centre to reduce uncertainty, and halve it to find x","Calculate the angle using tanθ = x/D for each order n","Use d = 1/N where N is the number of lines per metre, and λ = d sinθ/n","Plot sinθ against n: the gradient is λ/d, which gives λ"],
+  model:"I would shine the laser straight through the grating onto a screen a measured distance D away. The spots either side of the central maximum are marked and their separation measured, then halved to give x. The angle for each order is found from tanθ = x/D. Knowing the line spacing d = 1/N, the wavelength follows from d sinθ = nλ. A graph of sinθ against n has a gradient λ/d, which averages over several orders. Safety: laser warnings and avoiding reflections.",
+  tip:"Measuring across several orders reduces percentage uncertainty."},
+ {m:4,cw:"Explain",q:"Explain how a stationary wave forms on a stretched string fixed at both ends and why only certain frequencies produce a clear pattern.",
+  ms:["A wave travelling along the string is reflected at the fixed end","The incident and reflected waves (same frequency and amplitude, opposite directions) superpose","Nodes form at the fixed ends, so an integer number of half wavelengths must fit onto the string, L = nλ/2","At other frequencies the waves do not reinforce consistently so no large-amplitude pattern forms"],tip:"Mention superposition and nodes at the ends."},
+ {m:3,cw:"Calculate",q:"Light passes from glass of refractive index 1.52 into air. Calculate the critical angle for the glass–air boundary.",
+  ms:["sin C = 1/n","= 1/1.52 = 0.658","C = 41°"],tip:"The critical angle is for the denser medium to the less dense medium."}]);
+
+X("qua",[
+ ["What is meant by wave–particle duality?","Radiation and matter show both wave-like properties (diffraction, interference) and particle-like properties (photons, localised energy transfers)."],
+ ["Which observations in the photoelectric effect support the photon model?","A threshold frequency, instantaneous emission and a maximum KE independent of intensity but dependent on frequency."]],
+[
+ {m:6,cw:"Explain",q:"Explain how the photoelectric effect provides evidence for the particle nature of electromagnetic radiation and why the wave model cannot account for the observations.",
+  ms:["Observation: no electrons are emitted below a threshold frequency, however intense the radiation","The wave model predicts that any frequency should eject electrons if the intensity is high enough or the exposure long enough","The photon model: radiation is quantised as photons of energy hf, and one photon interacts with one electron","If hf is less than the work function φ no electron can escape; if greater, hf = φ + KE(max)","Increasing intensity gives more photons per second, so more electrons per second but not a greater maximum KE","Emission is instantaneous because the energy is delivered in one packet, whereas the wave model predicts a delay while energy builds up"],
+  model:"The photoelectric effect shows a threshold frequency below which no electrons are emitted whatever the intensity, and emission is immediate. In the wave model energy would accumulate gradually and any frequency should work given enough intensity. Einstein's photon model explains it: each photon has energy hf and gives all of it to a single electron. If hf is less than the work function no electron escapes; otherwise the excess becomes KE, hf = φ + KE(max). A higher intensity gives more photons and so more electrons per second but not more energetic ones.",
+  tip:"Contrast the wave prediction with the observation in each case."},
+ {m:4,cw:"Explain",q:"Explain how line emission spectra provide evidence for discrete energy levels in atoms.",
+  ms:["Electrons in an atom can only occupy certain discrete energy levels","When an electron falls from a higher to a lower level a photon is emitted with energy hf = E₂ − E₁","The photon energies are fixed so only certain wavelengths appear as sharp lines","A continuous range of levels would give a continuous spectrum; absorption spectra show dark lines at the same wavelengths"],tip:"Use the relation hf = E₂ − E₁."}]);
+
+X("thm",[
+ ["State Boyle's law.","For a fixed mass of gas at constant temperature, pressure is inversely proportional to volume, pV = constant."],
+ ["Why do the molecules in a gas at one temperature have a range of speeds?","Random collisions continually exchange energy between molecules, so the speeds are distributed around an average; temperature relates to the mean kinetic energy."]],
+[
+ {m:4,cw:"Explain",q:"A sealed rigid container of gas is heated. Use kinetic theory to explain why the pressure of the gas increases.",
+  ms:["Higher temperature means a greater mean kinetic energy, so the molecules move faster","They collide with the walls more frequently","Each collision involves a greater change in momentum","The rate of change of momentum (force) on the walls increases, so pressure increases as volume is constant"],tip:"Use force = rate of change of momentum."},
+ {m:4,cw:"Calculate",q:"An electric heater of power 50 W heats a 0.50 kg aluminium block from 20 °C to 45 °C in 5.0 minutes. Calculate the specific heat capacity of aluminium from these results and comment on the value, given the accepted value is about 900 J kg⁻¹ K⁻¹.",
+  ms:["Energy supplied = 50 × 300 = 1.5 × 10⁴ J","c = Q/(mΔθ)","= 1.5 × 10⁴ / (0.50 × 25) = 1.2 × 10³ J kg⁻¹ K⁻¹","The value is too large because some energy is lost to the surroundings, so the block gained less energy than was supplied (insulate the block)"],tip:"Heat losses make the calculated c too high."}]);
+
+X("circm",[
+ ["How is angular velocity related to the period?","ω = 2π/T (and ω = 2πf)."],
+ ["Why are bends on roads and railways banked?","The normal reaction has a horizontal component that provides some or all of the centripetal force, reducing dependence on friction."]],
+[
+ {m:3,cw:"Explain",q:"A passenger in a car turning a corner feels pushed towards the outside of the bend. Explain what is actually happening using Newton's laws.",
+  ms:["The passenger's body tends to continue in a straight line at constant velocity (Newton's first law)","The car turns, and the door and seat provide a resultant force towards the centre of the circle (centripetal force)","There is no outward force; the sensation is the contact force of the door pushing the passenger inwards"],tip:"State clearly that no outward force acts."},
+ {m:3,cw:"Calculate",q:"A bucket of water is swung in a vertical circle of radius 0.80 m. Calculate the minimum speed at the top of the circle so that the water stays in the bucket.",
+  ms:["At the minimum speed the weight alone provides the centripetal force","mg = mv²/r","v = √(gr) = √(9.81 × 0.80) = 2.8 m s⁻¹"],tip:"Contact force falls to zero at the limit."}]);
+
+X("osc",[
+ ["Describe the phase relationship between displacement, velocity and acceleration in SHM.","Velocity leads displacement by π/2 (a quarter of a cycle); acceleration is in antiphase (π out of phase) with displacement."],
+ ["Define amplitude, period and frequency.","Amplitude: maximum displacement from equilibrium. Period: time for one complete oscillation. Frequency: number of oscillations per second (f = 1/T)."]],
+[
+ {m:4,cw:"Explain",q:"Explain why the suspension of a car is designed to be critically damped.",
+  ms:["Damping removes energy from the oscillation, reducing the amplitude","Critical damping returns the system to equilibrium in the shortest possible time","Without oscillating, so the car does not keep bouncing after a bump","Under-damping would cause continued oscillation and over-damping would be slow to return to normal"],tip:"Compare with light and heavy damping."},
+ {m:6,cw:"Describe",q:"Describe an experiment to investigate how the period of oscillation of a mass on a vertical spring depends on the mass, and explain how the spring constant is determined.",
+  ms:["Hang a spring from a clamp and attach a known mass; measure the mass with a balance","Displace the mass a small distance and release it, keeping the amplitude small and constant","Time 20 oscillations from the centre of the motion, repeat and take a mean to find T","Repeat with a range of masses (at least six)","Plot T² against m: T² = 4π²m/k, so a straight line","Gradient = 4π²/k, so k = 4π²/gradient"],
+  model:"A spring is hung from a clamp with different known masses added. For each mass I would displace it slightly and time 20 oscillations, using a marker at the equilibrium position, then repeat and average to get the period. T² plotted against m should be a straight line since T² = 4π²m/k. The gradient equals 4π²/k, so the spring constant is 4π² divided by the gradient. A small amplitude and a long timed interval reduce the uncertainty.",
+  tip:"State what you plot and what the gradient means."}]);
+
+X("grav",[
+ ["Why do astronauts in orbit appear weightless?","They and the spacecraft are in free fall with the same acceleration towards Earth, so there is no contact force between them; gravity still acts."],
+ ["How does g vary with distance from a spherical planet?","Outside the planet, g ∝ 1/r². Near the surface, over small height changes, g is approximately uniform."]],
+[
+ {m:3,cw:"Explain",q:"Explain why two satellites of different mass in the same circular orbit have the same orbital period.",
+  ms:["Gravity provides the centripetal force: GMm/r² = mω²r","The mass m of the satellite cancels from both sides","T² = 4π²r³/GM depends only on the central mass and the orbital radius"],tip:"Show the mass cancelling."},
+ {m:4,cw:"Explain",q:"A satellite is moved from a low circular orbit to a higher circular orbit. Explain what happens to its gravitational potential energy, its kinetic energy and its total energy, and what is needed to make this change.",
+  ms:["Gravitational potential energy increases (becomes less negative)","Orbital speed decreases as v = √(GM/r), so the kinetic energy decreases","Total energy E = −GMm/2r increases (less negative)","The rocket engines must do work to supply this extra energy"],tip:"The total energy of a bound orbit is negative."}]);
+
+X("astro",[
+ ["What is a standard candle?","An object of known luminosity, such as a Type Ia supernova, so that its distance can be found from the measured intensity using I = L/4πd²."],
+ ["What provides the force that balances gravity in a main-sequence star?","The outward pressure from the thermal energy and radiation released by hydrogen fusion in the core."]],
+[
+ {m:6,cw:"Describe",q:"Describe the evolution of a star of similar mass to the Sun from a nebula to a white dwarf.",
+  ms:["A cloud of gas (nebula) collapses under gravity and heats up to form a protostar","When the core is hot enough hydrogen fusion begins and the star settles on the main sequence","Gravity is balanced by the outward pressure from fusion energy","When the core hydrogen is used up the core contracts and the outer layers expand and cool, forming a red giant","The outer layers are ejected as a planetary nebula","The remaining core is a hot, dense white dwarf, which cools and fades over time"],
+  model:"A nebula collapses under gravity forming a protostar that heats up until hydrogen fusion begins and it reaches the main sequence, where the outward pressure from fusion balances gravity. When the hydrogen in the core runs out the core contracts and the outer layers expand and cool into a red giant. Eventually the outer layers are shed as a planetary nebula, leaving a hot dense core: a white dwarf, which cools over time.",
+  tip:"Describe the balance of forces at each stage."},
+ {m:4,cw:"Explain",q:"Explain how the cosmic microwave background radiation provides evidence for the Big Bang.",
+  ms:["The radiation is the remnant of the hot, dense early universe","Expansion has stretched its wavelength (cosmological redshift) from short wavelengths to the microwave region","It corresponds to a black-body temperature of about 2.7 K","It is almost uniform in all directions (isotropic), consistent with a once hot and dense universe"],tip:"Link redshift of the early radiation to the expansion."}]);
+
+X("cap",[
+ ["Why is the energy stored in a capacitor ½QV rather than QV?","The p.d. rises as charge accumulates, so the average p.d. during charging is V/2. Half of the energy supplied by the source is dissipated as thermal energy in the resistance of the circuit."],
+ ["Describe an experiment to determine the time constant of an RC circuit.","Charge the capacitor, then discharge through a resistor, recording V (or I) at regular times with a data logger. Find the time to fall to 1/e of the initial value, or plot ln V against t; gradient = −1/RC."]],
+[
+ {m:4,cw:"Explain",q:"Explain why the energy stored in a charged capacitor is ½QV and not QV.",
+  ms:["As charge flows onto the plates the p.d. across the capacitor increases from zero to V","Work done in moving a small charge ΔQ is VΔQ, with V rising as Q increases","The total energy is the area under the V–Q graph, a triangle of area ½QV","(The other half of the energy supplied by the battery, QV, is dissipated as thermal energy in the resistance of the circuit)"],tip:"Link to the area under the V–Q graph."},
+ {m:3,cw:"Calculate",q:"A 4.0 μF capacitor and a 6.0 μF capacitor are connected in series across a 10 V supply. Calculate the charge stored on each capacitor.",
+  ms:["1/C = 1/4.0 + 1/6.0, so C = 2.4 μF","Q = CV = 2.4 × 10⁻⁶ × 10 = 24 μC","The same charge (24 μC) is stored on each capacitor in series"],tip:"Series capacitors store the same charge."}]);
+
+X("efld",[
+ ["What shape are the field lines between oppositely charged parallel plates?","Parallel, equally spaced lines between the plates (a uniform field), curving outwards (fringing) at the edges."],
+ ["What happens to the field strength of a point charge if the distance is doubled?","It falls to one quarter (E ∝ 1/r²)."]],
+[
+ {m:6,cw:"Compare",q:"Compare and contrast gravitational fields and electric fields.",
+  ms:["Both are radial inverse-square fields around a point mass or point charge","Both can be described by field lines and a field strength (force per unit mass or per unit charge)","Both have potentials which are zero at infinity","Gravitational forces are always attractive but electric forces can be attractive or repulsive","Gravitational forces depend on mass and electric forces depend on charge","The electric force between charged particles is far larger than the gravitational force between them"],
+  model:"Both fields obey an inverse-square law, with field strengths defined as force per unit mass or per unit charge and potentials that are zero at infinity. They differ because gravity is only ever attractive whereas electric forces can attract or repel, because gravity depends on mass while electric forces depend on charge, and because electric forces are enormously larger for particles such as protons and electrons.",
+  tip:"Write about both fields in each sentence."},
+ {m:4,cw:"Explain",q:"An electron enters the uniform electric field between two horizontal plates horizontally. Explain the shape of its path in the field.",
+  ms:["The electric force on the electron is constant in size and acts vertically (towards the positive plate)","There is no horizontal force so the horizontal velocity is constant","The vertical component of velocity increases uniformly (constant acceleration)","The combination gives a parabolic path, like a projectile"],tip:"Compare with a ball thrown horizontally under gravity."}]);
+
+X("emag",[
+ ["How does an AC generator work?","A coil rotates in a uniform magnetic field, so the flux linkage changes continuously; by Faraday's law a sinusoidal emf is induced, collected via slip rings."],
+ ["Define magnetic flux linkage.","The product of the number of turns and the magnetic flux through each turn, NΦ = NBA cosθ (unit: Wb or weber-turns)."]],
+[
+ {m:4,cw:"Explain",q:"A magnet is dropped through a coil connected to a data logger. Explain the shape of the induced emf against time graph, which has a positive peak followed by a larger negative peak.",
+  ms:["As the magnet enters the coil the flux linkage increases, so an emf is induced (Faraday's law)","When it leaves, the flux linkage decreases so the emf has the opposite sign","(Lenz's law) the induced current opposes the change in each case","The magnet is moving faster as it leaves, so the rate of change of flux linkage and the emf are larger"],tip:"Mention the speed of the magnet."},
+ {m:6,cw:"Explain",q:"Explain why electrical energy is transmitted at high voltage and how a transformer changes the voltage, including reasons why it is not 100% efficient.",
+  ms:["For a given power P = VI, a higher voltage means a lower current","Power lost in the cables is I²R, so a lower current greatly reduces wasted power","A step-up transformer raises the voltage at the power station and a step-down transformer lowers it for use","An alternating current in the primary coil produces a changing magnetic flux in the iron core","The flux links the secondary coil, inducing an emf (Faraday's law), with Vs/Vp = Ns/Np","Energy is lost through resistance of the coils, eddy currents in the core (reduced by laminations), hysteresis and flux leakage"],
+  model:"At the same power, a higher transmission voltage means a lower current, and since power lost in cables is I²R, high-voltage transmission wastes much less energy. Step-up transformers raise the voltage at the power station and step-down transformers reduce it near homes. In a transformer, the alternating current in the primary produces a changing flux in the iron core which links the secondary and induces an emf, with Vs/Vp = Ns/Np. Losses occur through the resistance of the windings, eddy currents in the core, hysteresis and flux leakage.",
+  tip:"Link I²R to the reason for high voltage."}]);
+
+X("part",[
+ ["What happens in pair production and annihilation?","Pair production: a photon of sufficient energy (at least 2 × 0.511 MeV) becomes a particle–antiparticle pair. Annihilation: a particle and its antiparticle convert into photons, conserving energy, momentum and charge."],
+ ["State the main features of the strong nuclear force.","Attractive between nucleons up to about 3 fm, repulsive at very short range (below about 0.5 fm), short range, and independent of charge."]],
+[
+ {m:4,cw:"Describe",q:"Describe the key features of the strong nuclear force and explain its role in the nucleus.",
+  ms:["It acts between hadrons (nucleons) and is independent of charge","It is attractive up to a separation of about 3 fm","It is repulsive at very small separations (below about 0.5 fm), preventing collapse","It is stronger than the electrostatic repulsion between protons at nuclear distances, so it holds the nucleus together"],tip:"Mention both attractive and repulsive ranges."},
+ {m:3,cw:"Show that",q:"Show that the β⁺ decay p → n + e⁺ + νₑ conserves charge, baryon number and lepton number.",
+  ms:["Charge: +1 → 0 + (+1) + 0 = +1 (conserved)","Baryon number: 1 → 1 + 0 + 0 (conserved)","Lepton number: 0 → 0 + (−1) + (+1) = 0 (conserved)"],tip:"Positron has lepton number −1."}]);
+
+X("rad",[
+ ["What is the constant-ratio property of exponential decay?","In equal time intervals the quantity falls by the same fraction, so each half-life halves the activity."],
+ ["Why must the background count rate be subtracted?","Radiation from the environment adds to the count, so the corrected count rate = measured − background gives only that from the source."]],
+[
+ {m:3,cw:"Suggest",q:"Suggest why carbon-14 dating (half-life 5700 years) cannot be used to date a rock sample that is about 100 million years old.",
+  ms:["After a very large number of half-lives almost all the carbon-14 has decayed","The remaining activity is too small to distinguish from background radiation","A radioactive isotope with a much longer half-life (and present in rocks) is needed"],tip:"Compute the number of half-lives involved."},
+ {m:4,cw:"Describe",q:"Describe an experiment to investigate how the intensity of gamma radiation depends on the thickness of lead placed between the source and a detector.",
+  ms:["Measure the background count rate with no source present","Place the gamma source at a fixed distance from a Geiger–Müller tube and measure the count rate with no lead","Add lead absorbers of increasing thickness, recording the count rate for each","Subtract background, then plot ln(corrected count rate) against thickness: gradient = −μ (use tongs, shielding and minimum exposure time for safety)"],tip:"Include a safety precaution."}]);
+
+X("bind",[
+ ["Why do the neutrons from fission need to be slowed down?","Slow (thermal) neutrons are much more likely to be absorbed by a uranium-235 nucleus and cause another fission, sustaining the chain reaction."],
+ ["Compare nuclear fission and nuclear fusion.","Fission: heavy nucleus splits into medium nuclei (neutron-induced chain reaction); used in current reactors, radioactive waste. Fusion: light nuclei combine at very high temperature and pressure; more energy per kg; little long-lived waste but hard to achieve."]],
+[
+ {m:4,cw:"Evaluate",q:"Evaluate nuclear fission as a source of electrical energy.",
+  ms:["Advantage: a very large amount of energy is released per kilogram of fuel","Advantage: no carbon dioxide emissions during operation","Disadvantage: radioactive waste with a long half-life needs safe storage for a long time","Disadvantage: risk of accidents and release of radioactive material (and fuel is finite); a balanced conclusion is reached"],tip:"Give points for and against, then judge."},
+ {m:3,cw:"Calculate",q:"In a deuterium–tritium fusion reaction the mass lost is 0.0189 u. Calculate the energy released in MeV. (1 u = 931.5 MeV)",
+  ms:["Energy = Δm × 931.5","= 0.0189 × 931.5","= 17.6 MeV"],tip:"Use the u-to-MeV conversion directly."}]);
+
+X("med",[
+ ["How does a gamma camera differ from a PET scanner?","A gamma camera detects single gamma photons from a gamma-emitting tracer (e.g. Tc-99m) using a collimator and scintillator. A PET scanner uses positron emitters and detects pairs of back-to-back 0.511 MeV photons from annihilation."],
+ ["Why is MRI considered safer than X-ray based imaging?","It uses strong magnetic fields and radio waves rather than ionising radiation, so there is no risk of ionisation damage to cells."]],
+[
+ {m:6,cw:"Compare",q:"Compare the use of CT scans and MRI scans in producing images of the body.",
+  ms:["CT uses X-rays (ionising radiation), MRI uses strong magnetic fields and radio waves (non-ionising)","CT: an X-ray tube and detectors rotate around the patient, taking many attenuation readings from different angles","A computer reconstructs slices (and 3D images) from the data","MRI: protons align in the magnetic field, radio-frequency pulses make them absorb energy and flip, and the emitted signals as they relax are detected","CT is quick and good for bone and dense tissue but gives a radiation dose","MRI has excellent soft tissue contrast and no ionising dose but is slower and costly and unsuitable for patients with some metal implants"],
+  model:"CT scanning uses X-rays that rotate around the patient, with detectors measuring attenuation from many angles so that a computer can reconstruct cross-sectional images; it is fast and shows bone well but delivers an ionising dose. MRI uses a strong magnetic field to align protons, and radio-frequency pulses make them flip; the signals emitted as they relax are detected. It gives excellent soft-tissue contrast without ionising radiation, but is slower, more expensive and cannot be used with some implants.",
+  tip:"Give an advantage and a disadvantage of each."},
+ {m:4,cw:"Explain",q:"Explain how an ultrasound scan produces an image of a fetus.",
+  ms:["A transducer emits short pulses of ultrasound using the piezoelectric effect","Some of the ultrasound is reflected at boundaries between tissues with different acoustic impedances","The time delay of each echo gives the depth of the boundary (distance = speed × time/2)","The echoes are processed to build a 2D image; gel is used to match impedances and reduce reflection at the skin"],tip:"Mention the role of acoustic impedance."}]);
+/* ---------- Multiple choice (Section A style). First option is the correct one; the order is shuffled every time it is shown. ---------- */
+function M(id,list){const t=TOPICS.find(x=>x.id===id);t.mcqs=(t.mcqs||[]).concat(list.map(a=>({q:a[0],opts:a[1],why:a[2]})))}
+
+M("prac",[
+ ["Which action reduces the effect of random errors on a measured quantity?",["Repeating the readings and calculating a mean","Correcting for a zero error","Calibrating the instrument against a standard","Using a heavier object"],"Random scatter is averaged out by repeats. Zero errors and calibration deal with systematic errors."],
+ ["A micrometer reads 0.03 mm when its jaws are closed. It reads 0.52 mm on a wire. What is the correct diameter?",["0.49 mm","0.52 mm","0.55 mm","0.03 mm"],"Subtract the zero error from every reading: 0.52 − 0.03 = 0.49 mm."],
+ ["In an investigation, what is the independent variable?",["The quantity that the experimenter deliberately changes","The quantity measured as a result","A quantity kept constant","The quantity found from the gradient"],"The dependent variable is the one measured as a result, and control variables are kept constant."]]);
+M("units",[
+ ["What are the SI base units of power (the watt)?",["kg m² s⁻³","kg m² s⁻²","kg m s⁻³","kg m⁻² s⁻³"],"W = J s⁻¹ = kg m² s⁻² ÷ s = kg m² s⁻³."],
+ ["A frequency of 2.4 GHz is equal to:",["2.4 × 10⁹ Hz","2.4 × 10⁶ Hz","2.4 × 10¹² Hz","2.4 × 10⁻⁹ Hz"],"Giga means 10⁹."],
+ ["Which quantity has the SI base units kg m⁻³?",["Density","Pressure","Momentum","Specific heat capacity"],"Density is mass per unit volume, kg per m³."]]);
+M("meas",[
+ ["x = 20.0 ± 0.2 cm and y = 10.0 ± 0.3 cm. What is the absolute uncertainty in x + y?",["± 0.5 cm","± 0.3 cm","± 0.2 cm","± 0.1 cm"],"Absolute uncertainties add for sums and differences."],
+ ["A quantity Q is proportional to r². The percentage uncertainty in r is 3%. What is the percentage uncertainty in Q?",["6%","3%","9%","1.5%"],"Multiply the percentage uncertainty by the power: 2 × 3% = 6%."],
+ ["A = 5.0 ± 0.1 and B = 2.0 ± 0.1. What is the percentage uncertainty in A/B?",["7%","3%","5%","2.5%"],"A is 2%, B is 5%. Percentages add for quotients: 7%."]]);
+M("vec",[
+ ["Which of the following is a vector quantity?",["Acceleration","Energy","Power","Speed"],"Acceleration has direction. The others are scalars."],
+ ["A force of 10 N acts at 60° to the horizontal. What is its vertical component?",["8.7 N","5.0 N","10 N","6.0 N"],"10 sin 60° = 8.7 N."],
+ ["Two perpendicular forces of 3.0 N and 4.0 N act at a point. What is the magnitude of their resultant?",["5.0 N","7.0 N","1.0 N","12 N"],"√(3² + 4²) = 5.0 N."]]);
+M("mot",[
+ ["What does the gradient of a velocity–time graph represent?",["Acceleration","Displacement","Velocity","Distance"],"Gradient of v–t is acceleration. The area gives displacement."],
+ ["A car at 10 m s⁻¹ accelerates uniformly at 2.0 m s⁻² for 5.0 s. How far does it travel?",["75 m","50 m","60 m","100 m"],"s = ut + ½at² = 50 + 25 = 75 m."],
+ ["A ball is thrown horizontally at 3.0 m s⁻¹ from a table 1.2 m high. Approximately how long does it take to hit the floor?",["0.5 s","0.25 s","1.0 s","0.12 s"],"Vertical: 1.2 = ½gt² gives t ≈ 0.5 s, independent of the horizontal speed."]]);
+M("frc",[
+ ["What is the moment of a 20 N force acting at a perpendicular distance of 0.30 m from a pivot?",["6.0 N m","600 N m","0.015 N m","20 N m"],"Moment = force × perpendicular distance = 20 × 0.30."],
+ ["What is the pressure due to the water alone at a depth of 10 m? (ρ = 1000 kg m⁻³)",["9.8 × 10⁴ Pa","1.0 × 10⁴ Pa","9.8 × 10³ Pa","1.0 × 10⁶ Pa"],"p = hρg = 10 × 1000 × 9.81."],
+ ["Which statement is true of an object falling at terminal velocity?",["The resultant force on it is zero","Drag is zero","Its acceleration is g","Its weight is zero"],"Drag equals weight, so the resultant force and the acceleration are zero."]]);
+M("wep",[
+ ["What is the kinetic energy of a 2.0 kg mass moving at 3.0 m s⁻¹?",["9.0 J","6.0 J","18 J","4.5 J"],"½mv² = ½ × 2.0 × 9.0 = 9.0 J."],
+ ["A motor lifts a 50 kg load through 4.0 m in 10 s. What is its useful power output?",["2.0 × 10² W","20 W","2.0 × 10³ W","5.0 × 10² W"],"P = mgh/t = 50 × 9.81 × 4.0/10 ≈ 200 W."],
+ ["How much work does a force do on a body moving at right angles to the force?",["Zero","Positive","Negative","It depends on the speed"],"W = Fs cos 90° = 0."]]);
+M("mat",[
+ ["What is the unit of the Young modulus?",["Pa","N","N m⁻¹","It has no unit"],"E = stress ÷ strain, and strain has no unit, so E is in pascals."],
+ ["A spring of stiffness 200 N m⁻¹ is extended by 0.050 m. How much energy is stored?",["0.25 J","0.50 J","10 J","5.0 J"],"½kx² = ½ × 200 × 0.0025 = 0.25 J."],
+ ["Which statement describes a brittle material?",["It fractures with little or no plastic deformation","It shows a large plastic region before fracture","It has no elastic region","It always obeys Hooke's law after the yield point"],"Brittle materials fracture suddenly, close to the elastic limit."]]);
+M("newt",[
+ ["What is the SI base unit combination of momentum?",["kg m s⁻¹","kg m s⁻²","kg m² s⁻¹","kg m² s⁻²"],"p = mv."],
+ ["A 2.0 kg trolley at 3.0 m s⁻¹ collides with a stationary 1.0 kg trolley and they stick together. What is their speed after the collision?",["2.0 m s⁻¹","3.0 m s⁻¹","1.5 m s⁻¹","6.0 m s⁻¹"],"6.0 = 3.0v, so v = 2.0 m s⁻¹."],
+ ["What does the area under a force–time graph represent?",["Impulse (change in momentum)","Work done","Power","Kinetic energy"],"Impulse = FΔt = Δp."]]);
+M("chg",[
+ ["A current of 2.0 A flows for 30 s. What charge passes?",["60 C","15 C","0.067 C","120 C"],"Q = It = 2.0 × 30."],
+ ["In a wire of constant current, the cross-sectional area is doubled. What happens to the drift velocity?",["It halves","It doubles","It stays the same","It quarters"],"v = I/nAq, so v ∝ 1/A."],
+ ["Kirchhoff's first law is a statement of the conservation of:",["Charge","Energy","Momentum","Mass"],"Current into a junction equals current out, so charge is conserved."]]);
+M("res",[
+ ["A lamp has a p.d. of 12 V across it and a current of 3.0 A. What is its resistance?",["4.0 Ω","36 Ω","0.25 Ω","9.0 Ω"],"R = V/I = 12/3.0."],
+ ["A 6.0 Ω resistor carries 3.0 A. What is the power dissipated?",["54 W","18 W","2.0 W","108 W"],"P = I²R = 9.0 × 6.0."],
+ ["A wire has its length doubled while its diameter stays the same. What happens to its resistance?",["It doubles","It halves","It quadruples","It stays the same"],"R = ρL/A, so R ∝ L."]]);
+M("circ",[
+ ["Two 6.0 Ω resistors are connected in parallel. What is the combined resistance?",["3.0 Ω","12 Ω","6.0 Ω","1.5 Ω"],"1/R = 1/6 + 1/6 = 1/3."],
+ ["A cell of emf 6.0 V and internal resistance 1.0 Ω delivers a current of 2.0 A. What is its terminal p.d.?",["4.0 V","6.0 V","2.0 V","8.0 V"],"V = E − Ir = 6.0 − 2.0 × 1.0."],
+ ["A 12 V supply is connected across a 4.0 kΩ and an 8.0 kΩ resistor in series. What is the p.d. across the 8.0 kΩ resistor?",["8.0 V","4.0 V","6.0 V","12 V"],"V = 12 × 8/(4 + 8) = 8.0 V."]]);
+M("wav",[
+ ["A wave of frequency 50 Hz travels at 20 m s⁻¹. What is its wavelength?",["0.40 m","2.5 m","1000 m","0.025 m"],"λ = v/f = 20/50."],
+ ["Which path difference gives destructive interference for two coherent sources in phase?",["(n + ½)λ","nλ","2nλ","λ/4 only"],"Waves arrive in antiphase when the path difference is an odd number of half wavelengths."],
+ ["Polarisation of light is evidence that light is:",["A transverse wave","A longitudinal wave","A stream of neutral particles","A sound wave"],"Only transverse waves can be polarised."]]);
+M("qua",[
+ ["A photon has energy 3.2 × 10⁻¹⁹ J. What is this in electronvolts?",["2.0 eV","0.50 eV","5.1 eV","3.2 eV"],"3.2 × 10⁻¹⁹ ÷ 1.60 × 10⁻¹⁹ = 2.0 eV."],
+ ["Light above the threshold frequency is made more intense. What increases?",["The number of electrons emitted per second","The maximum kinetic energy of the electrons","The threshold frequency","The work function"],"More photons per second means more electrons per second, but each photon has the same energy."],
+ ["The speed of an electron doubles. What happens to its de Broglie wavelength (non-relativistic)?",["It halves","It doubles","It is unchanged","It quarters"],"λ = h/mv, so λ ∝ 1/v."]]);
+M("thm",[
+ ["What is 0 °C in kelvin (to the nearest degree)?",["273 K","0 K","373 K","−273 K"],"T/K = θ/°C + 273."],
+ ["How much energy is needed to melt 0.50 kg of ice at 0 °C? (L = 3.34 × 10⁵ J kg⁻¹)",["1.7 × 10⁵ J","6.7 × 10⁵ J","3.3 × 10⁵ J","1.7 × 10⁴ J"],"Q = mL = 0.50 × 3.34 × 10⁵."],
+ ["The mean kinetic energy of the molecules of an ideal gas depends only on:",["Its absolute temperature","Its pressure","Its volume","The mass of each molecule"],"Mean KE = (3/2)kT."]]);
+M("circm",[
+ ["A body moves at 4.0 m s⁻¹ in a circle of radius 2.0 m. What is its centripetal acceleration?",["8.0 m s⁻²","2.0 m s⁻²","16 m s⁻²","4.0 m s⁻²"],"a = v²/r = 16/2.0."],
+ ["An object moves in a circle with period 2.0 s. What is its angular speed?",["3.1 rad s⁻¹","6.3 rad s⁻¹","0.50 rad s⁻¹","1.6 rad s⁻¹"],"ω = 2π/T = π ≈ 3.1 rad s⁻¹."],
+ ["In uniform circular motion the centripetal force does:",["No work","Positive work","Negative work","Work proportional to the radius"],"The force is perpendicular to the velocity."]]);
+M("osc",[
+ ["Which statement defines simple harmonic motion?",["Acceleration is proportional to displacement and in the opposite direction","Velocity is proportional to displacement","Force is constant and towards the centre","Acceleration is constant"],"a ∝ −x."],
+ ["The mass on a spring is increased by a factor of four. What happens to the period?",["It doubles","It quadruples","It halves","It is unchanged"],"T = 2π√(m/k), so T ∝ √m."],
+ ["Where is the kinetic energy of an oscillating mass a maximum?",["At the equilibrium position","At maximum displacement","At half the amplitude","It is constant"],"Speed is greatest at the equilibrium position."]]);
+M("grav",[
+ ["The distance of a satellite from the centre of a planet is doubled. What happens to g at the satellite?",["It falls to a quarter","It halves","It doubles","It is unchanged"],"g ∝ 1/r²."],
+ ["Why is gravitational potential negative?",["It is zero at infinity and gravity is attractive","The Earth is negatively charged","Gravity is repulsive","Potential is only defined near the surface"],"Work must be done against the field to move a mass to infinity."],
+ ["What is the orbital period of a geostationary satellite?",["24 hours","12 hours","90 minutes","1 hour"],"It matches the rotation period of the Earth."]]);
+M("astro",[
+ ["The absolute temperature of a star doubles. What happens to the peak wavelength of its emission?",["It halves","It doubles","It is unchanged","It quarters"],"Wien's law: λ_max ∝ 1/T."],
+ ["According to Hubble's law, the recession speed of a galaxy is proportional to:",["Its distance from us","Its mass","Its luminosity","Its temperature"],"v = H₀d."],
+ ["A star's radius doubles at constant temperature. What happens to its luminosity?",["It increases by a factor of 4","It doubles","It increases by a factor of 16","It is unchanged"],"L = 4πr²σT⁴, so L ∝ r²."]]);
+M("cap",[
+ ["A 10 μF capacitor is charged to 5.0 V. How much charge does it store?",["50 μC","2.0 μC","0.50 μC","15 μC"],"Q = CV."],
+ ["What is the time constant of a 2.0 kΩ resistor and a 50 μF capacitor?",["0.10 s","1.0 s","100 s","0.040 s"],"τ = RC = 2000 × 50 × 10⁻⁶."],
+ ["How much energy is stored in a 100 μF capacitor charged to 10 V?",["5.0 × 10⁻³ J","1.0 × 10⁻² J","1.0 × 10⁻³ J","5.0 × 10⁻² J"],"½CV² = ½ × 100 × 10⁻⁶ × 100."]]);
+M("efld",[
+ ["A p.d. of 4.0 V is applied across plates 2.0 cm apart. What is the field strength between them?",["200 V m⁻¹","2.0 V m⁻¹","8.0 V m⁻¹","0.50 V m⁻¹"],"E = V/d = 4.0/0.020."],
+ ["The distance between two point charges is doubled. What happens to the force between them?",["It falls to a quarter","It halves","It doubles","It is unchanged"],"F ∝ 1/r²."],
+ ["Electric field lines show:",["The direction of the force on a positive charge","The direction of the force on a negative charge","The path of an electron only","Equipotential surfaces"],"By definition, they point in the direction a positive charge would move."]]);
+M("emag",[
+ ["A 0.20 m wire carrying 5.0 A is perpendicular to a field of 0.10 T. What is the force on it?",["0.10 N","0.010 N","0.50 N","1.0 N"],"F = BIL = 0.10 × 5.0 × 0.20."],
+ ["Lenz's law is a consequence of conservation of:",["Energy","Charge","Momentum","Mass"],"If the induced current helped the change, energy would be created from nothing."],
+ ["A transformer has 100 turns on the primary and 400 on the secondary. The primary p.d. is 20 V. What is the secondary p.d.?",["80 V","5.0 V","20 V","8000 V"],"V_s = V_p × N_s/N_p."]]);
+M("part",[
+ ["Which quark combination makes a proton?",["uud","udd","uuu","ddd"],"Charge: 2/3 + 2/3 − 1/3 = +1."],
+ ["Which of these is a lepton?",["Electron","Proton","Pion","Neutron"],"Leptons are fundamental particles that do not feel the strong force."],
+ ["In β⁻ decay a neutron changes into a proton, an electron and a:",["Antineutrino","Neutrino","Positron","Photon"],"Lepton number must be conserved, so an antineutrino is emitted."]]);
+M("rad",[
+ ["A sample has a half-life of 4.0 hours. What fraction of the nuclei remains after 12 hours?",["1/8","1/3","1/6","1/4"],"12 h is three half-lives: (½)³."],
+ ["Which radiation is the most penetrating?",["Gamma","Alpha","Beta-minus","They are equally penetrating"],"Gamma rays are weakly ionising and pass through several centimetres of lead."],
+ ["What does an activity of 1 Bq represent?",["One decay per second","One decay per hour","One half-life","One ionisation per second"],"Activity is the number of decays per second."]]);
+M("bind",[
+ ["Which nucleus has about the highest binding energy per nucleon?",["Iron-56","Hydrogen-1","Uranium-238","Helium-4"],"The curve peaks near iron-56."],
+ ["A nucleus has a mass defect of 0.010 u. What is its binding energy? (1 u = 931.5 MeV)",["9.3 MeV","93 MeV","0.93 MeV","931.5 MeV"],"0.010 × 931.5 = 9.3 MeV."],
+ ["What is the role of the control rods in a nuclear reactor?",["To absorb neutrons","To slow neutrons","To remove thermal energy","To shield the staff"],"The moderator slows neutrons; the coolant removes thermal energy."]]);
+M("med",[
+ ["Which radioisotope is widely used as a tracer in a gamma camera?",["Technetium-99m","Carbon-14","Uranium-235","Fluorine-18"],"Technetium-99m emits gamma rays and has a half-life of about 6 hours. Fluorine-18 is used in PET."],
+ ["In PET scanning, what is detected?",["Two gamma photons travelling in opposite directions","A single alpha particle","X-rays from the tracer","Radio waves from protons"],"Positron annihilation produces two photons of 0.511 MeV each, back to back."],
+ ["The linear attenuation coefficient of a tissue doubles. What happens to its half-value thickness?",["It halves","It doubles","It is unchanged","It quadruples"],"x½ = ln 2/μ."]]);
 /* ---------- Diagram library (inline SVG, themed with CSS variables) ---------- */
 const DEFS='<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="inkf"/></marker><marker id="ahA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="accf"/></marker></defs>';
 function svg(W,H,inner,alt){return `<svg class="fig" viewBox="0 0 ${W} ${H}" role="img" aria-label="${alt||'Diagram'}">${DEFS}${inner}</svg>`}
@@ -792,6 +1370,109 @@ const CALCS=[
  {t:"meas",f:()=>{const d=rnd(.5,2,.1),dd=rnd(.01,.05,.01),n=pick([2,3]);const pc=dd/d*100*n;return{q:`The radius of a sphere is ${d} ± ${dd} cm. Calculate the percentage uncertainty in its ${n==2?'surface area (∝ r²)':'volume (∝ r³)'}.`,a:pc,u:"%",sol:`% uncertainty in r = ${dd}/${d} × 100 = ${sf(dd/d*100)}%. Multiply by the power ${n}: ${sf(pc)}%`}}}
 ];
 function makeCalc(topics){const pool=CALCS.filter(c=>!topics||topics.includes(c.t));if(!pool.length)return null;const c=pick(pool);const o=c.f();o.topic=c.t;o.id='calc-'+c.t;return o}
+/* ---------- Fun layer: toasts, confetti, sound, mascot, XP, levels, badges ---------- */
+const LEVELS=['Quark','Electron','Proton','Neutron','Atom','Molecule','Crystal','Planet','Star','Pulsar','Galaxy','Universe'];
+const levelOf=xp=>Math.floor(Math.sqrt(Math.max(0,xp)/40))+1;
+const xpAt=L=>40*(L-1)*(L-1);
+const levelName=L=>LEVELS[Math.min(L-1,LEVELS.length-1)];
+const FACTS=[
+ "A teaspoon of neutron star material would weigh around a billion tonnes.",
+ "Light from the Sun takes about 8 minutes 20 seconds to reach the Earth.",
+ "Electrons drift along a copper wire at roughly 0.1 mm per second, yet a lamp lights almost instantly.",
+ "The cosmic microwave background is the oldest light we can see, released about 380 000 years after the Big Bang.",
+ "A photon has no mass but still carries momentum, p = h/λ.",
+ "A skydiver falling belly-down reaches a terminal speed of around 55 m s⁻¹.",
+ "Geostationary satellites orbit roughly 36 000 km above the equator.",
+ "The strong nuclear force only acts over a few femtometres, about the size of a nucleus.",
+ "Quarks are never seen on their own. They always come in groups.",
+ "Sound travels about four times faster in water than in air.",
+ "Testing yourself beats re-reading. That is the whole idea behind this app.",
+ "Spacing out your revision gives your memory time to forget a little, and recalling it then makes it stronger."];
+const PRAISE=['Nice!','Spot on','Great recall','Yes!','Sharp','Brilliant','Smooth','Nailed it'];
+const OOPS=['Not yet','Close','Next time','Keep going'];
+const BADGES=[
+ {id:'first',n:'First steps',d:'Complete your first review',c:()=>S.log.length>=1},
+ {id:'r25',n:'Warming up',d:'Do 25 reviews',c:()=>S.log.length>=25},
+ {id:'r100',n:'Century',d:'Do 100 reviews',c:()=>S.log.length>=100},
+ {id:'s3',n:'On a roll',d:'Revise 3 days in a row',c:()=>streak()>=3},
+ {id:'s7',n:'Week warrior',d:'Revise 7 days in a row',c:()=>streak()>=7},
+ {id:'goal',n:'Goal getter',d:'Hit your daily goal',c:()=>Object.values(S.days).some(d=>d.goalHit)},
+ {id:'t5',n:'Syllabus explorer',d:'Mark 5 topics as learned',c:()=>TOPICS.filter(x=>tget(x.id).status===2).length>=5},
+ {id:'test',n:'Date in the diary',d:'Add a test',c:()=>S.tests.length>=1},
+ {id:'mcq',n:'Sharp-eyed',d:'Get 30 multiple choice right',c:()=>S.log.filter(l=>l.ty==='mcq'&&l.s>=1).length>=30},
+ {id:'calc',n:'Number cruncher',d:'Get 15 calculations right',c:()=>S.log.filter(l=>l.ty==='calc'&&l.s>=1).length>=15},
+ {id:'ext',n:'Full marks',d:'Score full marks on a 4+ mark question',c:()=>S.log.some(l=>l.ty==='q'&&l.tot>=4&&l.got===l.tot)},
+ {id:'master',n:'Topic master',d:'Reach 80% mastery in a topic',c:()=>TOPICS.some(x=>tget(x.id).status>=1&&mastery(x.id)>=.8)}];
+const BCOL=['--m3','--m2','--sun','--m5','--m6','--mint','--m3','--m4','--m2','--m5','--m6','--sun'];
+function checkBadges(){const out=[];if(!S.badges)S.badges={};BADGES.forEach(b=>{if(!S.badges[b.id]&&b.c()){S.badges[b.id]=today();out.push(b)}});return out}
+function badgeSVG(i,on){const c=`var(${BCOL[i%BCOL.length]})`;
+  return `<svg viewBox="0 0 64 64" class="bdg ${on?'on':''}" aria-hidden="true"><path d="M32 4l24 14v28L32 60 8 46V18z" fill="${on?c:'var(--surface2)'}" stroke="${on?'rgba(0,0,0,.12)':'var(--line)'}" stroke-width="2"/>${on?`<path d="M32 17l4.4 9 9.9 1.4-7.2 7 1.7 9.8-8.8-4.7-8.8 4.7 1.7-9.8-7.2-7 9.9-1.4z" fill="#fff"/>`:`<path d="M24 30v-4a8 8 0 0116 0v4M22 30h20v14H22z" fill="none" stroke="var(--ink2)" stroke-width="2.5" stroke-linejoin="round" opacity=".6"/>`}</svg>`}
+
+/* toasts */
+function toast(html,kind){
+  let box=$('#toasts');if(!box){box=document.createElement('div');box.id='toasts';box.setAttribute('aria-live','polite');document.body.appendChild(box)}
+  const t=document.createElement('div');t.className='toast '+(kind||'');t.innerHTML=html;box.appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),400)},3400);
+}
+/* floating text */
+function floatText(text,cls){
+  if(REDUCED)return;
+  const p=UI.last||{x:innerWidth/2,y:innerHeight/2};
+  const e=document.createElement('div');e.className='floaty '+(cls||'');e.textContent=text;e.style.left=p.x+'px';e.style.top=p.y+'px';
+  document.body.appendChild(e);setTimeout(()=>e.remove(),1100);
+}
+/* confetti */
+function confetti(n,at){
+  if(REDUCED)return;
+  let cv=$('#confetti');if(!cv){cv=document.createElement('canvas');cv.id='confetti';document.body.appendChild(cv)}
+  const dpr=Math.min(2,devicePixelRatio||1);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
+  const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);
+  const cs=getComputedStyle(document.documentElement);
+  const cols=['--accent','--sun','--coral','--mint','--m5','--m6'].map(v=>cs.getPropertyValue(v).trim()||'#2447D8');
+  const ox=at?at.x:innerWidth/2,oy=at?at.y:innerHeight*.35;
+  const P=Array.from({length:n||90},()=>({x:ox,y:oy,vx:(Math.random()-.5)*(at?9:16),vy:-(Math.random()*(at?9:13)+(at?3:4)),w:5+Math.random()*6,h:3+Math.random()*5,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[Math.floor(Math.random()*cols.length)],round:Math.random()<.3}));
+  const t0=performance.now();cancelAnimationFrame(UI.cf);
+  const step=now=>{const k=(now-t0)/1900;ctx.clearRect(0,0,innerWidth,innerHeight);
+    P.forEach(p=>{p.vy+=.35;p.vx*=.992;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.globalAlpha=Math.max(0,1-k*k);ctx.fillStyle=p.c;
+      if(p.round){ctx.beginPath();ctx.arc(0,0,p.w/2,0,7);ctx.fill()}else ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()});
+    if(k<1)UI.cf=requestAnimationFrame(step);else ctx.clearRect(0,0,innerWidth,innerHeight)};
+  UI.cf=requestAnimationFrame(step);
+}
+/* sound (off by default; toggle in the header) */
+let AC=null;
+function blip(seq){
+  if(!S.settings.sound)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    let t=AC.currentTime;seq.forEach(([f,d,type])=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02);t+=d*.8})}catch(e){}
+}
+const SND={good:[[660,.09],[880,.14]],bad:[[220,.16,'triangle']],level:[[523,.1],[659,.1],[784,.1],[1047,.25]],badge:[[784,.1],[988,.2]]};
+
+/* icons */
+const ICON={
+ flame:`<svg viewBox="0 0 24 24" class="flame" aria-hidden="true"><path d="M12 2c1 4 5 6 5 11a5 5 0 01-10 0c0-2 1-3.200 2-4 0 2 1 3 2 3 0-3-1-6 1-10z" fill="var(--coral)"/><path d="M12 12c.8 1.800 2.500 2.600 2.500 4.500a2.500 2.500 0 01-5 0c0-1.200.8-1.800 1.300-2.500.2.800.7 1.200 1.200 1.200 0-1.100-.4-1.900 0-3.200z" fill="var(--sun)"/></svg>`,
+ sound:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.500a5 5 0 010 7M18.500 6a8.500 8.500 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+ mute:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+ sun:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.500" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+ moon:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.500A8 8 0 019.500 4 8.500 8.500 0 1020 14.500z" fill="currentColor"/></svg>`,
+ bolt:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L5 14h6l-1 8 8-12h-6z" fill="currentColor"/></svg>`,
+ target:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.800" fill="currentColor"/></svg>`,
+ clock:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`
+};
+/* the Atom mascot: nucleus with a face and three orbiting electrons */
+function mascot(mood){
+  const orbit='M8 60a52 18 0 1 0 104 0a52 18 0 1 0 -104 0';
+  const e=(rot,dur,col)=>`<g transform="rotate(${rot} 60 60)"><ellipse cx="60" cy="60" rx="52" ry="18" fill="none" stroke="var(--line)" stroke-width="1.600"/>${REDUCED?`<circle cx="112" cy="60" r="5.500" fill="${col}"/>`:`<circle r="5.500" fill="${col}"><animateMotion dur="${dur}s" repeatCount="indefinite" path="${orbit}"/></circle>`}</g>`;
+  const mouth=mood==='cheer'?'M47 63q13 16 26 0z':'M48 64q12 11 24 0';
+  return `<svg viewBox="0 0 120 120" class="mascot" role="img" aria-label="Atom, your revision buddy" data-act="fact">${e(0,3.6,'var(--sun)')}${e(60,4.4,'var(--coral)')}${e(120,5.2,'var(--mint)')}
+   <circle cx="60" cy="60" r="27" fill="var(--accent)"/><circle cx="52" cy="50" r="9" fill="#fff" opacity=".16"/>
+   <g class="eyes"><ellipse cx="50" cy="56" rx="4" ry="5" fill="#fff"/><ellipse cx="70" cy="56" rx="4" ry="5" fill="#fff"/><circle cx="51" cy="57" r="2" fill="#10203f"/><circle cx="71" cy="57" r="2" fill="#10203f"/></g>
+   <path d="${mouth}" fill="${mood==='cheer'?'#fff':'none'}" stroke="#fff" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"/>
+   <circle cx="42" cy="66" r="4" fill="var(--coral)" opacity=".55"/><circle cx="78" cy="66" r="4" fill="var(--coral)" opacity=".55"/></svg>`;
+}
+function ringHTML(frac,label,cls,size){
+  frac=Math.max(0,Math.min(1,frac||0));
+  return `<div class="ringbox" style="${size?`width:${size}px;height:${size}px`:''}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="rbg" cx="50" cy="50" r="42"/><circle class="rfg ${cls||''}" cx="50" cy="50" r="42" style="stroke-dashoffset:${(264*(1-frac)).toFixed(1)}"/></svg><span>${label}</span></div>`;
+}
 /* ---------- App ---------- */
 const $=(s,r)=>(r||document).querySelector(s), $$=(s,r)=>[...(r||document).querySelectorAll(s)];
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -808,7 +1489,7 @@ const fmtInt=n=>n<=0?'today':n===1?'1 day':n<30?n+' days':n<365?Math.round(n/30)
 /* ----- state ----- */
 const LS='ocrphys.v1';
 let S,canSave=true;
-const fresh=()=>({v:1,settings:{newPerDay:8,target:'A'},topics:{},tests:[],sr:{},log:[],days:{},calc:{}});
+const fresh=()=>({v:1,settings:{newPerDay:8,target:'A',goal:20,name:'Joshua',sound:false,theme:''},topics:{},tests:[],sr:{},log:[],days:{},calc:{},xp:0,badges:{}});
 function load(){
   try{const r=localStorage.getItem(LS);S=r?JSON.parse(r):fresh();localStorage.setItem(LS+'.probe','1');localStorage.removeItem(LS+'.probe')}catch(e){canSave=false;if(!S)S=fresh()}
   S=Object.assign(fresh(),S);S.settings=Object.assign(fresh().settings,S.settings);
@@ -820,7 +1501,8 @@ load();
 const ITEMS=[],BY={},TB={};
 TOPICS.forEach(t=>{TB[t.id]=t;
   t.cards.forEach((c,i)=>{const it={id:t.id+'-c'+i,topic:t.id,type:'card',q:c[0],a:c[1]};ITEMS.push(it);BY[it.id]=it});
-  t.qs.forEach((q,i)=>{const it=Object.assign({id:t.id+'-q'+i,topic:t.id,type:'q'},q);ITEMS.push(it);BY[it.id]=it})});
+  t.qs.forEach((q,i)=>{const it=Object.assign({id:t.id+'-q'+i,topic:t.id,type:'q'},q);ITEMS.push(it);BY[it.id]=it});
+  (t.mcqs||[]).forEach((m,i)=>{const it={id:t.id+'-m'+i,topic:t.id,type:'mcq',q:m.q,opts:m.opts,why:m.why};ITEMS.push(it);BY[it.id]=it})});
 const itemsOf=id=>ITEMS.filter(i=>i.topic===id);
 const tget=id=>S.topics[id]||{status:0,conf:0,note:''};
 const tset=(id,p)=>{S.topics[id]=Object.assign({status:0,conf:0,note:''},S.topics[id],p);save()};
@@ -857,18 +1539,19 @@ const dueItems=()=>{const t=today();return ITEMS.filter(i=>{const r=S.sr[i.id];r
 const urg=topic=>{const d=nextTestDays(topic);return d===null?999:d};
 function interleave(list){
   const g={};list.forEach(i=>(g[i.topic]=g[i.topic]||[]).push(i));
-  const keys=Object.keys(g);const out=[];let more=true;
+  const keys=shuf(Object.keys(g));const out=[];let more=true;
   while(more){more=false;keys.forEach(k=>{if(g[k].length){out.push(g[k].shift());more=true}})}
   return out}
 function smartQueue(){
   const t=today();
-  const due=dueItems().sort((a,b)=>urg(a.topic)-urg(b.topic)||S.sr[a.id].due.localeCompare(S.sr[b.id].due)).slice(0,25);
+  const tier=tp=>{const d=nextTestDays(tp);return d===null?2:d<=14?0:1};
+  const due=dueItems().sort((a,b)=>tier(a.topic)-tier(b.topic)||S.sr[a.id].due.localeCompare(S.sr[b.id].due)||Math.random()-.5).slice(0,25);
   const left=Math.max(0,S.settings.newPerDay-((S.days[t]||{}).n||0));
-  const nc=ITEMS.filter(i=>!S.sr[i.id]&&tget(i.topic).status>=1)
-    .sort((a,b)=>urg(a.topic)-urg(b.topic)||mastery(a.topic)-mastery(b.topic)||(a.type==='card'?-1:1)-(b.type==='card'?-1:1)).slice(0,left);
+  const nc=shuf(ITEMS.filter(i=>!S.sr[i.id]&&tget(i.topic).status>=1))
+    .sort((a,b)=>tier(a.topic)-tier(b.topic)).slice(0,left);
   return interleave(due).concat(interleave(nc));
 }
-function estMin(q){return Math.max(1,Math.round(q.reduce((a,i)=>a+(i.type==='q'?i.m*1.35+.5:.7),0)))}
+function estMin(q){return Math.max(1,Math.round(q.reduce((a,i)=>a+(i.type==='q'?i.m*1.35+.5:i.type==='mcq'?.8:.7),0)))}
 function streak(){let n=0,d=today();if(!(S.days[d]||{}).rev)d=addDays(d,-1);while((S.days[d]||{}).rev){n++;d=addDays(d,-1)}return n}
 
 /* ----- study plan ----- */
@@ -912,12 +1595,29 @@ function defaultSel(){
   if(up)return new Set(up.topics);
   const l=TOPICS.filter(x=>tget(x.id).status>=1).map(x=>x.id);return new Set(l);
 }
-function render(){
+const REDUCED=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+function render(anim){
   const due=dueItems().length;
   $('#nav').innerHTML=TABS.map(([k,l])=>`<button data-act="tab" data-v="${k}" aria-current="${UI.tab===k&&!UI.sess}">${l}${k==='today'&&due?`<span class="badge">${due}</span>`:''}</button>`).join('');
-  $('#view').innerHTML=(!canSave?`<div class="warnbox" style="margin-bottom:16px">This browser is not letting the page save progress. Use Export on the Guide tab to keep a copy of your data.</div>`:'')+(UI.sess?vSession():({today:vToday,topics:vTopics,tests:vTests,practice:vPractice,progress:vProgress,guide:vGuide}[UI.tab])());
+  const v=$('#view');v.classList.remove('anim');
+  v.innerHTML=(!canSave?`<div class="warnbox" style="margin-bottom:16px">This browser is not letting the page save progress. Use Export on the Guide tab to keep a copy of your data.</div>`:'')+(UI.sess?vSession():({today:vToday,topics:vTopics,tests:vTests,practice:vPractice,progress:vProgress,guide:vGuide}[UI.tab])());
+  const fresh=!!(UI.sess&&UI.sess.fresh);if(UI.sess)UI.sess.fresh=false;
+  const ended=!!(UI.sess&&fresh&&UI.sess.i>=UI.sess.queue.length);
+  $$('.grades button,.ms li,.opts button',v).forEach((el,i)=>el.style.setProperty('--i',i));
   if(UI.sess&&UI.sess.kind==='exam')tickTimer();
+  if(REDUCED)return;
+  if(anim||ended)runAnim(v);
+  if(fresh)drawFigs(v);
 }
+function runAnim(v){
+  v.classList.add('anim');
+  $$('.card,.topic,.empty,.mod-h',v).forEach((el,i)=>el.style.setProperty('--i',Math.min(i,12)));
+  countUp(v);drawFigs(v);
+  clearTimeout(UI.at);UI.at=setTimeout(()=>v.classList.remove('anim'),1900);
+}
+function countUp(v){$$('.readout',v).forEach(el=>{const n=el.firstChild;if(!n||n.nodeType!==3)return;const t=parseFloat(n.nodeValue);if(!(t>0))return;const t0=performance.now();n.nodeValue='0';
+  const step=now=>{const k=Math.min(1,(now-t0)/800),e=1-Math.pow(1-k,3);n.nodeValue=String(Math.round(t*e));if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)})}
+function drawFigs(v){$$('.fig .c1,.fig .c3',v).forEach(p=>{try{const L=p.getTotalLength();p.style.setProperty('--len',L);p.classList.add('draw')}catch(e){}})}
 
 /* ----- Today ----- */
 function topicChip(id){return `<span class="chip">${TB[id].ref} ${esc(TB[id].title.split(':')[0])}</span>`}
@@ -970,7 +1670,7 @@ function vTopics(){
       if(open)h+=`<div class="topic-b"><div><h4>What the specification asks for</h4><ul>${tp.pts.map(p=>`<li>${p}</li>`).join('')}</ul>${tp.tips.map(x=>`<div class="pit">${x}</div>`).join('')}</div>
         <div><h4>Key equations</h4><dl class="eq">${tp.eq.map(e=>`<dt>${e[0]}</dt><dd>${e[1]}</dd>`).join('')}</dl><p class="note" style="margin-top:8px">Check which relationships are given in the OCR data, formulae and relationships booklet and learn the rest.</p></div>
         <div><h4>My notes and weak points</h4><textarea id="note-${tp.id}" data-chg="note" data-id="${tp.id}" placeholder="Write the bits you keep getting wrong…">${esc(st.note)}</textarea>
-        <div class="row" style="margin-top:8px"><button class="btn sm" data-act="drilltopic" data-id="${tp.id}">Practise this topic</button><span class="note">${tp.cards.length} flashcards · ${tp.qs.length} exam questions</span></div></div></div>`;
+        <div class="row" style="margin-top:8px"><button class="btn sm" data-act="drilltopic" data-id="${tp.id}">Practise this topic</button><span class="note">${tp.cards.length} flashcards · ${(tp.mcqs||[]).length} multiple choice · ${tp.qs.length} written questions</span></div></div></div>`;
       h+=`</div>`});
     h+=`</section>`});
   return h+`</div>`;
@@ -1008,7 +1708,8 @@ function vPractice(){
   <div class="modes">
    <div class="card mode"><h3>Smart session</h3><p class="muted small">Everything the spaced-repetition schedule says is due, plus a few new items from topics you've learned.</p><button class="btn" data-act="smart" ${smartQueue().length?'':'disabled'}>Start (${smartQueue().length})</button></div>
    <div class="card mode"><h3>Topic drill</h3><p class="muted small">Mixed questions from the selected topics, weakest and unseen first.</p>
-     <div class="row"><select id="dr-ty" style="width:auto"><option value="all">Cards and questions</option><option value="card">Flashcards only</option><option value="q">Exam questions only</option></select><select id="dr-n" style="width:auto"><option>10</option><option selected>20</option><option>30</option></select></div><button class="btn" data-act="drill">Start drill</button></div>
+     <div class="row"><select id="dr-ty" style="width:auto"><option value="all">All types, mixed</option><option value="card">Flashcards only</option><option value="mcq">Multiple choice only</option><option value="q">Written exam questions only</option></select><select id="dr-n" style="width:auto"><option>10</option><option selected>20</option><option>30</option></select></div><button class="btn" data-act="drill">Start drill</button></div>
+   <div class="card mode"><h3>Multiple choice quiz</h3><p class="muted small">Section A style questions with instant feedback. The questions and the options are shuffled each time.</p><select id="mc-n" style="width:auto"><option>10</option><option selected>15</option><option>20</option></select><button class="btn" data-act="mcqquiz">Start quiz</button></div>
    <div class="card mode"><h3>Timed mini-paper</h3><p class="muted small">Exam questions with a countdown at about 1.35 minutes per mark, as in the real papers. Self-mark against the scheme.</p>
      <select id="ex-m" style="width:auto"><option value="15">15 marks</option><option value="30" selected>30 marks</option><option value="50">50 marks</option></select><button class="btn" data-act="exam">Start paper</button></div>
    <div class="card mode"><h3>Calculation practice</h3><p class="muted small">Fresh numbers every time, with worked solutions. Builds the procedural fluency that scores marks.</p>
@@ -1020,12 +1721,12 @@ function vPractice(){
 function startSess(kind,queue,extra){
   if(!queue.length){UI.msg='No items match that choice.';alert_inline('Nothing to practise for that selection. Choose more topics.');return}
   UI.sess=Object.assign({kind,queue,i:0,step:'ask',res:[],t0:Date.now(),re:{},draft:''},extra||{});
-  window.scrollTo(0,0);render();
+  UI.sess.fresh=true;window.scrollTo(0,0);render(true);
   if(kind==='exam'){clearInterval(UI.tm);UI.tm=setInterval(tickTimer,1000)}
 }
 function alert_inline(msg){const e=$('#view');const d=document.createElement('div');d.className='warnbox';d.style.marginBottom='16px';d.textContent=msg;e.prepend(d);setTimeout(()=>d.remove(),4000)}
 function selTopics(){return UI.sel&&UI.sel.size?[...UI.sel]:[]}
-function rankFor(list){return list.sort((a,b)=>{const ra=S.sr[a.id]?retr(a):-1,rb=S.sr[b.id]?retr(b):-1;return ra-rb||Math.random()-.5})}
+function rankFor(list){return list.map(i=>[S.sr[i.id]?retr(i)+Math.random()*.45:Math.random()*.6-.2,i]).sort((a,b)=>a[0]-b[0]).map(x=>x[1])}
 function shuf(a){return a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1])}
 
 /* ----- Session UI ----- */
@@ -1036,8 +1737,9 @@ function sessHead(s){
 function vSession(){
   const s=UI.sess;if(s.i>=s.queue.length)return vSummary();
   const it=s.queue[s.i];const tp=TB[it.topic];
-  let h=`<div class="sess">${sessHead(s)}<div class="card sess-card"><div class="row" style="gap:6px"><span class="chip acc">${tp.ref} ${esc(tp.title.split(' and ')[0])}</span>`;
-  if(it.type==='q')h+=`<span class="chip">${it.m} mark${it.m>1?'s':''}</span><span class="chip">${it.cw}</span>`;
+  let h=`<div class="sess">${sessHead(s)}<div class="card sess-card${s.fresh?' slide':''}"><div class="row" style="gap:6px"><span class="chip acc">${tp.ref} ${esc(tp.title.split(' and ')[0])}</span>`;
+  if(it.type==='q')h+=`<span class="chip">${it.m} mark${it.m>1?'s':''}</span><span class="chip">${it.cw}</span>${it.m>=6?'<span class="chip ext">Extended response</span>':''}`;
+  if(it.type==='mcq')h+=`<span class="chip">Multiple choice</span>`;
   if(it.type==='card')h+=`<span class="chip">Flashcard</span>`;
   if(it.type==='calc')h+=`<span class="chip">Calculation</span>`;
   if(it.type!=='calc'&&!S.sr[it.id])h+=`<span class="chip good">New</span>`;
@@ -1048,14 +1750,29 @@ function vSession(){
     else h+=`<div class="answer">${it.a}</div><p class="note">How well did you recall it before looking?</p>${gradeBtns(it)}`;
   }else if(it.type==='q'){
     h+=`<p class="qtext">${it.q}</p>${figHTML(it.fig)}`;
-    if(s.step==='ask')h+=`<textarea id="ans" placeholder="Write your answer and working here (on paper is fine too), then reveal the mark scheme."></textarea><div class="row"><button class="btn" data-act="show">Reveal mark scheme</button><span class="note">About ${Math.max(1,Math.round(it.m*1.35))} min in the exam.</span></div>`;
-    else h+=`<textarea readonly style="min-height:70px">${esc(s.draft)}</textarea><h4>Mark scheme: tick only the points you really made</h4><ul class="ms">${it.ms.map((p,i)=>`<li><label><input type="checkbox" data-chg="mp" value="${i}"><span>${p}</span></label></li>`).join('')}</ul>${it.tip?`<div class="pit"><b>Examiner tip.</b> ${it.tip}</div>`:''}<div class="row"><button class="btn" data-act="submitq" id="sq">Save ${0}/${it.m}</button></div>`;
+    if(s.step==='ask')h+=`<textarea id="ans" placeholder="Write your answer and working here (on paper is fine too), then reveal the mark scheme."></textarea>${CWHINT[it.cw]?`<p class="note"><b>${it.cw}:</b> ${CWHINT[it.cw]}</p>`:''}${it.m>=6?'<p class="note">Extended responses are marked by level of response. Write a structured, logical answer in full sentences rather than a list.</p>':''}<div class="row"><button class="btn" data-act="show">Reveal mark scheme</button><span class="note">About ${Math.max(1,Math.round(it.m*1.35))} min in the exam.</span></div>`;
+    else h+=`<textarea readonly style="min-height:70px">${esc(s.draft)}</textarea><h4>Mark scheme: tick only the points you really made</h4><ul class="ms">${it.ms.map((p,i)=>`<li><label><input type="checkbox" data-chg="mp" value="${i}"><span style="flex:1">${p}</span>${kwHit(p,s.draft)?'<span class="hint">likely covered</span>':''}</label></li>`).join('')}</ul>${it.tip?`<div class="pit"><b>Examiner tip.</b> ${it.tip}</div>`:''}${it.model?`<details class="model"><summary>Model answer</summary><div class="answer">${it.model}</div></details>`:''}<div class="row"><button class="btn" data-act="submitq" id="sq">Save ${0}/${it.m}</button></div>`;
+  }else if(it.type==='mcq'){
+    if(!s.order){s.order=shuf([0,1,2,3]);s.qt=Date.now()}
+    const rev=s.step==='reveal';
+    h+=`<p class="qtext">${it.q}</p><div class="opts">${s.order.map((oi,k)=>`<button class="${rev?(oi===0?'right':(k===s.picked?'wrong':'')):''}" data-act="mcq" data-v="${k}" ${rev?'disabled':''}><b>${'ABCD'[k]}</b><span>${it.opts[oi]}</span></button>`).join('')}</div>`;
+    if(!rev)h+=`<p class="note">Choose A to D, or press <kbd>1</kbd> to <kbd>4</kbd>.</p>`;
+    else h+=`<div class="answer"><b>${s.ok?'Correct.':'Not quite.'}</b> ${it.why}</div><div class="row"><button class="btn" data-act="nextcalc">Next</button><span class="note"><kbd>Enter</kbd> for next</span></div>`;
   }else{
     h+=`<p class="qtext">${it.q}</p>`;
     if(s.step==='ask')h+=`<div class="row" style="flex-wrap:nowrap"><input type="text" id="cin" inputmode="decimal" autocomplete="off" placeholder="Answer, e.g. 12.5 or 3.2e-5" aria-label="Your answer"><span class="mono">${it.u}</span></div><div class="row"><button class="btn" data-act="check">Check</button><button class="btn ghost" data-act="giveup">Show solution</button></div><p class="note">Accepted if within 2% of the exact answer. Use e-notation for powers of ten.</p>`;
     else h+=`<div class="chip ${s.ok?'good':'bad'}" style="align-self:flex-start">${s.ok?'Correct':'Not quite'}${s.given!=null&&!isNaN(s.given)?` · you entered ${sf(s.given)}`:''}</div><div class="answer"><b>${sf(it.a)} ${it.u}</b><div class="small" style="margin-top:6px">${it.sol}</div></div><button class="btn" data-act="nextcalc">Next</button>`;
   }
   return h+`</div></div>`;
+}
+const CWHINT={Explain:'Give reasons. Link each point with because, so or therefore (cause, effect, consequence).',Describe:'Say what happens or how it is done, in order. You do not need to give reasons.',Calculate:'Write the equation, substitute with units, then give the answer with a unit and sensible significant figures.',Determine:'Use the data or graph to find the value and show how you did it.','Show that':'Work to the value given. Show every step and quote your answer to more significant figures than the question.',Evaluate:'Give points for and against, then a justified conclusion.',Compare:'Make a point about both things each time (similarity or difference).',Suggest:'Apply what you know to the new situation and give a reason.',Estimate:'State sensible values and assumptions, then calculate to one significant figure.',Identify:'Name each item clearly and say why.'};
+const STOP=new Set(['which','their','there','would','where','being','these','those','about','because','other','after','before','should','could','while','using','under','every','between','through']);
+function kwHit(point,draft){
+  if(!draft||draft.length<15)return false;
+  const d=draft.toLowerCase();
+  const w=(point.replace(/<[^>]+>/g,'').toLowerCase().match(/[a-zα-ω]{5,}|\d+(?:\.\d+)?/g)||[]).filter(x=>!STOP.has(x));
+  if(w.length<2)return false;
+  return w.filter(x=>d.includes(x)).length/w.length>=.5;
 }
 function gradeBtns(it){
   const r=S.sr[it.id],early=r&&r.due>today();
@@ -1073,14 +1790,14 @@ function record(it,g,score,extra){
   save();
 }
 const A={}; // actions
-function advance(){const s=UI.sess;s.i++;s.step='ask';s.draft='';s.ok=null;render();window.scrollTo(0,0)}
+function advance(){const s=UI.sess;s.i++;s.step='ask';s.draft='';s.ok=null;s.order=null;s.picked=null;s.fresh=true;render();window.scrollTo(0,0)}
 function reQueue(it,g){const s=UI.sess;if(g===0&&(s.kind==='smart'||s.kind==='drill')){s.re[it.id]=(s.re[it.id]||0)+1;if(s.re[it.id]<=2)s.queue.push(it)}}
 function vSummary(){
   const s=UI.sess;clearInterval(UI.tm);
   const res=s.res,n=res.length,ok=res.filter(r=>r.s>=.6).length;
   let h=`<div class="sess stack"><div class="card"><div class="eyebrow">Session complete</div><h2 style="margin:6px 0 12px">${n?`${ok} of ${n} recalled well`:'Session ended'}</h2>`;
   if(n){
-    h+=`<div class="hero"><div><span class="eyebrow">Accuracy</span><span class="readout">${pct(ok/n)}<small>%</small></span></div><div><span class="eyebrow">Time</span><span class="readout">${Math.max(1,Math.round((Date.now()-s.t0)/60000))}<small>min</small></span></div>`;
+    h+=`<div class="hero"><div style="gap:8px"><span class="eyebrow">Accuracy</span><div class="ringbox"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="rbg" cx="50" cy="50" r="42"/><circle class="rfg ${mcol(ok/n)}" cx="50" cy="50" r="42" style="stroke-dashoffset:${(264*(1-ok/n)).toFixed(1)}"/></svg><span>${pct(ok/n)}%</span></div></div><div><span class="eyebrow">Time</span><span class="readout">${Math.max(1,Math.round((Date.now()-s.t0)/60000))}<small>min</small></span></div>`;
     const qs=res.filter(r=>r.tot);if(qs.length){const g=qs.reduce((a,r)=>a+r.got,0),t=qs.reduce((a,r)=>a+r.tot,0);h+=`<div><span class="eyebrow">Exam marks</span><span class="readout">${g}<small>/ ${t}</small></span></div>`}
     h+=`</div>`;
     const byT={};res.forEach(r=>{const b=byT[r.topic]||(byT[r.topic]={n:0,ok:0});b.n++;if(r.s>=.6)b.ok++});
@@ -1174,7 +1891,7 @@ function recordCalc(it,ok){
   S.log.push({d:t,i:'calc-'+it.topic,tp:it.topic,ty:'calc',s:ok?1:0,g:ok?2:0});if(S.log.length>3000)S.log=S.log.slice(-3000);save();
 }
 const ACT={
-  tab(b){UI.sess=null;clearInterval(UI.tm);UI.tab=b.dataset.v;window.scrollTo(0,0);render()},
+  tab(b){UI.sess=null;clearInterval(UI.tm);UI.tab=b.dataset.v;window.scrollTo(0,0);render(true)},
   toggle(b){UI.open[b.dataset.id]=!UI.open[b.dataset.id];render()},
   status(b){tset(b.dataset.id,{status:+b.dataset.v});render()},
   conf(b){tset(b.dataset.id,{conf:+b.dataset.v});render()},
@@ -1220,8 +1937,11 @@ const ACT={
     const ok=Math.abs(v-it.a)<=Math.abs(it.a)*.02+1e-15;s.ok=ok;s.given=v;s.step='reveal';recordCalc(it,ok);s.res.push({topic:it.topic,s:ok?1:0});render()},
   giveup(){const s=UI.sess,it=s.queue[s.i];s.ok=false;s.given=null;s.step='reveal';recordCalc(it,false);s.res.push({topic:it.topic,s:0});render()},
   nextcalc(){advance()},
+  mcq(b){const s=UI.sess,it=s.queue[s.i];if(s.step!=='ask')return;const k=+b.dataset.v,ok=s.order[k]===0;s.picked=k;s.ok=ok;s.step='reveal';
+    const g=ok?(Date.now()-s.qt<15000?3:2):0;record(it,g,ok?1:0);s.res.push({topic:it.topic,s:ok?1:0,id:it.id});reQueue(it,g);render()},
+  mcqquiz(){const tp=selTopics();if(!tp.length)return alert_inline('Choose at least one topic first.');startSess('drill',buildDrill(tp,'mcq',+$('#mc-n').value))},
   exit(){const s=UI.sess;if(s.res.length){s.i=s.queue.length;render()}else{UI.sess=null;clearInterval(UI.tm);render()}},
-  done(){UI.sess=null;UI.tab='today';clearInterval(UI.tm);window.scrollTo(0,0);render()},
+  done(){UI.sess=null;UI.tab='today';clearInterval(UI.tm);window.scrollTo(0,0);render(true)},
   export(){const t=$('#bk');t.value=JSON.stringify(S);t.select();$('#bmsg').textContent='Backup ready. Copy it somewhere safe.'},
   copy(){const t=$('#bk');if(!t.value)ACT.export();t.select();
     const done=()=>{$('#bmsg').textContent='Copied.'};
@@ -1243,11 +1963,254 @@ document.addEventListener('keydown',e=>{
   const s=UI.sess;const tag=(e.target.tagName||'').toLowerCase();
   if(e.key==='Enter'&&e.target.id==='cin'){e.preventDefault();ACT.check();return}
   if(!s||s.i>=s.queue.length||tag==='textarea'||tag==='input'||tag==='select')return;
-  const it=s.queue[s.i];if(it.type!=='card')return;
+  const it=s.queue[s.i];
+  if(it.type==='mcq'){
+    if(s.step==='ask'&&e.key.length===1){const idx='1234'.indexOf(e.key)>=0?'1234'.indexOf(e.key):'abcd'.indexOf(e.key.toLowerCase());if(idx>=0)ACT.mcq({dataset:{v:String(idx)}})}
+    else if(s.step==='reveal'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();ACT.nextcalc()}
+    return}
+  if(it.type!=='card')return;
   if(s.step==='ask'&&(e.key===' '||e.key==='Enter')){e.preventDefault();ACT.show()}
   else if(s.step==='reveal'&&'1234'.includes(e.key)&&e.key.length===1)ACT.grade({dataset:{v:String(+e.key-1)}});
 });
-render();
+/* ---------- Friendlier UI layer: overrides and extends the base views ---------- */
+const isDark=()=>{const d=document.documentElement.dataset.theme;return d?d==='dark':matchMedia('(prefers-color-scheme: dark)').matches};
+function applyTheme(){const t=S.settings.theme;if(t)document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme}
+document.addEventListener('click',e=>{UI.last={x:e.clientX||innerWidth/2,y:e.clientY||innerHeight/2}},true);
+
+/* ----- render wrapper ----- */
+const _render=render;
+render=function(a){
+  _render(a);decorate();
+  if(!UI.sess&&UI.tab==='topics')applyTopicFilter();
+  if(UI.celebrate){UI.celebrate=false;confetti(130);blip(SND.level)}
+  if(UI.pending){const p=UI.pending;UI.pending=null;feedback(p)}
+};
+function decorate(){
+  const h=$('#hdr');if(!h)return;
+  const xp=S.xp||0,L=levelOf(xp),a=xpAt(L),b=xpAt(L+1);
+  h.innerHTML=`<button class="lvl" data-act="tab" data-v="progress" title="${xp} XP"><span class="lvn">Lv ${L}</span><span class="lvt">${levelName(L)}</span><span class="lvbar"><i style="width:${Math.round((xp-a)/(b-a)*100)}%"></i></span></button>
+  <button class="ib" data-act="sound" aria-label="Sound effects ${S.settings.sound?'on':'off'}" aria-pressed="${!!S.settings.sound}">${S.settings.sound?ICON.sound:ICON.mute}</button>
+  <button class="ib" data-act="theme" aria-label="Switch between light and dark theme">${isDark()?ICON.sun:ICON.moon}</button>`;
+}
+
+/* ----- XP, combos, goals, badges ----- */
+function afterReview(score,xp){
+  const before=levelOf(S.xp||0);S.xp=(S.xp||0)+xp;const after=levelOf(S.xp);
+  const ok=score>=.6;UI.combo=ok?(UI.combo||0)+1:0;
+  if(UI.sess){UI.sess.xp=(UI.sess.xp||0)+xp;UI.sess.best=Math.max(UI.sess.best||0,UI.combo)}
+  const day=S.days[today()];let goal=false;
+  if(S.settings.goal&&day&&day.rev>=S.settings.goal&&!day.goalHit){day.goalHit=true;goal=true}
+  const badges=checkBadges();save();
+  UI.pending={xp,ok,combo:UI.combo,level:after>before?after:0,goal,badges};
+}
+const _record=record;
+record=function(it,g,score,extra){
+  _record(it,g,score,extra);
+  const xp=it.type==='q'?Math.round(3*((extra&&extra.got)||0)+2):it.type==='mcq'?(score>=1?(g===3?13:10):2):[2,5,10,12][g];
+  afterReview(score,xp);
+};
+const _recordCalc=recordCalc;
+recordCalc=function(it,ok){_recordCalc(it,ok);afterReview(ok?1:0,ok?12:2)};
+const _startSess=startSess;
+startSess=function(k,q,e){UI.combo=0;_startSess(k,q,e)};
+function feedback(p){
+  if(p.xp>0)floatText('+'+p.xp+' XP',p.ok?'good':'meh');
+  if(p.ok&&p.combo>=3&&p.combo%3===0){toast(`${ICON.flame}<span><b>${p.combo} in a row!</b> Keep it going.</span>`,'fire');blip(SND.good)}
+  else if(p.xp>0)blip(p.ok?SND.good:SND.bad);
+  if(p.level){toast(`<span><b>Level up!</b> You are now level ${p.level}, ${levelName(p.level)}.</span>`,'level');confetti(140);blip(SND.level)}
+  if(p.goal){toast(`<span><b>Daily goal reached!</b> ${S.settings.goal} reviews done. Anything extra is a bonus.</span>`,'level');confetti(110)}
+  (p.badges||[]).forEach((b,i)=>setTimeout(()=>{toast(`${badgeSVG(BADGES.indexOf(b),true)}<span><b>Badge unlocked: ${b.n}</b><br><small>${b.d}</small></span>`,'badge');confetti(60);blip(SND.badge)},i*900+300));
+}
+function unlock(){const nb=checkBadges();if(nb.length){save();feedback({xp:0,ok:true,combo:0,badges:nb})}}
+
+/* ----- Today ----- */
+function mascotMsg(){
+  const t=today(),due=dueItems().length,learned=TOPICS.filter(x=>tget(x.id).status>=1).length;
+  const up=S.tests.filter(x=>diffDays(t,x.date)>=0).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const day=S.days[t]||{rev:0},nm=(S.settings.name||'').trim();
+  if(!learned)return `Tell me which topics you've covered and I'll build your plan${nm?', '+esc(nm):''}.`;
+  if(up&&diffDays(t,up.date)<=7){const d=diffDays(t,up.date);return `${esc(up.name)} is ${d===0?'today':'in '+d+' day'+(d>1?'s':'')}. Let's tighten up your weak spots.`}
+  if(S.settings.goal&&day.rev>=S.settings.goal)return `Daily goal smashed. Anything extra is a bonus.`;
+  if(due)return `${due} review${due>1?'s are':' is'} ready. A quick round keeps them fresh.`;
+  return `All caught up. A multiple choice quiz is a fun way to keep going.`;
+}
+function vToday(){
+  const t=today(),q=smartQueue(),due=dueItems().length,learned=TOPICS.filter(x=>tget(x.id).status>=1).length;
+  const day=S.days[t]||{rev:0},goal=S.settings.goal||20,xp=S.xp||0,L=levelOf(xp),a=xpAt(L),b=xpAt(L+1);
+  const up=S.tests.filter(x=>diffDays(t,x.date)>=0).sort((x,y)=>x.date.localeCompare(y.date));
+  const hr=new Date().getHours(),greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening',nm=(S.settings.name||'').trim();
+  const newN=q.filter(i=>!S.sr[i.id]).length;
+  const next=BADGES.find(x=>!(S.badges||{})[x.id]);
+  let h=`<div class="stack"><section class="hero2"><div class="hero2-txt"><div class="eyebrow">${fmtDate(t)}</div><h1>${greet}${nm?', '+esc(nm):''}!</h1>
+   <button class="bubble" data-act="fact" aria-live="polite"><span id="bubtxt">${mascotMsg()}</span><small>tap for a physics fact</small></button>
+   <div class="row" style="margin-top:8px"><button class="btn big" data-act="smart" ${q.length?'':'disabled'}>${q.length?"Start today's session":'All caught up'}</button><button class="btn glass" data-act="quickmcq">Quick quiz</button><button class="btn glass" data-act="tab" data-v="topics">My topics</button></div></div>
+   <div class="hero2-art">${mascot(day.rev>=goal?'cheer':'')}</div></section>
+  <div class="tiles">
+   <button class="tile" data-act="tab" data-v="progress">${ringHTML(day.rev/goal,`${Math.min(day.rev,goal)}/${goal}`,day.rev>=goal?'good':'',84)}<span class="tl">Daily goal</span></button>
+   <button class="tile" data-act="smart"><span class="tn readout">${due}</span><span class="tl">Reviews due</span><span class="ts">${newN} new waiting</span></button>
+   <button class="tile" data-act="tab" data-v="progress"><span class="tn">${ICON.flame}<span class="readout">${streak()}</span></span><span class="tl">Day streak</span><span class="ts">${streak()?'Keep it alive today':'Start one today'}</span></button>
+   <button class="tile" data-act="tab" data-v="progress"><span class="tn">Lv ${L}</span><span class="tl">${levelName(L)}</span><div class="bar"><i style="width:${Math.round((xp-a)/(b-a)*100)}%"></i></div><span class="ts">${b-xp} XP to level ${L+1}</span></button>
+  </div>`;
+  if(!learned)h+=`<div class="card"><h3>Start by telling the app what you have covered</h3><p class="muted" style="margin-top:6px;max-width:62ch">Revision items only appear for topics you have marked as learning or learned, so you are tested on material you have seen. Tick topics off on the Topics tab, add your test dates, and the plan builds itself.</p>
+    <div class="row" style="margin-top:12px"><button class="btn" data-act="tab" data-v="topics">Mark topics I've covered</button><button class="btn ghost" data-act="tab" data-v="tests">Add a test</button><button class="btn ghost" data-act="example">Try with example data</button></div></div>`;
+  h+=`<div class="grid2"><div class="card"><div class="row sp"><h3>Upcoming tests</h3><button class="btn ghost sm" data-act="tab" data-v="tests">Manage</button></div>`;
+  if(!up.length)h+=`<div class="empty" style="margin-top:10px">No tests added. Add a date and the topics on it and the plan will prioritise them.</div>`;
+  else h+=up.slice(0,3).map(te=>{const d=diffDays(t,te.date),r=readiness(te);return `<div class="trow"><div>${ringHTML(r,pct(r)+'%',mcol(r),64)}</div><div style="min-width:0"><b>${esc(te.name)}</b><div class="note">${fmtDate(te.date)}</div><span class="chip ${d<=3?'bad':d<=10?'warn':''}">${d===0?'today':d+' days'}</span></div><button class="btn ghost sm" data-act="drilltest" data-t="${te.id}">Drill</button></div>`}).join('');
+  h+=`</div><div class="card"><h3>Reviews, last 14 days</h3>${last14()}${next?`<p class="note" style="margin-top:10px">Next badge: <b>${next.n}</b>. ${next.d}.</p>`:''}</div></div>
+  <div class="card"><div class="row sp"><h3>Your next 7 days</h3><span class="note">Weakest topics first, nearest test first</span></div>${agenda(buildPlan(7))}</div></div>`;
+  return h;
+}
+
+/* ----- Topics with filters and module colours ----- */
+function vTopics(){
+  let h=`<div class="stack"><div><h2>Topics</h2><p class="muted">Mark what you've covered. A topic's flashcards, multiple choice and questions join your reviews once it is Learning or Learned.</p></div>
+  <div class="toolbar"><input type="text" id="tsearch" placeholder="Search topics, e.g. capacitors" aria-label="Search topics"><div class="chips" role="group" aria-label="Filter topics">${[['all','All'],['learning','Learning'],['learned','Learned'],['not','Not yet'],['weak','Needs work'],['due','Due now']].map(([k,l])=>`<button class="fchip" data-act="tfilter" data-v="${k}" aria-pressed="${(UI.tf||'all')===k}">${l}</button>`).join('')}</div></div>`;
+  [1,2,3,4,5,6].forEach(m=>{
+    const ts=TOPICS.filter(x=>x.mod===m),done=ts.filter(x=>tget(x.id).status===2).length;
+    h+=`<section class="mod" data-mod="${m}" style="--mc:var(--m${m})"><div class="mod-h"><h3><span class="mdot"></span>${MODULES[m]}</h3><div class="row"><span class="chip">${done}/${ts.length} learned</span><span class="chip">${MOD_PAPERS[m].map(p=>'P'+p).join(' · ')}</span><button class="btn ghost sm" data-act="modall" data-m="${m}" data-v="2">Mark all learned</button><button class="btn ghost sm" data-act="modall" data-m="${m}" data-v="0">Reset</button></div></div>`;
+    ts.forEach(tp=>{
+      const st=tget(tp.id),mm=mastery(tp.id),open=UI.open[tp.id],its=itemsOf(tp.id),seen=its.filter(i=>S.sr[i.id]).length,due=its.filter(i=>S.sr[i.id]&&S.sr[i.id].due<=today()).length,nd=nextTestDays(tp.id);
+      h+=`<div class="topic" data-id="${tp.id}" data-t="${esc(tp.title.toLowerCase()+' '+tp.ref)}" data-st="${st.status}" data-weak="${st.status>0&&mm<.5?1:0}" data-due="${due?1:0}"><div class="topic-h"><button class="t" data-act="toggle" data-id="${tp.id}" aria-expanded="${!!open}"><span class="row" style="gap:8px;flex-wrap:nowrap"><span class="mb">${tp.ref}</span><span class="eyebrow">${nd!==null?`test in ${nd} d`:(st.status===2?'learned':st.status===1?'learning':'not started')}</span></span><b>${tp.title}</b><span class="note">${seen}/${its.length} items started${due?` · ${due} due`:''}</span></button>
+        <div class="topic-ctl"><div class="seg" role="group" aria-label="Status">${['Not yet','Learning','Learned'].map((l,i)=>`<button data-act="status" data-id="${tp.id}" data-v="${i}" aria-pressed="${st.status===i}">${l}</button>`).join('')}</div>
+        <div class="dots c${st.conf}" role="group" aria-label="Confidence">${[1,2,3,4,5].map(n=>`<button class="${st.conf>=n?'on':''}" data-act="conf" data-id="${tp.id}" data-v="${st.conf===n?0:n}" title="Confidence ${n} of 5" aria-label="Confidence ${n}"></button>`).join('')}</div>
+        <div style="width:70px"><div class="bar ${mcol(mm)}"><i style="width:${pct(mm)}%"></i></div></div></div></div>`;
+      if(open)h+=`<div class="topic-b"><div><h4>What the specification asks for</h4><ul>${tp.pts.map(p=>`<li>${p}</li>`).join('')}</ul>${tp.tips.map(x=>`<div class="pit">${x}</div>`).join('')}</div>
+        <div><h4>Key equations</h4><dl class="eq">${tp.eq.map(e=>`<dt>${e[0]}</dt><dd>${e[1]}</dd>`).join('')}</dl><p class="note" style="margin-top:8px">Check which relationships are given in the OCR data, formulae and relationships booklet and learn the rest.</p></div>
+        <div><h4>My notes and weak points</h4><textarea id="note-${tp.id}" data-chg="note" data-id="${tp.id}" placeholder="Write the bits you keep getting wrong…">${esc(st.note)}</textarea>
+        <div class="row" style="margin-top:8px"><button class="btn sm" data-act="drilltopic" data-id="${tp.id}">Practise this topic</button><span class="note">${tp.cards.length} flashcards · ${(tp.mcqs||[]).length} multiple choice · ${tp.qs.length} written questions</span></div></div></div>`;
+      h+=`</div>`});
+    h+=`</section>`});
+  return h+`<div class="empty" id="tnone" hidden>No topics match. Try another filter.</div></div>`;
+}
+function applyTopicFilter(){
+  const f=UI.tf||'all',q=(($('#tsearch')||{}).value||'').toLowerCase().trim();let any=false;
+  $$('.topic[data-id]').forEach(el=>{
+    const st=+el.dataset.st;let ok=true;
+    if(f==='learning')ok=st===1;else if(f==='learned')ok=st===2;else if(f==='not')ok=st===0;else if(f==='weak')ok=el.dataset.weak==='1';else if(f==='due')ok=el.dataset.due==='1';
+    if(ok&&q)ok=q.split(/\s+/).every(w=>el.dataset.t.includes(w));
+    el.hidden=!ok;if(ok)any=true});
+  $$('.mod[data-mod]').forEach(m=>{m.hidden=!$$('.topic',m).some(t=>!t.hidden)});
+  const n=$('#tnone');if(n)n.hidden=any;
+}
+
+/* ----- Session ----- */
+function sessHead(s){
+  const n=s.queue.length,c=UI.combo||0;
+  return `<div class="stack" style="margin-bottom:16px"><div class="row sp"><button class="btn ghost sm" data-act="exit">Finish and exit</button><div class="row">${c>=2?`<span class="combo">${ICON.flame}<b>${c}</b></span>`:''}${s.kind==='exam'?`<span class="timer" id="timer">--:--</span>`:''}<span class="mono small">${Math.min(s.i+1,n)} / ${n}</span></div></div><div class="prog"><i style="width:${s.i/n*100}%"></i></div></div>`}
+function gradeBtns(it){
+  const r=S.sr[it.id],early=r&&r.due>today();
+  const L=[['Again','forgot'],['Hard','tough'],['Good','got it'],['Easy','easy']];
+  return `<div class="grades">${L.map((l,g)=>{const n=nextState(r,g,it.topic);return `<button class="g${g}" data-act="grade" data-v="${g}"><span>${l[0]}</span><small>${l[1]}</small><small>${early&&g>0?'no change':fmtInt(n.int)}</small></button>`}).join('')}</div>`;
+}
+function vSession(){
+  const s=UI.sess;if(s.i>=s.queue.length)return vSummary();
+  const it=s.queue[s.i],tp=TB[it.topic];
+  let h=`<div class="sess">${sessHead(s)}<div class="card sess-card${s.fresh?' slide':''}" style="--mc:var(--m${tp.mod})"><div class="row" style="gap:6px"><span class="chip mc">${tp.ref} ${esc(tp.title.split(' and ')[0])}</span>`;
+  if(it.type==='q')h+=`<span class="chip">${it.m} mark${it.m>1?'s':''}</span><span class="chip">${it.cw}</span>${it.m>=6?'<span class="chip ext">Extended response</span>':''}`;
+  if(it.type==='mcq')h+=`<span class="chip">Multiple choice</span>`;
+  if(it.type==='card')h+=`<span class="chip">Flashcard</span>`;
+  if(it.type==='calc')h+=`<span class="chip">Calculation</span>`;
+  if(it.type!=='calc'&&!S.sr[it.id])h+=`<span class="chip good">New</span>`;
+  h+=`</div>`;
+  if(it.type==='card'){
+    if(s.step==='ask')h+=`<button class="cardface front" data-act="show"><span class="eyebrow">Question</span><span class="qtext">${it.q}</span><span class="tap">Tap to flip · <kbd>Space</kbd></span></button>`;
+    else h+=`<div class="cardface mini"><span class="eyebrow">Question</span><span class="qtext">${it.q}</span></div><div class="cardface back flipin"><span class="eyebrow">Answer</span><div class="qtext">${it.a}</div></div><p class="note">How well did you remember it? <kbd>1</kbd> to <kbd>4</kbd></p>${gradeBtns(it)}`;
+  }else if(it.type==='q'){
+    h+=`<p class="qtext">${it.q}</p>${figHTML(it.fig)}`;
+    if(s.step==='ask')h+=`<textarea id="ans" placeholder="Write your answer and working here (on paper is fine too), then reveal the mark scheme."></textarea>${CWHINT[it.cw]?`<p class="note"><b>${it.cw}:</b> ${CWHINT[it.cw]}</p>`:''}${it.m>=6?'<p class="note">Extended responses are marked by level of response. Write a structured, logical answer in full sentences rather than a list.</p>':''}<div class="row"><button class="btn" data-act="show">Reveal mark scheme</button><span class="note">About ${Math.max(1,Math.round(it.m*1.35))} min in the exam.</span></div>`;
+    else h+=`<textarea readonly style="min-height:70px">${esc(s.draft)}</textarea><h4>Mark scheme: tick only the points you really made</h4><ul class="ms">${it.ms.map((p,i)=>`<li><label><input type="checkbox" data-chg="mp" value="${i}"><span style="flex:1">${p}</span>${kwHit(p,s.draft)?'<span class="hint">likely covered</span>':''}</label></li>`).join('')}</ul>${it.tip?`<div class="pit"><b>Examiner tip.</b> ${it.tip}</div>`:''}${it.model?`<details class="model"><summary>Model answer</summary><div class="answer">${it.model}</div></details>`:''}<div class="row"><button class="btn" data-act="submitq" id="sq">Save ${0}/${it.m}</button></div>`;
+  }else if(it.type==='mcq'){
+    if(!s.order){s.order=shuf([0,1,2,3]);s.qt=Date.now()}
+    const rev=s.step==='reveal';
+    h+=`<p class="qtext">${it.q}</p><div class="opts">${s.order.map((oi,k)=>`<button class="${rev?(oi===0?'right':(k===s.picked?'wrong':'')):''}" data-act="mcq" data-v="${k}" ${rev?'disabled':''}><b>${'ABCD'[k]}</b><span>${it.opts[oi]}</span></button>`).join('')}</div>`;
+    if(!rev)h+=`<p class="note">Choose A to D, or press <kbd>1</kbd> to <kbd>4</kbd>.</p>`;
+    else h+=`<div class="answer"><b>${s.ok?PRAISE[Math.floor(Math.random()*PRAISE.length)]:OOPS[Math.floor(Math.random()*OOPS.length)]}.</b> ${it.why}</div><div class="row"><button class="btn" data-act="nextcalc">Next</button><span class="note"><kbd>Enter</kbd> for next</span></div>`;
+  }else{
+    h+=`<p class="qtext">${it.q}</p>`;
+    if(s.step==='ask')h+=`<div class="row" style="flex-wrap:nowrap"><input type="text" id="cin" inputmode="decimal" autocomplete="off" placeholder="Answer, e.g. 12.5 or 3.2e-5" aria-label="Your answer"><span class="mono">${it.u}</span></div><div class="row"><button class="btn" data-act="check">Check</button><button class="btn ghost" data-act="giveup">Show solution</button></div><p class="note">Accepted if within 2% of the exact answer. Use e-notation for powers of ten.</p>`;
+    else h+=`<div class="chip ${s.ok?'good':'bad'}" style="align-self:flex-start">${s.ok?PRAISE[Math.floor(Math.random()*PRAISE.length)]:'Not quite'}${s.given!=null&&!isNaN(s.given)?` · you entered ${sf(s.given)}`:''}</div><div class="answer"><b>${sf(it.a)} ${it.u}</b><div class="small" style="margin-top:6px">${it.sol}</div></div><button class="btn" data-act="nextcalc">Next</button>`;
+  }
+  return h+`</div></div>`;
+}
+function vSummary(){
+  const s=UI.sess;clearInterval(UI.tm);
+  const res=s.res,n=res.length,ok=res.filter(r=>r.s>=.6).length,acc=n?ok/n:0;
+  if(n>=3&&acc>=.8&&!s.partied){s.partied=true;UI.celebrate=true}
+  const msg=!n?'Session ended':acc>=.9?'Outstanding session!':acc>=.7?'Solid session':acc>=.5?'Good effort':"That was a tough set";
+  const sub=!n?'':acc>=.7?'Those answers are going further out in your schedule.':'The ones you missed come back sooner. That is exactly how spaced practice works.';
+  let h=`<div class="sess stack"><div class="card"><div class="eyebrow">Session complete</div><h2 style="margin:6px 0 4px">${msg}</h2><p class="muted">${n?`${ok} of ${n} recalled well. ${sub}`:''}</p>`;
+  if(n){
+    h+=`<div class="hero" style="margin-top:14px"><div style="gap:8px"><span class="eyebrow">Accuracy</span>${ringHTML(acc,pct(acc)+'%',mcol(acc))}</div><div><span class="eyebrow">XP earned</span><span class="readout">${s.xp||0}</span></div><div><span class="eyebrow">Best streak</span><span class="readout">${s.best||0}</span></div><div><span class="eyebrow">Time</span><span class="readout">${Math.max(1,Math.round((Date.now()-s.t0)/60000))}<small>min</small></span></div>`;
+    const qs=res.filter(r=>r.tot);if(qs.length){const g=qs.reduce((a,r)=>a+r.got,0),t=qs.reduce((a,r)=>a+r.tot,0);h+=`<div><span class="eyebrow">Exam marks</span><span class="readout">${g}<small>/ ${t}</small></span></div>`}
+    h+=`</div>`;
+    const byT={};res.forEach(r=>{const b=byT[r.topic]||(byT[r.topic]={n:0,ok:0});b.n++;if(r.s>=.6)b.ok++});
+    h+=`<h4 style="margin-top:16px">By topic</h4><div class="tw"><table class="tb"><tbody>${Object.keys(byT).map(k=>`<tr><td>${TB[k].ref} ${TB[k].title}</td><td class="mono">${byT[k].ok}/${byT[k].n}</td><td style="width:120px"><div class="bar ${mcol(byT[k].ok/byT[k].n)}"><i style="width:${pct(byT[k].ok/byT[k].n)}%"></i></div></td></tr>`).join('')}</tbody></table></div>`;
+    const miss=res.filter(r=>r.missed&&r.missed.length);
+    if(miss.length)h+=`<h4 style="margin-top:16px">Mark points to fix</h4>${miss.map(r=>`<div class="pit"><b>${TB[r.topic].title}</b><ul style="margin:4px 0 0;padding-left:18px">${r.missed.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}`;
+  }
+  const dues=ITEMS.filter(i=>S.sr[i.id]).map(i=>S.sr[i.id].due).sort();const nd=dues.find(d=>d>today());
+  h+=`<p class="note" style="margin-top:14px">${nd?`Next scheduled review: ${fmtDate(nd)}.`:''}</p><div class="row" style="margin-top:12px"><button class="btn" data-act="done">Back to Today</button><button class="btn ghost" data-act="tab" data-v="practice">More practice</button></div></div></div>`;
+  return h;
+}
+
+/* ----- Progress and Guide extras ----- */
+const _vProgress=vProgress;
+vProgress=function(){
+  const xp=S.xp||0,L=levelOf(xp),a=xpAt(L),b=xpAt(L+1),got=Object.keys(S.badges||{}).length;
+  const extra=`<div class="grid2"><div class="card"><h3>Level ${L}: ${levelName(L)}</h3><div class="row" style="margin-top:10px;flex-wrap:nowrap">${ringHTML((xp-a)/(b-a),Math.round((xp-a)/(b-a)*100)+'%','',92)}<div><p><b class="mono">${xp}</b> XP in total</p><p class="note">${b-xp} XP to level ${L+1}. Earn XP with every review. Written answers and harder recall earn more.</p></div></div></div>
+  <div class="card"><div class="row sp"><h3>Badges</h3><span class="chip acc">${got} / ${BADGES.length}</span></div><div class="badges">${BADGES.map((x,i)=>{const on=!!(S.badges||{})[x.id];return `<div class="bd ${on?'on':''}" title="${x.d}">${badgeSVG(i,on)}<b>${x.n}</b><small>${x.d}</small></div>`}).join('')}</div></div></div>`;
+  return _vProgress().replace(/<\/div>$/,extra+'</div>');
+};
+function fcSVG(days){
+  const W=380,H=200,l=46,r=14,t=14,b=38,X=d=>l+d/30*(W-l-r),Y=v=>t+(1-v)*(H-t-b);
+  const none=[],pr=[];for(let d=0;d<=30;d+=.5)none.push([d,Math.exp(-d/2)]);
+  let st=2,last=0,i=0;const rv=[...days].sort((x,y)=>x-y);
+  for(let d=0;d<=30.001;d+=.25){if(i<rv.length&&d>=rv[i]-1e-9){pr.push([d,Math.exp(-(d-last)/st)]);st*=2.4;last=d;i++;pr.push([d,1])}pr.push([d,Math.exp(-(d-last)/st)])}
+  const P=a=>a.map(p=>X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)).join(' ');
+  let s='';[0,.5,1].forEach(v=>s+=`<line class="gr" x1="${l}" y1="${Y(v)}" x2="${W-r}" y2="${Y(v)}"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end" class="tk">${v*100}%</text>`);
+  for(let d=0;d<=30;d+=5)s+=`<text x="${X(d)}" y="${H-b+14}" text-anchor="middle" class="tk">${d}</text>`;
+  s+=`<path class="ax" d="M${l} ${t}V${H-b}H${W-r}"/><text x="${(l+W-r)/2}" y="${H-6}" text-anchor="middle">days since first learning</text>`;
+  s+=`<polyline class="c2" points="${P(none)}"/><polyline class="c1" points="${P(pr)}"/>`+days.map(d=>`<circle class="accf" cx="${X(d)}" cy="${Y(1)}" r="4"/>`).join('');
+  return {svg:svg(W,H,s,'Forgetting curve with and without reviews'),a:Math.round(pr[pr.length-1][1]*100),b:Math.round(none[none.length-1][1]*100)};
+}
+function fcBox(days){const f=fcSVG(days);return `<div class="fig-box">${f.svg}</div><p class="note" style="margin-top:8px">Memory at day 30: <b>${f.a}%</b> with ${days.length} spaced review${days.length===1?'':'s'} (solid line) against <b>${f.b}%</b> with none (dashed). A simple model, but the shape is real: each well-timed recall makes the memory last longer.</p>`}
+const _vGuide=vGuide;
+vGuide=function(){
+  const extra=`<div class="grid2"><div class="card"><h3>See spacing in action</h3><p class="note">Switch reviews on and off and watch the forgetting curve change.</p>
+   <div class="row" style="margin:10px 0">${[1,3,7,14,21].map(d=>`<label class="fchip pill"><input type="checkbox" data-chg="fcdemo" value="${d}" ${[1,3,7].includes(d)?'checked':''}> Day ${d}</label>`).join('')}</div><div id="fcbox">${fcBox([1,3,7])}</div></div>
+   <div class="card"><h3>Make it yours</h3><div class="stack" style="gap:12px;margin-top:8px"><label class="f">Your name<input type="text" id="p-name" data-chg="pname" value="${esc(S.settings.name||'')}" maxlength="24" placeholder="What should Atom call you?"></label>
+   <label class="f">Daily goal (reviews)<select id="p-goal" data-chg="pgoal">${[10,15,20,30,40,60].map(n=>`<option ${(S.settings.goal||20)===n?'selected':''}>${n}</option>`).join('')}</select></label>
+   <label class="chk"><input type="checkbox" data-chg="psound" ${S.settings.sound?'checked':''}> Sound effects (quiet blips on answers and level-ups)</label>
+   <p class="note">Meet <b>Atom</b>, your revision buddy, on the Today tab. Tap Atom for a physics fact.</p></div></div></div>`;
+  return _vGuide().replace(/<\/div>$/,extra+'</div>');
+};
+
+/* ----- actions and events ----- */
+Object.assign(ACT,{
+  fact(){const el=$('#bubtxt');UI.fi=((UI.fi==null?-1:UI.fi)+1+Math.floor(Math.random()*3))%FACTS.length;
+    if(el){el.textContent=FACTS[UI.fi];const b=el.closest('.bubble');if(b){b.classList.remove('swap');void b.offsetWidth;b.classList.add('swap')}}
+    const m=$('.mascot');if(m){m.classList.remove('bounce');void m.getBoundingClientRect();m.classList.add('bounce')}},
+  quickmcq(){const l=TOPICS.filter(x=>tget(x.id).status>=1).map(x=>x.id);const tp=l.length?l:TOPICS.map(x=>x.id);startSess('drill',buildDrill(tp,'mcq',10))},
+  tfilter(b){UI.tf=b.dataset.v;$$('.fchip[data-act=tfilter]').forEach(c=>c.setAttribute('aria-pressed',c===b));applyTopicFilter()},
+  sound(){S.settings.sound=!S.settings.sound;save();decorate();if(S.settings.sound)blip(SND.good)},
+  theme(){S.settings.theme=isDark()?'light':'dark';save();applyTheme();decorate();if($('.fig'))render()}
+});
+const _status=ACT.status;
+ACT.status=function(b){const r=b.getBoundingClientRect(),v=+b.dataset.v,id=b.dataset.id,was=tget(id).status;_status(b);
+  if(v>=1&&was===0)toast(`<span><b>${TB[id].title.split(' and ')[0]}</b> added. ${itemsOf(id).length} items will join your reviews.</span>`);
+  if(v===2&&was!==2)confetti(40,{x:r.left+r.width/2,y:r.top+r.height/2});unlock()};
+const _modall=ACT.modall;ACT.modall=function(b){_modall(b);if(+b.dataset.v===2){toast(`<span><b>Module ${b.dataset.m}</b> marked as learned.</span>`);confetti(50,{x:b.getBoundingClientRect().left+30,y:b.getBoundingClientRect().top})}unlock()};
+const _addtest=ACT.addtest;ACT.addtest=function(){const n=S.tests.length;_addtest();if(S.tests.length>n){toast(`<span><b>Test added.</b> Review intervals for its topics are now capped to fit before the date.</span>`);confetti(40,UI.last);unlock()}};
+document.addEventListener('input',e=>{if(e.target.id==='tsearch')applyTopicFilter()});
+document.addEventListener('change',e=>{
+  const c=e.target.dataset&&e.target.dataset.chg;if(!c)return;
+  if(c==='fcdemo'){const d=$$('[data-chg=fcdemo]:checked').map(x=>+x.value);$('#fcbox').innerHTML=fcBox(d)}
+  else if(c==='pname'){S.settings.name=e.target.value.trim();save()}
+  else if(c==='pgoal'){S.settings.goal=+e.target.value;save()}
+  else if(c==='psound'){S.settings.sound=e.target.checked;save();decorate();if(S.settings.sound)blip(SND.good)}
+});
+applyTheme();
+render(true);
 </script>
 
 </body></html>
