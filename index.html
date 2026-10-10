@@ -1489,7 +1489,7 @@ const fmtInt=n=>n<=0?'today':n===1?'1 day':n<30?n+' days':n<365?Math.round(n/30)
 /* ----- state ----- */
 const LS='ocrphys.v1';
 let S,canSave=true;
-const fresh=()=>({v:1,settings:{newPerDay:8,target:'A',goal:20,name:'Joshua',sound:false,theme:''},topics:{},tests:[],sr:{},log:[],days:{},calc:{},xp:0,badges:{}});
+const fresh=()=>({v:1,settings:{newPerDay:8,target:'A',goal:20,name:'Physics Superstar',sound:false,theme:''},topics:{},tests:[],sr:{},log:[],days:{},calc:{},xp:0,badges:{}});
 function load(){
   try{const r=localStorage.getItem(LS);S=r?JSON.parse(r):fresh();localStorage.setItem(LS+'.probe','1');localStorage.removeItem(LS+'.probe')}catch(e){canSave=false;if(!S)S=fresh()}
   S=Object.assign(fresh(),S);S.settings=Object.assign(fresh().settings,S.settings);
